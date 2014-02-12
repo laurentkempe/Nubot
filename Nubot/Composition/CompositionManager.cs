@@ -12,6 +12,7 @@
         private readonly Robot _robot;
         private readonly string _pluginsDirectory = string.Format("{0}\\plugins\\", Environment.CurrentDirectory);
         private readonly string _adaptersDirectory = string.Format("{0}\\adapters\\", Environment.CurrentDirectory);
+        private DirectoryCatalog _pluginsdirectoryCatalog;
 
         public CompositionManager(Robot robot)
         {
@@ -25,19 +26,25 @@
                 Directory.CreateDirectory(_pluginsDirectory);
             }
 
-            var pluginsdirectoryCatalog = new DirectoryCatalog(_pluginsDirectory);
+            LoadPlugins();
+        }
+
+        private void LoadPlugins()
+        {
+            _pluginsdirectoryCatalog = new DirectoryCatalog(_pluginsDirectory);
             var adapterdirectoryCatalog = new DirectoryCatalog(_adaptersDirectory);
             var applicationCatalog = new ApplicationCatalog();
-            var catalog = new AggregateCatalog(applicationCatalog, pluginsdirectoryCatalog, adapterdirectoryCatalog);
+            var catalog = new AggregateCatalog(applicationCatalog, _pluginsdirectoryCatalog, adapterdirectoryCatalog);
 
             var container = new CompositionContainer(catalog);
             container.ComposeParts(_robot);
 
-            ShowLoadedPlugins(pluginsdirectoryCatalog, "Loaded the following plugins");
+            ShowLoadedPlugins(applicationCatalog, "Loaded the following Nubot plugins");
+            ShowLoadedPlugins(_pluginsdirectoryCatalog, "Loaded the following plugins");
             ShowLoadedPlugins(adapterdirectoryCatalog, "Loaded the following adapter");
         }
 
-        private static void ShowLoadedPlugins(ComposablePartCatalog catalog, string message)
+        private void ShowLoadedPlugins(ComposablePartCatalog catalog, string message)
         {
             var builder = new StringBuilder();
             builder.AppendLine(message);
@@ -46,7 +53,12 @@
                 builder.AppendFormat("\t{0}\n", part);
             }
 
-            Console.WriteLine(builder.ToString());
+            _robot.Logger.WriteLine(builder.ToString());
+        }
+
+        public void Refresh()
+        {
+            _pluginsdirectoryCatalog.Refresh();
         }
     }
 }

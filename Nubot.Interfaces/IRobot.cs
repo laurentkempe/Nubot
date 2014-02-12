@@ -1,6 +1,7 @@
 ﻿namespace Nubot.Interfaces
 {
     using System;
+    using System.Collections.Generic;
     using System.Text.RegularExpressions;
 
     public interface IRobot
@@ -18,5 +19,9 @@
         void Receive(string body);
 
         void Respond(string regex, string message, Action<Match> action);
+
+        IEnumerable<IRobotPlugin> RobotPlugins { get; }
+
+        void ReloadPlugins();
     }
 }

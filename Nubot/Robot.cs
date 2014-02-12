@@ -52,7 +52,12 @@
         }
 
         [ImportMany(AllowRecomposition = true)]
-        private List<IRobotPlugin> RobotPlugins { get; set; }
+        public IEnumerable<IRobotPlugin> RobotPlugins { get; private set; }
+
+        public void ReloadPlugins()
+        {
+            _compositionManager.Refresh();
+        }
 
         [Import(AllowRecomposition = true)]
         public IAdapter Adapter { private get; set; }
