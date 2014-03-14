@@ -1,5 +1,6 @@
 ﻿namespace Nubot.Plugins
 {
+    using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Text;
     using Interfaces;
@@ -15,7 +16,15 @@
             Name = "Admin";
 
             _robot = TinyIoCContainer.Current.Resolve<IRobot>();
+
+            HelpMessages = new List<string>
+            {
+                "admin plugins list - List plugin(s) currently loaded",
+                "admin plugins reload - Reload plugin(s)"
+            };
         }
+
+        public IEnumerable<string> HelpMessages { get; private set; }
 
         public string Name { get; private set; }
 
@@ -39,7 +48,7 @@
                 stringBuilder.AppendFormat("{0}\n", plugin.Name);
             }
 
-            _robot. Message(stringBuilder.ToString());
+            _robot.Message(stringBuilder.ToString());
         }
     }
 }

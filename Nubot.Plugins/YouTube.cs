@@ -1,6 +1,7 @@
 ﻿namespace Nubot.Plugins
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Linq;
     using System.Net.Http;
@@ -19,9 +20,14 @@
             Name = "YouTube";
 
             _robot = TinyIoCContainer.Current.Resolve<IRobot>();
+
+            HelpMessages = new List<string> {
+                "youtube me <query> - Queries YouTube and returns a random video from the top 15 videos found"};
         }
 
         public string Name { get; private set; }
+
+        public IEnumerable<string> HelpMessages { get; private set; }
 
         public void Respond(string message)
         {

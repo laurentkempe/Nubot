@@ -23,5 +23,7 @@
         IEnumerable<IRobotPlugin> RobotPlugins { get; }
 
         void ReloadPlugins();
+
+        void ShowHelp();
     }
 }

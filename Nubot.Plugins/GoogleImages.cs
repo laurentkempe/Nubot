@@ -1,6 +1,7 @@
 ﻿namespace Nubot.Plugins
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Linq;
     using System.Net.Http;
@@ -21,6 +22,7 @@
         }
 
         public string Name { get; private set; }
+        public IEnumerable<string> HelpMessages { get; private set; }
 
         public void Respond(string message)
         {

@@ -5,6 +5,7 @@
     using System.ComponentModel.Composition;
     using System.Configuration;
     using System.Linq;
+    using System.Text;
     using System.Text.RegularExpressions;
     using Composition;
     using Interfaces;
@@ -22,6 +23,8 @@
             Name = name;
             Version = "1.0"; //todo replace harcoding of the version number
 
+            HelpList = new List<string>();
+
             Settings = new AppSettings();
             Logger = new ConsoleLogger();
 
@@ -32,6 +35,7 @@
         public string Version { get; private set; }
         public ISettings Settings { get; private set; }
         public ILogger Logger { get; private set; }
+        public List<string> HelpList { get; set; }
 
         public void Message(string message)
         {
@@ -57,6 +61,26 @@
         public void ReloadPlugins()
         {
             _compositionManager.Refresh();
+        }
+
+        public void AddHelp(params string[] help)
+        {
+            HelpList = help.Concat(HelpList).ToList();
+            HelpList.Sort();
+        }
+
+        public void ShowHelp()
+        {
+            var messages = RobotPlugins.SelectMany(plugin => plugin.HelpMessages ?? Enumerable.Empty<string>()).OrderBy(s => s);
+
+            var stringBuilder = new StringBuilder();
+
+            foreach (var message in messages)
+            {
+                stringBuilder.AppendFormat("{0} {1}\n", Settings.Get("RobotName"), message);
+            }
+
+            Adapter.Message(stringBuilder.ToString());
         }
 
         [Import(AllowRecomposition = true)]
