@@ -17,6 +17,7 @@
     public class Robot : IRobot
     {
         private readonly CompositionManager _compositionManager;
+        private IDisposable _webApp;
 
         public Robot(string name)
         {
@@ -98,16 +99,21 @@
             StartWebServer();
         }
 
+        public void Stop()
+        {
+            if (_webApp != null)
+            {
+                _webApp.Dispose();
+            }
+        }
+
         private void StartWebServer()
         {
             var url = ConfigurationManager.AppSettings["RobotUrl"];
 
-            using (WebApp.Start<Startup>(url))
-            {
-                Logger.WriteLine("Running on {0}", url);
-                Logger.WriteLine("Press enter to exit");
-                Console.ReadLine();
-            }
+            _webApp = WebApp.Start<Startup>(url);
+
+           Logger.WriteLine("Running on {0}", url);
         }
     }
 }
