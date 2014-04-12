@@ -1,17 +1,18 @@
 ﻿namespace Nubot.Composition
 {
-    using System;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.ComponentModel.Composition.Primitives;
     using System.IO;
+    using System.Reflection;
     using System.Text;
 
     public class CompositionManager
     {
         private readonly Robot _robot;
-        private readonly string _pluginsDirectory = string.Format("{0}\\plugins\\", Environment.CurrentDirectory);
-        private readonly string _adaptersDirectory = string.Format("{0}\\adapters\\", Environment.CurrentDirectory);
+        private static readonly string ExecutingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        private readonly string _pluginsDirectory = string.Format("{0}\\plugins\\", ExecutingDirectory);
+        private readonly string _adaptersDirectory = string.Format("{0}\\adapters\\", ExecutingDirectory);
         private DirectoryCatalog _pluginsdirectoryCatalog;
 
         public CompositionManager(Robot robot)
