@@ -1,27 +1,18 @@
 ﻿namespace Nubot.Plugins{
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Diagnostics;
     using System.Net;
     using System.Text;
     using Interfaces;
-    using Nancy;
-    using Nancy.TinyIoc;
 
     [Export(typeof(IRobotPlugin))]
-    public class Httpd : NancyModule, IRobotPlugin
+    public class Httpd : HttpPluginBase
     {
-        private readonly IRobot _robot;
-
         public Httpd()
-            : base("/")
+            : base("Httpd", "/")
         {
-            Name = "Httpd";
-
-            _robot = TinyIoCContainer.Current.Resolve<IRobot>();
-
-            Get["nubot/version"] = x => _robot.Version;
+            Get["nubot/version"] = x => Robot.Version;
             Get["nubot/ping"] = x => "PONG";
             Get["nubot/time"] = x => string.Format("Server time is: {0}", DateTime.Now);
             Get["nubot/info"] = x =>
@@ -39,7 +30,7 @@
 
             stringBuilder.Append("<ul>");
 
-            foreach (var plugin in _robot.RobotPlugins)
+            foreach (var plugin in Robot.RobotPlugins)
             {
                 stringBuilder.AppendFormat("<li>{0}</li>", plugin.Name);
             }
@@ -47,14 +38,6 @@
             stringBuilder.Append("</ul>");
 
             return stringBuilder.ToString();
-        }
-
-        public string Name { get; private set; }
-
-        public IEnumerable<string> HelpMessages { get; private set; }
-
-        public void Respond(string message)
-        {
         }
     }
 }

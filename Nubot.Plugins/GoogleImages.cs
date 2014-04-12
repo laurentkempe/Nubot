@@ -7,28 +7,28 @@
     using System.Net.Http;
     using System.Web;
     using Interfaces;
-    using Nancy.TinyIoc;
     using Newtonsoft.Json.Linq;
 
     [Export(typeof(IRobotPlugin))]
-    public class GoogleImages : IRobotPlugin
+    public class GoogleImages : RobotPluginBase
     {
-        private readonly IRobot _robot;
-        public GoogleImages()
+        public GoogleImages() 
+            : base("Google Images")
         {
-            Name = "Google Images";
-
-            _robot = TinyIoCContainer.Current.Resolve<IRobot>();
+            HelpMessages = new List<string>
+            {
+                "image|img me <query> - Queries Google Images for <query> and returns a random top result.",
+                "adnimate me <query> - The same thing as `image me`, except adds a few parameters to try to return an animated GIF instead.",
+                "mustache me <url> - Adds a mustache to the specified URL.",
+                "mustache me <query> - Searches Google Images for the specified query and mustaches it."
+            };
         }
 
-        public string Name { get; private set; }
-        public IEnumerable<string> HelpMessages { get; private set; }
-
-        public void Respond(string message)
+        public override void Respond(string message)
         {
-            _robot.Respond(@"(image|img) (me) (.*)", message, match => ImageMe(match.Groups[3].Value, url => _robot.Message(url)));
-            _robot.Respond(@"(animate) (me) (.*)", message, match => ImageMe(match.Groups[3].Value, url => _robot.Message(url), true));
-            _robot.Respond(@"(?:mo?u)?sta(?:s|c)he?(?: me)? (.*)", message,
+            Robot.Respond(@"(image|img) (me) (.*)", message, match => ImageMe(match.Groups[3].Value, url => Robot.Message(url)));
+            Robot.Respond(@"(animate) (me) (.*)", message, match => ImageMe(match.Groups[3].Value, url => Robot.Message(url), true));
+            Robot.Respond(@"(?:mo?u)?sta(?:s|c)he?(?: me)? (.*)", message,
                 match =>
                 {
                     const string mustachify = "http://mustachify.me/?";
@@ -36,11 +36,11 @@
 
                     if (imagery.StartsWith("http"))
                     {
-                        _robot.Message(string.Format("{0}{1}", mustachify, string.Format("src={0}", HttpUtility.UrlEncode(imagery))));
+                        Robot.Message(string.Format("{0}{1}", mustachify, string.Format("src={0}", HttpUtility.UrlEncode(imagery))));
                     }
                     else
                     {
-                        ImageMe(imagery, url => _robot.Message(string.Format("{0}src={1}", mustachify, HttpUtility.UrlEncode(url))), false, true);
+                        ImageMe(imagery, url => Robot.Message(string.Format("{0}src={1}", mustachify, HttpUtility.UrlEncode(url))), false, true);
                     }
                 });
         }

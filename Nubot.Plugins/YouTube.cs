@@ -7,31 +7,21 @@
     using System.Net.Http;
     using System.Web;
     using Interfaces;
-    using Nancy.TinyIoc;
     using Newtonsoft.Json.Linq;
 
     [Export(typeof(IRobotPlugin))]
-    public class YouTube : IRobotPlugin
+    public class YouTube : RobotPluginBase
     {
-        private readonly IRobot _robot;
-
         public YouTube()
+            : base("YouTube")
         {
-            Name = "YouTube";
-
-            _robot = TinyIoCContainer.Current.Resolve<IRobot>();
-
             HelpMessages = new List<string> {
                 "youtube me <query> - Queries YouTube and returns a random video from the top 15 videos found"};
         }
 
-        public string Name { get; private set; }
-
-        public IEnumerable<string> HelpMessages { get; private set; }
-
-        public void Respond(string message)
+        public override void Respond(string message)
         {
-            _robot.Respond(@"(youtube) (me) (.*)", message, async match =>
+            Robot.Respond(@"(youtube) (me) (.*)", message, async match =>
             {
                 var query = match.Groups[3].Value;
 
@@ -54,7 +44,7 @@
 
                 if (videos == null)
                 {
-                    _robot.Message(string.Format("No video results for {0}", query));
+                    Robot.Message(string.Format("No video results for {0}", query));
                     return;
                 }
 
@@ -63,7 +53,7 @@
                     where (string)link["rel"] == "alternate" && (string)link["type"] == "text/html"
                     select (string)link["href"]).ToList();
 
-                _robot.Message(links.ElementAt(new Random().Next(0, links.Count())));
+                Robot.Message(links.ElementAt(new Random().Next(0, links.Count())));
             });
         }
     }
