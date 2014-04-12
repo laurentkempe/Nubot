@@ -50,7 +50,8 @@
         }
 
         public string Name { get; private set; }
-        public IEnumerable<string> HelpMessages { get; }
+
+        public IEnumerable<string> HelpMessages { get; private set; }
 
         public void Respond(string message)
         {
