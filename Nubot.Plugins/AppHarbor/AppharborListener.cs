@@ -3,24 +3,45 @@
     using System.ComponentModel.Composition;
     using Interfaces;
     using Models;
-    using Nancy;
-    using Nancy.ModelBinding;
 
     [Export(typeof(IRobotPlugin))]
-    public class AppharborListener : HttpPluginBase
+    public class AppharborListener : RobotPluginBase
     {
         public AppharborListener()
-            : base("Appharbor Listener", "/appharbor")
+            : base("Appharbor Listener")
         {
-            Post["/"] = x =>
+            Robot.Router.Post<AppharborModel>("/appharbor", ((m, n) =>
             {
-                var model = this.Bind<AppharborModel>();
+                var model = (AppharborModel)m;
 
                 var message = string.Format("Your application {0} has been deployed with status: {1}", model.Application.Name, model.Build.Status);
                 Robot.Message(message);
 
-                return HttpStatusCode.OK;
-            };
+                return 200; //return HttpStatusCode.OK;
+            }));
         }
     }
 }
+
+
+/*
+
+ http://localhost:8080/appharbor
+ 
+ Content-Type: application/json
+  
+ 
+{
+  "application": {
+    "name": "Foo"
+  }, 
+  "build": {
+    "commit": {
+      "id": "77d991fe61187d205f329ddf9387d118a09fadcd", 
+      "message": "Implement foo"
+    }, 
+    "status": "succeeded"
+  }
+}
+ 
+ */

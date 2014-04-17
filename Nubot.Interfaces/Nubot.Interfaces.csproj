@@ -37,11 +37,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HttpPluginBase.cs" />
     <Compile Include="IAdapter.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="IRobot.cs" />
     <Compile Include="IRobotPlugin.cs" />
+    <Compile Include="IRouter.cs" />
     <Compile Include="ISettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RobotPluginBase.cs" />

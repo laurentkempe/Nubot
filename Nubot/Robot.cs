@@ -18,6 +18,7 @@
     {
         private readonly CompositionManager _compositionManager;
         private IDisposable _webApp;
+        private NancyRouter _nancyRouter;
 
         public Robot(string name)
         {
@@ -28,6 +29,7 @@
 
             Settings = new AppSettings();
             Logger = new ConsoleLogger();
+            Router = new Router();
 
             _compositionManager = new CompositionManager(this);
         }
@@ -59,9 +61,13 @@
         [ImportMany(AllowRecomposition = true)]
         public IEnumerable<IRobotPlugin> RobotPlugins { get; private set; }
 
+        public IRouter Router { get; private set; }
+
         public void ReloadPlugins()
         {
             _compositionManager.Refresh();
+
+            //todo we might need to recreate the NancyRouter
         }
 
         public void AddHelp(params string[] help)
@@ -96,6 +102,9 @@
             Adapter.Robot = this;
 
             Adapter.Start();
+
+            TinyIoCContainer.Current.Register(Router);
+
             StartWebServer();
         }
 
@@ -107,13 +116,23 @@
             }
         }
 
+        /// <summary>
+        /// Starts the web server.
+        /// </summary>
         private void StartWebServer()
         {
-            var url = ConfigurationManager.AppSettings["RobotUrl"];
+            try
+            {
+                var url = ConfigurationManager.AppSettings["RobotUrl"];
 
-            _webApp = WebApp.Start<Startup>(url);
+                _webApp = WebApp.Start<Startup>(url);
 
-           Logger.WriteLine("Running on {0}", url);
+                Logger.WriteLine("Running on {0}", url);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 }

@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
+    using Nancy.Routing.Trie;
 
     public interface IRobot
     {
@@ -25,5 +26,7 @@
         void ReloadPlugins();
 
         void ShowHelp();
+
+        IRouter Router { get; }
     }
 }
