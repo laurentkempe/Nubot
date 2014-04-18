@@ -1,7 +1,5 @@
 ﻿namespace Nubot.Router
 {
-    using System;
-    using System.Collections.Generic;
     using Annotations;
     using Interfaces;
     using Nancy;
@@ -26,8 +24,24 @@
                     Post[route.Key.Path] = x =>
                     {
                         var action = route1.Value;
+
+                        var result = action(this.Bind());
+
+                        if (result is Interfaces.HttpStatusCode)
+                        {
+                            var httpStatusCode = (Interfaces.HttpStatusCode)result;
+
+                            return httpStatusCode.ToNancyHttpStatusCode();                            
+                        }
+
+                        var stringResult = result as string;
                         
-                        return action(this.Bind());
+                        if (stringResult != null)
+                        {
+                            return stringResult;
+                        }
+
+                        return null;
                     };
                 }
             }
