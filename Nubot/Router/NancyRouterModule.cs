@@ -1,6 +1,7 @@
 ﻿namespace Nubot.Router
 {
     using System;
+    using System.Collections.Generic;
     using Annotations;
     using Interfaces;
     using Nancy;
@@ -11,25 +12,24 @@
     {
         public NancyRouterModule(IRobot robot)
         {
-            foreach (var route in robot.Router.HttpGetRoutes)
+            foreach (var route in robot.Router.HttpRoutes)
             {
-                Get[route.Key] = route.Value;
-            }
-
-            foreach (var route in robot.Router.HttpPostRoutes)
-            {
-                var r = route;
-
-                Post[route.Key] = x =>
+                if (route.Key.Method == Route.RouteMethod.Get)
                 {
-                    var modelType = r.Value.Item1;
-                    var action = r.Value.Item2;
+                    Get[route.Key.Path] = route.Value;
+                }
 
-                    var model = Activator.CreateInstance(modelType);
-                    var bindTo = this.BindTo(model);
+                if (route.Key.Method == Route.RouteMethod.Post)
+                {
+                    var route1 = route;
 
-                    return action(bindTo, x);
-                };
+                    Post[route.Key.Path] = x =>
+                    {
+                        var action = route1.Value;
+                        
+                        return action(this.Bind());
+                    };
+                }
             }
         }
     }

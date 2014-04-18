@@ -11,7 +11,7 @@
         public AppharborListener(IRobot robot)
             : base("Appharbor Listener", robot)
         {
-            Robot.Router.Post<AppharborModel>("/appharbor", (m, x) =>
+            Robot.Router.Post("/appharbor", m =>
             {
                 var model = (AppharborModel)m;
 

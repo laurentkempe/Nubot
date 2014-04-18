@@ -5,12 +5,10 @@
 
     public interface IRouter
     {
-        Dictionary<string, Func<dynamic, dynamic>> HttpGetRoutes { get; }
+        Dictionary<Route, Func<dynamic, dynamic>> HttpRoutes { get; }
 
-        Dictionary<string, Tuple<Type, Func<dynamic, dynamic, dynamic>>> HttpPostRoutes { get; }
+        void Get(string path, Func<dynamic, dynamic> func);
 
-        void Get(string path, Func<dynamic, dynamic> action);
-
-        void Post<T>(string path, Func<dynamic, dynamic, dynamic> func);
+        void Post(string path, Func<dynamic, dynamic> func);
     }
 }

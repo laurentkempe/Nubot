@@ -8,22 +8,21 @@
     {
         public Router()
         {
-            HttpGetRoutes = new Dictionary<string, Func<dynamic, dynamic>>();
-            HttpPostRoutes = new Dictionary<string, Tuple<Type, Func<dynamic, dynamic, dynamic>>>();
+            HttpRoutes = new Dictionary<Route, Func<dynamic, dynamic>>();
         }
 
-        public void Get(string path, Func<dynamic, dynamic> action)
+        public void Get(string path, Func<dynamic, dynamic> func)
         {
-            HttpGetRoutes.Add(path, action);
+            HttpRoutes.Add(new Route {Method = Route.RouteMethod.Get, Path = path}, func);
         }
 
-        public Dictionary<string, Func<dynamic, dynamic>> HttpGetRoutes { get; private set; }
+        public Dictionary<Route, Func<dynamic, dynamic>> HttpRoutes { get; private set; }
 
-        public Dictionary<string, Tuple<Type, Func<dynamic, dynamic, dynamic>>> HttpPostRoutes { get; private set; }
-
-        public void Post<T>(string path, Func<dynamic, dynamic, dynamic> func)
+        public void Post(string path, Func<dynamic, dynamic> func)
         {
-            HttpPostRoutes.Add(path, new Tuple<Type, Func<dynamic, dynamic, dynamic>>(typeof(T), func));
+            var route = new Route {Method = Route.RouteMethod.Post, Path = path};
+
+            HttpRoutes.Add(route, func);
         }
     }
 }
