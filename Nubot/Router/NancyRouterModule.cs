@@ -1,33 +1,31 @@
 ﻿namespace Nubot.Router
 {
     using System;
+    using Annotations;
     using Interfaces;
     using Nancy;
     using Nancy.ModelBinding;
 
+    [UsedImplicitly]
     public class NancyRouterModule : NancyModule
     {
-        private readonly IRobot _robot;
-
         public NancyRouterModule(IRobot robot)
         {
-            _robot = robot;
-
-            foreach (var route in _robot.Router.HttpGetRoutes)
+            foreach (var route in robot.Router.HttpGetRoutes)
             {
                 Get[route.Key] = route.Value;
             }
 
-            foreach (var route in _robot.Router.HttpPostRoutes)
+            foreach (var route in robot.Router.HttpPostRoutes)
             {
-                var route1 = route;
+                var r = route;
+
                 Post[route.Key] = x =>
                 {
-                    var modelType = route1.Value.Item1;
-                    var action = route1.Value.Item2;
+                    var modelType = r.Value.Item1;
+                    var action = r.Value.Item2;
 
                     var model = Activator.CreateInstance(modelType);
-
                     var bindTo = this.BindTo(model);
 
                     return action(bindTo, x);

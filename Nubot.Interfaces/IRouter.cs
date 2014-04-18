@@ -6,7 +6,7 @@
     public interface IRouter
     {
         Dictionary<string, Func<dynamic, dynamic>> HttpGetRoutes { get; }
-        
+
         Dictionary<string, Tuple<Type, Func<dynamic, dynamic, dynamic>>> HttpPostRoutes { get; }
 
         void Get(string path, Func<dynamic, dynamic> action);
