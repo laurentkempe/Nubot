@@ -21,6 +21,7 @@
         void Respond(string regex, string message, Action<Match> action);
 
         IEnumerable<IRobotPlugin> RobotPlugins { get; }
+        IRouter Router { get; }
 
         void ReloadPlugins();
 

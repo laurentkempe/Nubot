@@ -11,7 +11,7 @@
     using Interfaces;
     using Loggers;
     using Microsoft.Owin.Hosting;
-    using Nancy.TinyIoc;
+    using Router;
     using Settings;
 
     public class Robot : IRobot
@@ -28,6 +28,7 @@
 
             Settings = new AppSettings();
             Logger = new ConsoleLogger();
+            Router = new Router.Router();
 
             _compositionManager = new CompositionManager(this);
         }
@@ -36,6 +37,7 @@
         public string Version { get; private set; }
         public ISettings Settings { get; private set; }
         public ILogger Logger { get; private set; }
+        public IRouter Router { get; private set; }
         public List<string> HelpList { get; set; }
 
         public void Message(string message)
@@ -89,13 +91,10 @@
 
         public void Start()
         {
-            TinyIoCContainer.Current.Register<IRobot>(this);
-
             _compositionManager.Compose();
 
-            Adapter.Robot = this;
-
             Adapter.Start();
+
             StartWebServer();
         }
 
@@ -109,11 +108,13 @@
 
         private void StartWebServer()
         {
+            Helper.GetConfiguredContainer().Register<IRobot>(this);
+
             var url = ConfigurationManager.AppSettings["RobotUrl"];
 
             _webApp = WebApp.Start<Startup>(url);
 
-           Logger.WriteLine("Running on {0}", url);
+            Logger.WriteLine("Running on {0}", url);
         }
     }
 }

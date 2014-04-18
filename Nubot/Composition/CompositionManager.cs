@@ -1,11 +1,13 @@
 ﻿namespace Nubot.Composition
 {
+    using System;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.ComponentModel.Composition.Primitives;
     using System.IO;
     using System.Reflection;
     using System.Text;
+    using Interfaces;
 
     public class CompositionManager
     {
@@ -32,17 +34,25 @@
 
         private void LoadPlugins()
         {
-            _pluginsdirectoryCatalog = new DirectoryCatalog(_pluginsDirectory);
-            var adapterdirectoryCatalog = new DirectoryCatalog(_adaptersDirectory);
-            var applicationCatalog = new ApplicationCatalog();
-            var catalog = new AggregateCatalog(applicationCatalog, _pluginsdirectoryCatalog, adapterdirectoryCatalog);
+            try
+            {
+                _pluginsdirectoryCatalog = new DirectoryCatalog(_pluginsDirectory);
+                var adapterdirectoryCatalog = new DirectoryCatalog(_adaptersDirectory);
+                var applicationCatalog = new ApplicationCatalog();
+                var catalog = new AggregateCatalog(applicationCatalog, _pluginsdirectoryCatalog, adapterdirectoryCatalog);
 
-            var container = new CompositionContainer(catalog);
-            container.ComposeParts(_robot);
+                var container = new CompositionContainer(catalog);
+                container.ComposeExportedValue<IRobot>(_robot);
+                container.ComposeParts(_robot);
 
-            ShowLoadedPlugins(applicationCatalog, "Loaded the following Nubot plugins");
-            ShowLoadedPlugins(_pluginsdirectoryCatalog, "Loaded the following plugins");
-            ShowLoadedPlugins(adapterdirectoryCatalog, "Loaded the following adapter");
+                ShowLoadedPlugins(applicationCatalog, "Loaded the following Nubot plugins");
+                ShowLoadedPlugins(_pluginsdirectoryCatalog, "Loaded the following plugins");
+                ShowLoadedPlugins(adapterdirectoryCatalog, "Loaded the following adapter");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         private void ShowLoadedPlugins(ComposablePartCatalog catalog, string message)

@@ -7,8 +7,9 @@
     [Export(typeof (IRobotPlugin))]
     public class Default : RobotPluginBase
     {
-        public Default()
-            : base("Default")
+        [ImportingConstructor]
+        public Default(IRobot robot)
+            : base("Default", robot)
         {
             HelpMessages = new List<string> {
                 "help - Show help of all currently loaded plugin(s)"

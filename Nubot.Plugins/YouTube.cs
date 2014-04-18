@@ -12,8 +12,9 @@
     [Export(typeof(IRobotPlugin))]
     public class YouTube : RobotPluginBase
     {
-        public YouTube()
-            : base("YouTube")
+        [ImportingConstructor]
+        public YouTube(IRobot robot)
+            : base("YouTube", robot)
         {
             HelpMessages = new List<string> {
                 "youtube me <query> - Queries YouTube and returns a random video from the top 15 videos found"};

@@ -7,21 +7,22 @@
     using Interfaces;
 
     [Export(typeof(IRobotPlugin))]
-    public class Httpd : HttpPluginBase
+    public class Httpd : RobotPluginBase
     {
-        public Httpd()
-            : base("Httpd", "/")
+        [ImportingConstructor]
+        public Httpd(IRobot robot)
+            : base("Httpd", robot)
         {
-            Get["nubot/version"] = x => Robot.Version;
-            Get["nubot/ping"] = x => "PONG";
-            Get["nubot/time"] = x => string.Format("Server time is: {0}", DateTime.Now);
-            Get["nubot/info"] = x =>
+            Robot.Router.Get("/nubot/version", x => Robot.Version);
+            Robot.Router.Get("/nubot/ping", x => "PONG");
+            Robot.Router.Get("/nubot/time", x => string.Format("Server time is: {0}", DateTime.Now));
+            Robot.Router.Get("/nubot/info", x =>
             {
                 var currentProcess = Process.GetCurrentProcess();
                 return string.Format("[pid:{0}] [Start Time:{1}]", currentProcess.Id, currentProcess.StartTime);
-            };
-            Get["nubot/ip"] = x => new WebClient().DownloadString("http://ifconfig.me/ip");
-            Get["nubot/plugins"] = x => ShowPlugins();
+            });
+            Robot.Router.Get("nubot/ip", x => new WebClient().DownloadString("http://ifconfig.me/ip"));
+            Robot.Router.Get("nubot/plugins", x => ShowPlugins());
         }
 
         private string ShowPlugins()
