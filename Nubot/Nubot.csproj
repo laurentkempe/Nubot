@@ -61,7 +61,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Nancy\Bootstrapper.cs" />
     <Compile Include="Composition\CompositionManager.cs" />
+    <Compile Include="Nancy\Helper.cs" />
     <Compile Include="Loggers\ConsoleLogger.cs" />
     <Compile Include="Plugins\Admin.cs" />
     <Compile Include="Plugins\Default.cs" />

@@ -1,17 +1,16 @@
 ﻿namespace Nubot.Interfaces
 {
     using System.Collections.Generic;
-    using Nancy.TinyIoc;
 
     public abstract class RobotPluginBase : IRobotPlugin
     {
         protected readonly IRobot Robot;
 
-        protected RobotPluginBase(string pluginName)
+        protected RobotPluginBase(string pluginName, IRobot robot)
         {
             Name = pluginName;
 
-            Robot = TinyIoCContainer.Current.Resolve<IRobot>();
+            Robot = robot;
 
             HelpMessages = new List<string>();
         }

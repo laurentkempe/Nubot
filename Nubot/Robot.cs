@@ -11,7 +11,7 @@
     using Interfaces;
     using Loggers;
     using Microsoft.Owin.Hosting;
-    using Nancy.TinyIoc;
+    using Nancy;
     using Settings;
 
     public class Robot : IRobot
@@ -89,13 +89,10 @@
 
         public void Start()
         {
-            TinyIoCContainer.Current.Register<IRobot>(this);
-
             _compositionManager.Compose();
 
-            Adapter.Robot = this;
-
             Adapter.Start();
+            
             StartWebServer();
         }
 
@@ -109,6 +106,8 @@
 
         private void StartWebServer()
         {
+            Helper.GetConfiguredContainer().Register<IRobot>(this); 
+            
             var url = ConfigurationManager.AppSettings["RobotUrl"];
 
             _webApp = WebApp.Start<Startup>(url);

@@ -6,6 +6,7 @@
     using System.IO;
     using System.Reflection;
     using System.Text;
+    using Interfaces;
 
     public class CompositionManager
     {
@@ -38,6 +39,7 @@
             var catalog = new AggregateCatalog(applicationCatalog, _pluginsdirectoryCatalog, adapterdirectoryCatalog);
 
             var container = new CompositionContainer(catalog);
+            container.ComposeExportedValue<IRobot>(_robot);
             container.ComposeParts(_robot);
 
             ShowLoadedPlugins(applicationCatalog, "Loaded the following Nubot plugins");

@@ -16,18 +16,19 @@
     {
         private ConcurrentDictionary<string, string> _roster = new ConcurrentDictionary<string, string>();
         private XmppClientConnection _client;
+        private IRobot _robot;
         private List<Jid> JoinedRoomJids { get; set; }
 
-        public Hipchat()
+        [ImportingConstructor]
+        public Hipchat(IRobot robot)
         {
+            _robot = robot;
             JoinedRoomJids = new List<Jid>();
         }
 
-        public IRobot Robot { get; set; }
-
         public void Start()
         {
-            _client = new XmppClientConnection(Robot.Settings.Get("HipChatServer"))
+            _client = new XmppClientConnection(_robot.Settings.Get("HipChatServer"))
             {
                 AutoResolveConnectServer = false
             };
@@ -37,10 +38,10 @@
             _client.OnRosterStart += OnRosterStart;
             _client.OnRosterItem += OnRosterItem;
 
-            Robot.Logger.WriteLine("Connecting...");
-            _client.Resource = Robot.Settings.Get("HipChatResource");
-            _client.Open(Robot.Settings.Get("HipChatUser"), Robot.Settings.Get("HipChatPassword"));
-            Robot.Logger.WriteLine("Connected.");
+            _robot.Logger.WriteLine("Connecting...");
+            _client.Resource = _robot.Settings.Get("HipChatResource");
+            _client.Open(_robot.Settings.Get("HipChatUser"), _robot.Settings.Get("HipChatPassword"));
+            _robot.Logger.WriteLine("Connected.");
         }
 
         public void Message(string message)
@@ -62,13 +63,13 @@
         {
             var mucManager = new MucManager(_client);
 
-            var rooms = Robot.Settings.Get("HipChatRooms").Split(',');
+            var rooms = _robot.Settings.Get("HipChatRooms").Split(',');
 
-            var roomJids = rooms.Select(room => new Jid(room + "@" + Robot.Settings.Get("HipChatConferenceServer")));
+            var roomJids = rooms.Select(room => new Jid(room + "@" + _robot.Settings.Get("HipChatConferenceServer")));
 
             foreach (var jid in roomJids)
             {
-                mucManager.JoinRoom(jid, Robot.Settings.Get("HipChatRoomNick"));
+                mucManager.JoinRoom(jid, _robot.Settings.Get("HipChatRoomNick"));
                 JoinedRoomJids.Add(jid);
             }
         }
@@ -81,12 +82,12 @@
 
             if (MessageIsFromRobot(user)) return;
 
-            Robot.Receive(msg.Body);
+            _robot.Receive(msg.Body);
         }
 
         private bool MessageIsFromRobot(string user)
         {
-            return user == Robot.Settings.Get("HipChatRoomNick");
+            return user == _robot.Settings.Get("HipChatRoomNick");
         }
 
         private string GetUser(Message msg)

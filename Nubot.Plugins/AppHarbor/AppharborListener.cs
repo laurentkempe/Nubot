@@ -9,8 +9,9 @@
     [Export(typeof(IRobotPlugin))]
     public class AppharborListener : HttpPluginBase
     {
-        public AppharborListener()
-            : base("Appharbor Listener", "/appharbor")
+        [ImportingConstructor]
+        public AppharborListener(IRobot robot)
+            : base("Appharbor Listener", "/appharbor", robot)
         {
             Post["/"] = x =>
             {

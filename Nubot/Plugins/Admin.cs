@@ -8,8 +8,9 @@
     [Export(typeof (IRobotPlugin))]
     public class Admin : RobotPluginBase
     {
-        public Admin()
-            : base("Admin")
+        [ImportingConstructor]
+        public Admin(IRobot robot)
+            : base("Admin", robot)
         {
             HelpMessages = new List<string>
             {

@@ -9,8 +9,9 @@
     [Export(typeof(IRobotPlugin))]
     public class Httpd : HttpPluginBase
     {
-        public Httpd()
-            : base("Httpd", "/")
+        [ImportingConstructor]
+        public Httpd(IRobot robot)
+            : base("Httpd", "/", robot)
         {
             Get["nubot/version"] = x => Robot.Version;
             Get["nubot/ping"] = x => "PONG";

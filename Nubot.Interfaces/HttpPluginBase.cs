@@ -2,18 +2,17 @@
 {
     using System.Collections.Generic;
     using Nancy;
-    using Nancy.TinyIoc;
 
     public abstract class HttpPluginBase : NancyModule, IRobotPlugin
     {
         protected readonly IRobot Robot;
 
-        protected HttpPluginBase(string pluginName, string modulePath)
+        protected HttpPluginBase(string pluginName, string modulePath, IRobot robot)
             : base(modulePath)
         {
             Name = pluginName;
 
-            Robot = TinyIoCContainer.Current.Resolve<IRobot>();
+            Robot = robot;
 
             HelpMessages = new List<string>();
         }

@@ -12,8 +12,9 @@
     [Export(typeof(IRobotPlugin))]
     public class GoogleImages : RobotPluginBase
     {
-        public GoogleImages() 
-            : base("Google Images")
+        [ImportingConstructor]
+        public GoogleImages(IRobot robot) 
+            : base("Google Images", robot)
         {
             HelpMessages = new List<string>
             {
