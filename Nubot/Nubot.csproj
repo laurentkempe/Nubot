@@ -74,7 +74,11 @@
     <Compile Include="Settings\AppSettings.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\Httpd\test.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nubot.Interfaces\Nubot.Interfaces.csproj">
       <Project>{4486cadc-a768-4bac-8249-7cd3b8f0993d}</Project>

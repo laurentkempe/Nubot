@@ -22,6 +22,8 @@
 
                 return HttpStatusCode.OK;
             };
+
+            Get["test"] = x => View["plugins/appharbor/views/test.html"];
         }
     }
 }

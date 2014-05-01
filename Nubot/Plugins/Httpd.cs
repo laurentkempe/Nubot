@@ -23,6 +23,7 @@
             };
             Get["nubot/ip"] = x => new WebClient().DownloadString("http://ifconfig.me/ip");
             Get["nubot/plugins"] = x => ShowPlugins();
+            Get["nubot/test"] = x => View["test.html"];
         }
 
         private string ShowPlugins()
