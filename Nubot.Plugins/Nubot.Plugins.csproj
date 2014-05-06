@@ -46,12 +46,14 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin.cs" />
     <Compile Include="AppHarbor\AppharborListener.cs" />
     <Compile Include="AppHarbor\Models\AppharborModel.cs" />
     <Compile Include="AppHarbor\Models\Application.cs" />
     <Compile Include="AppHarbor\Models\Build.cs" />
     <Compile Include="AppHarbor\Models\Commit.cs" />
     <Compile Include="GoogleImages.cs" />
+    <Compile Include="Nubot\Httpd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rules.cs" />
     <Compile Include="YouTube.cs" />
@@ -66,7 +68,19 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AppHarbor\Views\test.html">
+    <Content Include="AppHarbor\Views\css\style.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppHarbor\Views\scripts\script.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppHarbor\Views\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Nubot\Views\css\style.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Nubot\Views\test.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -1,5 +1,7 @@
 ﻿namespace Nubot.Plugins.AppHarbor
 {
+    using System;
+    using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using Interfaces;
     using Models;
@@ -23,7 +25,7 @@
                 return HttpStatusCode.OK;
             };
 
-            Get["test"] = x => View["plugins/appharbor/views/test.html"];
+            Get["index"] = x => PluginView["index.html"];
         }
     }
 }
