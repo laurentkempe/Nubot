@@ -6,8 +6,6 @@
     using System.Net;
     using System.Text;
     using Interfaces;
-    using Nancy;
-    using Nancy.Responses.Negotiation;
 
     [Export(typeof(IRobotPlugin))]
     public class Httpd : HttpPluginBase
@@ -27,7 +25,8 @@
             Get["ip"] = x => new WebClient().DownloadString("http://ifconfig.me/ip");
             Get["plugins"] = x => ShowPlugins();
 
-            Get["test"] = x => PluginView["test.html"];
+            Get["test"] = x => View[string.Format("plugins{0}/views/", ModulePath) + "test.html"];
+            Get["index"] = x => View[string.Format("plugins{0}/views/", ModulePath) + "index.cshtml", Robot.RobotPlugins];
         }
 
         private string ShowPlugins()

@@ -27,7 +27,7 @@
         {
         }
 
-        public PluginViewRenderer PluginView { get { return new PluginViewRenderer(this); } }
+        //public PluginViewRenderer PluginView { get { return new PluginViewRenderer(this); } }
 
 
         public virtual IEnumerable<Tuple<string, string>> StaticPaths
@@ -40,19 +40,30 @@
         }
     }
 
-    public class PluginViewRenderer : NancyModule.ViewRenderer
-    {
-        private readonly string _modulePath;
+    //public class PluginViewRenderer : NancyModule.ViewRenderer
+    //{
+    //    private readonly string _modulePath;
 
-        public PluginViewRenderer(INancyModule module)
-            : base(module)
-        {
-            _modulePath = module.ModulePath;
-        }
+    //    public PluginViewRenderer(INancyModule module)
+    //        : base(module)
+    //    {
+    //        _modulePath = module.ModulePath;
+    //    }
 
-        public new Negotiator this[string viewName]
-        {
-            get { return base[string.Format("plugins{0}/views/", _modulePath) + viewName]; }
-        }
-    }
+    //    public new Negotiator this[dynamic model]
+    //    {
+    //        get { return base[model]; }
+    //    }
+
+    //    public new Negotiator this[string viewName]
+    //    {
+    //        get { return base[string.Format("plugins{0}/views/", _modulePath) + viewName]; }
+    //    }
+
+    //    public new Negotiator this[string viewName, dynamic model]
+    //    {
+    //        get { return base[string.Format("plugins{0}/views/", _modulePath) + viewName, model]; }
+    //    }
+
+    //}
 }
