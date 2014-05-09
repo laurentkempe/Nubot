@@ -19,7 +19,7 @@
             HelpMessages = new List<string>
             {
                 "image|img me <query> - Queries Google Images for <query> and returns a random top result.",
-                "adnimate me <query> - The same thing as `image me`, except adds a few parameters to try to return an animated GIF instead.",
+                "animate me <query> - The same thing as `image me`, except adds a few parameters to try to return an animated GIF instead.",
                 "mustache me <url> - Adds a mustache to the specified URL.",
                 "mustache me <query> - Searches Google Images for the specified query and mustaches it."
             };

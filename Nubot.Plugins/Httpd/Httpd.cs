@@ -12,7 +12,7 @@
     {
         [ImportingConstructor]
         public Httpd(IRobot robot)
-            : base("Httpd", "/nubot", robot)
+            : base("Httpd", "/httpd", robot)
         {
             Get["version"] = x => Robot.Version;
             Get["ping"] = x => "PONG";
@@ -26,7 +26,8 @@
             Get["plugins"] = x => ShowPlugins();
 
             Get["test"] = x => View[string.Format("plugins{0}/views/", ModulePath) + "test.html"];
-            Get["index"] = x => View[string.Format("plugins{0}/views/", ModulePath) + "index.cshtml", Robot.RobotPlugins];
+            Get["index"] = x => View["index.cshtml", Robot.RobotPlugins];
+            //Get["index"] = x => View[string.Format("plugins{0}/views/", ModulePath) + "index.cshtml", Robot.RobotPlugins];
         }
 
         private string ShowPlugins()

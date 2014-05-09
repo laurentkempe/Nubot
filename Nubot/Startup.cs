@@ -1,6 +1,7 @@
 ﻿namespace Nubot
 {
     using Annotations;
+    using global::Nancy;
     using global::Nancy.Owin;
     using Interfaces;
     using Nancy;
@@ -15,6 +16,8 @@
             {
                 Bootstrapper = new Bootstrapper(Helper.GetConfiguredContainer().Resolve<IRobot>())
             });
+
+            StaticConfiguration.DisableErrorTraces = false;
         }
     }
 }

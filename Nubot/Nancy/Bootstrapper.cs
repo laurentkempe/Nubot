@@ -35,6 +35,12 @@ namespace Nubot.Nancy
             {
                 nancyConventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory(staticPath.Item1, staticPath.Item2));
             }
+
+            nancyConventions.ViewLocationConventions.Add((viewName, model, viewLocationContext) =>
+            {
+                var concat = string.Concat("plugins/", viewLocationContext.ModuleName, "/Views/", viewName);
+                return concat;
+            });
         }
     }
 }
