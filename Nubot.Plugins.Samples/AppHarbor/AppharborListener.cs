@@ -1,9 +1,9 @@
 ﻿namespace Nubot.Plugins.Samples.AppHarbor
 {
     using System.ComponentModel.Composition;
+    using System.Net;
     using Interfaces;
     using Models;
-    using Nancy;
     using Nancy.ModelBinding;
 
     [Export(typeof(IRobotPlugin))]
