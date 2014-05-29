@@ -1,4 +1,4 @@
-﻿namespace Nubot.Plugins.AppHarbor
+﻿namespace Nubot.Plugins.Samples.AppHarbor
 {
     using System.ComponentModel.Composition;
     using Interfaces;
