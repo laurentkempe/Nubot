@@ -1,12 +1,12 @@
-﻿namespace Nubot.Plugins
+﻿namespace Nubot.Plugins.Samples
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Linq;
     using System.Net.Http;
-    using System.Web;
     using Interfaces;
+    using Nancy.Helpers;
     using Newtonsoft.Json.Linq;
 
     [Export(typeof(IRobotPlugin))]

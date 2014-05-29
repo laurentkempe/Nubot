@@ -1,0 +1,40 @@
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Nubot.Plugins.Nubot.ViewModel.IndexViewModel>
+
+@{
+    ViewBag.Title = "Nubot Plugins";
+    Layout = "_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Active Plugins</h2>
+        <p>
+            <ul class="list-group">
+                @foreach (var plugin in Model.RobotPlugins)
+                {
+                    <li class="list-group-item">
+                        <span class="label label-primary">
+                            @plugin.Name
+                        </span>
+                        <ul>
+                            @foreach (var message in plugin.HelpMessages)
+                            {
+                                <li><small >@message</small></li>
+                            }
+                        </ul>
+                    </li>
+                }
+            </ul>
+        </p>
+    </div>
+    <div class="col-md-6">
+        <h2>Get more Plugins</h2>
+        <p>Nubot plugins extend its basic capabilities.</p>
+        <p><a class="btn btn-default" href="https://github.com/laurentkempe/nubot">Learn more &raquo;</a></p>
+    </div>
+</div>
+
+
+
+
+

@@ -1,4 +1,4 @@
-﻿namespace Nubot.Plugins
+﻿namespace Nubot.Plugins.Samples
 {
     using System;
     using System.ComponentModel.Composition;

@@ -1,5 +1,6 @@
 ﻿namespace Nubot.Interfaces
 {
+    using System;
     using System.Collections.Generic;
     using Nancy;
 
@@ -19,10 +20,19 @@
 
         public string Name { get; private set; }
 
-        public IEnumerable<string> HelpMessages { get; private set; }
+        public IEnumerable<string> HelpMessages { get; protected set; }
 
         public virtual void Respond(string message)
         {
+        }
+
+        public virtual IEnumerable<Tuple<string, string>> StaticPaths
+        {
+            get
+            {
+                yield return new Tuple<string, string>(ModulePath + "/css", string.Format("plugins{0}/views/css", ModulePath));
+                yield return new Tuple<string, string>(ModulePath + "/scripts", string.Format("plugins{0}/views/scripts", ModulePath));
+            }
         }
     }
 }

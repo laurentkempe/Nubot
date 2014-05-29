@@ -1,6 +1,8 @@
 namespace Nubot.Nancy
 {
+    using System.Linq;
     using global::Nancy;
+    using global::Nancy.Conventions;
     using global::Nancy.TinyIoc;
     using Interfaces;
 
@@ -22,6 +24,18 @@ namespace Nubot.Nancy
         {
             base.ConfigureApplicationContainer(container);
             container.Register(_robot);
+        }
+
+        protected override void ConfigureConventions(NancyConventions nancyConventions)
+        {
+            base.ConfigureConventions(nancyConventions);
+
+            foreach (var staticPath in _robot.RobotPlugins.OfType<HttpPluginBase>().SelectMany(httpPlugin => httpPlugin.StaticPaths))
+            {
+                nancyConventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory(staticPath.Item1, staticPath.Item2));
+            }
+
+            nancyConventions.ViewLocationConventions.Add((viewName, model, viewLocationContext) => string.Concat("plugins/", viewLocationContext.ModulePath, "/Views/", viewName));
         }
     }
 }

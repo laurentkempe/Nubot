@@ -1,4 +1,4 @@
-﻿namespace Nubot.Plugins.AppHarbor
+﻿namespace Nubot.Plugins.Samples.AppHarbor
 {
     using System.ComponentModel.Composition;
     using Interfaces;
@@ -22,6 +22,8 @@
 
                 return HttpStatusCode.OK;
             };
+
+            Get["index"] = x => View[string.Format("plugins{0}/views/", ModulePath) + "index.html"];
         }
     }
 }

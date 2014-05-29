@@ -1,4 +1,4 @@
-﻿namespace Nubot.Plugins.AppHarbor.Models
+﻿namespace Nubot.Plugins.Samples.AppHarbor.Models
 {
     public class Commit
     {

@@ -1,0 +1,30 @@
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Nubot.Plugins.Nubot.ViewModel.IndexViewModel>
+
+@{
+    ViewBag.Title = "Nubot Plugins";
+    Layout = "_Layout.cshtml";
+}
+
+<div class="jumbotron">
+    <h1>Nubot v@(Model.RobotVersion)</h1>
+    <p class="lead">Nubot is a free bot to connect to Hipchat and automate your work.</p>
+    <p><a href="https://github.com/laurentkempe/nubot" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Get more Plugins</h2>
+        <p>Nubot plugins extend its basic capabilities.</p>
+        <p><a class="btn btn-default" href="https://github.com/laurentkempe/nubot">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Hosting</h2>
+        <p>Nubot is self hosted as a console or windows service.</p>
+        <p><a class="btn btn-default" href="https://github.com/laurentkempe/nubot">Learn more &raquo;</a></p>
+    </div>
+</div>
+
+
+
+
+
