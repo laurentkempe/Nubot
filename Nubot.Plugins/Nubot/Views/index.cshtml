@@ -1,4 +1,4 @@
-﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<System.Collections.Generic.IEnumerable<Nubot.Interfaces.IRobotPlugin>>
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Nubot.Plugins.Nubot.ViewModel.IndexViewModel>
 
 @{
     ViewBag.Title = "Nubot Plugins";
@@ -6,7 +6,7 @@
 }
 
 <div class="jumbotron">
-    <h1>Nubot</h1>
+    <h1>Nubot v@(Model.RobotVersion)</h1>
     <p class="lead">Nubot is a free bot to connect to Hipchat and automate your work.</p>
     <p><a href="https://github.com/laurentkempe/nubot" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
 </div>
@@ -16,7 +16,7 @@
         <h2>Plugins</h2>
         <p>
             <ul class="list-group">
-                @foreach (var plugin in Model)
+                @foreach (var plugin in Model.RobotPlugins)
                 {
                     <li class="list-group-item">
                         <span class="label label-primary">
@@ -32,7 +32,6 @@
                 }
             </ul>
         </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
     </div>
     <div class="col-md-4">
         <h2>Get more Plugins</h2>

@@ -26,7 +26,6 @@ namespace Nubot.Nancy
             container.Register(_robot);
         }
 
-        //todo how do we do when we reload the plugins?
         protected override void ConfigureConventions(NancyConventions nancyConventions)
         {
             base.ConfigureConventions(nancyConventions);
@@ -36,11 +35,7 @@ namespace Nubot.Nancy
                 nancyConventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory(staticPath.Item1, staticPath.Item2));
             }
 
-            nancyConventions.ViewLocationConventions.Add((viewName, model, viewLocationContext) =>
-            {
-                var concat = string.Concat("plugins/", viewLocationContext.ModuleName, "/Views/", viewName);
-                return concat;
-            });
+            nancyConventions.ViewLocationConventions.Add((viewName, model, viewLocationContext) => string.Concat("plugins/", viewLocationContext.ModulePath, "/Views/", viewName));
         }
     }
 }

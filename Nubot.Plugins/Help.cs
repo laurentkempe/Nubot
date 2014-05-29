@@ -4,7 +4,7 @@
     using System.ComponentModel.Composition;
     using Interfaces;
 
-    [Export(typeof (IRobotPlugin))]
+    [Export(typeof(IRobotPlugin))]
     public class Default : RobotPluginBase
     {
         [ImportingConstructor]
