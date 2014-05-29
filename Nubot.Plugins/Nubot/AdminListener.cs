@@ -33,6 +33,7 @@
             };
 
             Get["admin"] = x => View["index.cshtml", new IndexViewModel { RobotPlugins = Robot.RobotPlugins, RobotVersion = Robot.Version }];
+            Get["plugins"] = x => View["plugins.cshtml", new IndexViewModel { RobotPlugins = Robot.RobotPlugins, RobotVersion = Robot.Version }];
         }
 
         private string ShowPlugins()
