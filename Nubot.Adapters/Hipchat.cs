@@ -51,10 +51,10 @@
             JoinedRoomJids.ForEach(jid => _client.Send(new Message(jid, _client.MyJID, MessageType.groupchat, message)));
         }
 
-        public bool SendNotification(string roomName, string htmlMessage)
+        public bool SendNotification(string roomName, string htmlMessage, bool notify)
         {
             var client = new HipchatClient();
-            return client.SendNotification(roomName, htmlMessage, RoomColors.Green);
+            return client.SendNotification(roomName, htmlMessage, RoomColors.Green, notify);
         }
 
         private void OnRosterItem(object sender, RosterItem item)

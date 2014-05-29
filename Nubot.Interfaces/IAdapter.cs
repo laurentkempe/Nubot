@@ -6,6 +6,6 @@
 
         void Message(string message);
 
-        bool SendNotification(string roomName, string htmlMessage);
+        bool SendNotification(string roomName, string htmlMessage, bool notify = false);
     }
 }

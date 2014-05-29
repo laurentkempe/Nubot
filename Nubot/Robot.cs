@@ -43,9 +43,9 @@
             Adapter.Message(message);
         }
 
-        public void SendNotification(string room, string htmlMessage)
+        public void SendNotification(string room, string htmlMessage, bool notify = false)
         {
-            Adapter.SendNotification(room, htmlMessage);
+            Adapter.SendNotification(room, htmlMessage, notify);
         }
 
         public void Receive(string message)
