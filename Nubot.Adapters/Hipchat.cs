@@ -9,6 +9,8 @@
     using agsXMPP.protocol.client;
     using agsXMPP.protocol.iq.roster;
     using agsXMPP.protocol.x.muc;
+    using HipchatApiV2;
+    using HipchatApiV2.Enums;
     using Interfaces;
 
     [Export(typeof(IAdapter))]
@@ -16,7 +18,7 @@
     {
         private ConcurrentDictionary<string, string> _roster = new ConcurrentDictionary<string, string>();
         private XmppClientConnection _client;
-        private IRobot _robot;
+        private readonly IRobot _robot;
         private List<Jid> JoinedRoomJids { get; set; }
 
         [ImportingConstructor]
@@ -47,6 +49,12 @@
         public void Message(string message)
         {
             JoinedRoomJids.ForEach(jid => _client.Send(new Message(jid, _client.MyJID, MessageType.groupchat, message)));
+        }
+
+        public bool SendNotification(string roomName, string htmlMessage)
+        {
+            var client = new HipchatClient();
+            return client.SendNotification(roomName, htmlMessage, RoomColors.Green);
         }
 
         private void OnRosterItem(object sender, RosterItem item)

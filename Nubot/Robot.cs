@@ -43,6 +43,11 @@
             Adapter.Message(message);
         }
 
+        public void SendNotification(string room, string htmlMessage)
+        {
+            Adapter.SendNotification(room, htmlMessage);
+        }
+
         public void Receive(string message)
         {
             RobotPlugins.ToList().ForEach(plugin => plugin.Respond(message));

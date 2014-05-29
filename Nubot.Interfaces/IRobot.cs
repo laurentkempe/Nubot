@@ -16,6 +16,8 @@
 
         void Message(string message);
 
+        void SendNotification(string room, string htmlMessage);
+
         void Receive(string body);
 
         void Respond(string regex, string message, Action<Match> action);

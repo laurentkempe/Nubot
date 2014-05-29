@@ -5,5 +5,7 @@
         void Start();
 
         void Message(string message);
+
+        bool SendNotification(string roomName, string htmlMessage);
     }
 }
