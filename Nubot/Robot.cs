@@ -9,7 +9,6 @@
     using System.Text.RegularExpressions;
     using Composition;
     using Interfaces;
-    using Loggers;
     using Microsoft.Owin.Hosting;
     using Nancy;
     using Settings;
@@ -19,7 +18,7 @@
         private readonly CompositionManager _compositionManager;
         private IDisposable _webApp;
 
-        public Robot(string name)
+        public Robot(string name, ILogger logger)
         {
             Name = name;
             Version = "1.0"; //todo replace harcoding of the version number
@@ -27,7 +26,7 @@
             HelpList = new List<string>();
 
             Settings = new AppSettings();
-            Logger = new ConsoleLogger();
+            Logger = logger;
 
             _compositionManager = new CompositionManager(this);
         }
@@ -45,7 +44,10 @@
 
         public void SendNotification(string room, string htmlMessage, bool notify = false)
         {
-            Adapter.SendNotification(room, htmlMessage, notify);
+            if (!string.IsNullOrEmpty(htmlMessage))
+            {
+                Adapter.SendNotification(room, htmlMessage, notify);
+            }
         }
 
         public void Receive(string message)

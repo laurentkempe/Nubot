@@ -14,7 +14,7 @@
 
                 x.Service<Robot>(s =>
                 {
-                    s.ConstructUsing(name => new Robot(DefaultRobotName));
+                    s.ConstructUsing(name => new Robot(DefaultRobotName, new Log4NetLogger()));
                     s.WhenStarted(robot => robot.Start());
                     s.WhenStopped(robot => robot.Stop());
                 });
