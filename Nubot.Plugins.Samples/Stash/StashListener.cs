@@ -21,8 +21,9 @@
         {
             _settings = new List<IPluginSetting>
             {
+                new PluginSetting(Robot, "AtlassianStashUrl"),
                 new PluginSetting(Robot, "AtlassianStashNotifyRoomName"),
-                new PluginSetting(Robot, "AtlassianStashUrl")
+                new PluginSetting(Robot, "AtlassianStashHipchatAuthToken"),
             };
 
             Post["/"] = x =>
@@ -31,6 +32,7 @@
 
                 Robot.SendNotification(
                     Robot.Settings.Get("AtlassianStashNotifyRoomName").Trim(),
+                    Robot.Settings.Get("AtlassianStashHipchatAuthToken").Trim(),
                     BuildMessage(model),
                     true);
 

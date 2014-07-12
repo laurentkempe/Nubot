@@ -22,8 +22,9 @@
         {
             _settings = new List<IPluginSetting>
             {
+                new PluginSetting(Robot, "AtlassianJiraUrl"),
                 new PluginSetting(Robot, "AtlassianJiraNotifyRoomName"),
-                new PluginSetting(Robot, "AtlassianJiraUrl")
+                new PluginSetting(Robot, "AtlassianJiraHipchatAuthToken")
             };
 
             Post["/"] = x =>
@@ -32,6 +33,7 @@
 
                 Robot.SendNotification(
                     Robot.Settings.Get("AtlassianJiraNotifyRoomName").Trim(),
+                    Robot.Settings.Get("AtlassianJiraHipchatAuthToken").Trim(),
                     BuildMessage(model),
                     true);
 
@@ -76,14 +78,13 @@
 
         private void BuildChangeLogMessage(JiraModel model, StringBuilder stringBuilder)
         {
-            if (model.comment != null)
+            if (model.comment != null && model.changelog == null)
             {
                 stringBuilder
                     .AppendFormat(
-                        "{0} added a comment to <b><a href='{1}'>{2}</a></b>.",
+                        "{0} added a comment to <b>{1}</b>.",
                         GetUserProfileLinkHtml(model.user),
-                        GetIssueLink(model.issue),
-                        GetIssueDescription(model.issue));
+                        GetFullIssueLink(model.issue));
                 
                 return;
             }
@@ -99,6 +100,17 @@
                         "{0}, <b>{1}</b> has just been assigned to you for code review.",
                         GetUserProfileLinkHtml(model.issue.fields.assignee),
                         GetFullIssueLink(model.issue));
+
+                    if (model.comment != null)
+                    {
+                        if (!string.IsNullOrEmpty(model.comment.body))
+                        {
+                            stringBuilder
+                                .AppendFormat(
+                                    "<br/>With followig comment '{0}'",
+                                    model.comment.body);
+                        }
+                    }
                 }
             }
             else
@@ -151,7 +163,7 @@
 
         private string GetUserProfileLink(string username)
         {
-            return JiraBaseUrl + "/secure/ViewProfile.jspa?name=" + username;
+            return string.Format("{0}/secure/ViewProfile.jspa?name={1}", JiraBaseUrl, username);
         }
     }
 }

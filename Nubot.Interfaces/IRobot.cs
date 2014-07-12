@@ -16,7 +16,7 @@
 
         void Message(string message);
 
-        void SendNotification(string room, string htmlMessage, bool notify = false);
+        void SendNotification(string room, string authToken, string htmlMessage, bool notify = false);
 
         void Receive(string body);
 

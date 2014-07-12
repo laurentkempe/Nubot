@@ -19,7 +19,8 @@
         {
             _settings = new List<IPluginSetting>
             {
-                new PluginSetting(Robot, "TeamCityNotifyRoomName")
+                new PluginSetting(Robot, "TeamCityNotifyRoomName"),
+                new PluginSetting(Robot, "TeamCityHipchatAuthToken")
             };
 
             Post["/"] = x =>
@@ -28,6 +29,7 @@
 
                 Robot.SendNotification(
                     Robot.Settings.Get("TeamCityNotifyRoomName").Trim(),
+                    Robot.Settings.Get("TeamCityHipchatAuthToken").Trim(), 
                     BuildMessage(model),
                     true);
 

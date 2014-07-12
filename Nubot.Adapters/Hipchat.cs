@@ -51,9 +51,9 @@
             JoinedRoomJids.ForEach(jid => _client.Send(new Message(jid, _client.MyJID, MessageType.groupchat, message)));
         }
 
-        public bool SendNotification(string roomName, string htmlMessage, bool notify)
+        public bool SendNotification(string roomName, string authToken, string htmlMessage, bool notify = false)
         {
-            var client = new HipchatClient();
+            var client = new HipchatClient(authToken);
             return client.SendNotification(roomName, htmlMessage, RoomColors.Green, notify);
         }
 

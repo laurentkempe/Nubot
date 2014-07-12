@@ -42,11 +42,11 @@
             Adapter.Message(message);
         }
 
-        public void SendNotification(string room, string htmlMessage, bool notify = false)
+        public void SendNotification(string room, string authToken, string htmlMessage, bool notify = false)
         {
             if (!string.IsNullOrEmpty(htmlMessage))
             {
-                Adapter.SendNotification(room, htmlMessage, notify);
+                Adapter.SendNotification(room, authToken, htmlMessage, notify: notify);
             }
         }
 
