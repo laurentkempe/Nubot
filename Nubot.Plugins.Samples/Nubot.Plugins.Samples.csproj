@@ -81,6 +81,10 @@
     <Compile Include="Stash\Models\Value1.cs" />
     <Compile Include="Stash\StashListener.cs" />
     <Compile Include="Stash\Models\StashModel.cs" />
+    <Compile Include="TeamCity\Model\Branch.cs" />
+    <Compile Include="TeamCity\Model\Build.cs" />
+    <Compile Include="TeamCity\Model\TeamCityModel.cs" />
+    <Compile Include="TeamCity\TeamCityListener.cs" />
     <Compile Include="YouTube.cs" />
   </ItemGroup>
   <ItemGroup>
