@@ -12,7 +12,6 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\Output\bin\Release\plugins\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -34,14 +33,20 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Nancy">
-      <HintPath>..\packages\Nancy.0.22.2\lib\net40\Nancy.dll</HintPath>
+      <HintPath>..\packages\Nancy.0.23.1\lib\net40\Nancy.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Nancy.ViewEngines.Razor">
-      <HintPath>..\packages\Nancy.Viewengines.Razor.0.22.2\lib\net40\Nancy.ViewEngines.Razor.dll</HintPath>
+      <HintPath>..\packages\Nancy.Viewengines.Razor.0.23.1\lib\net40\Nancy.ViewEngines.Razor.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Help.cs" />
@@ -90,11 +95,9 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
-if $(ConfigurationName) == Debug (
-xcopy /s /y /R "$(SolutionDir)packages\Nancy.Viewengines.Razor.0.22.2\BuildProviders\Nancy.ViewEngines.Razor.BuildProviders.dll" "$(ProjectDir)bin\"
-xcopy /s /y /R "$(SolutionDir)packages\Nancy.Viewengines.Razor.0.22.2\lib\Net40\Nancy.ViewEngines.Razor.dll" "$(ProjectDir)bin\"
-)</PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\Nancy.Viewengines.Razor.0.23.1\Tools\Nancy.Viewengines.Razor.targets" Condition="Exists('..\packages\Nancy.Viewengines.Razor.0.23.1\Tools\Nancy.Viewengines.Razor.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
