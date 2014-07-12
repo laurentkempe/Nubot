@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Nancy;
 
     public abstract class HttpPluginBase : NancyModule, IRobotPlugin
@@ -21,6 +22,8 @@
         public string Name { get; private set; }
 
         public IEnumerable<string> HelpMessages { get; protected set; }
+
+        public virtual IEnumerable<IPluginSetting> Settings { get {return Enumerable.Empty<IPluginSetting>();} }
 
         public virtual void Respond(string message)
         {

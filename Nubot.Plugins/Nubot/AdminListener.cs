@@ -6,6 +6,8 @@
     using System.Net;
     using System.Text;
     using Interfaces;
+    using Nancy;
+    using Nancy.ModelBinding;
     using ViewModel;
 
     [Export(typeof(IRobotPlugin))]
@@ -33,7 +35,19 @@
             };
 
             Get["admin"] = x => View["index.cshtml", new IndexViewModel { RobotPlugins = Robot.RobotPlugins, RobotVersion = Robot.Version }];
+
             Get["plugins"] = x => View["plugins.cshtml", new IndexViewModel { RobotPlugins = Robot.RobotPlugins, RobotVersion = Robot.Version }];
+            Post["plugins/update"] = parameters =>
+            {
+                var settings = this.Bind<List<SettingsModel>>();
+
+                foreach (var setting in settings)
+                {
+                    Robot.Settings.Set(setting.Key, setting.Value);
+                }
+
+                return Response.AsRedirect("/nubot/plugins");
+            };
         }
 
         private string ShowPlugins()
@@ -73,6 +87,12 @@
             }
 
             Robot.Message(stringBuilder.ToString());
+        }
+
+        private class SettingsModel
+        {
+            public string Key { get; set; }
+            public string Value { get; set; }
         }
     }
 }

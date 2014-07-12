@@ -1,4 +1,7 @@
-﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Nubot.Plugins.Nubot.ViewModel.IndexViewModel>
+﻿@using System.Linq
+@using System.Runtime.InteropServices
+@using Nubot.Interfaces
+@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Nubot.Plugins.Nubot.ViewModel.IndexViewModel>
 
 @{
     ViewBag.Title = "Nubot Plugins";
@@ -13,15 +16,38 @@
                 @foreach (var plugin in Model.RobotPlugins)
                 {
                     <li class="list-group-item">
-                        <span class="label label-primary">
+                        <h3 class="label label-primary">
                             @plugin.Name
-                        </span>
+                        </h3>
                         <ul>
                             @foreach (var message in plugin.HelpMessages)
                             {
-                                <li><small >@message</small></li>
+                                <li><small>@message</small></li>
                             }
                         </ul>
+                        
+                        @if (plugin.Settings.Any())
+                        {
+                            <span class="label label-info">Settings</span>
+
+                            <form action="plugins/update" method="POST" class="form" role="form">
+                                
+                                @{var n = 0;} 
+
+                                @foreach (var setting in plugin.Settings)
+                                {
+                                    <div class="form-group">
+                                        <label for="@setting.Key">@setting.Key</label>
+                                        <input type="hidden" name="Key[@n]" value="@setting.Key" />
+                                        <input type="text" name="Value[@n]" value="@setting.Value" class="form-control">
+                                    </div>
+                                    
+                                    n++;
+                                }
+                                
+                                <button type="submit" class="btn btn-default btn-xs">Update</button>
+                            </form>
+                        }
                     </li>
                 }
             </ul>
@@ -33,8 +59,3 @@
         <p><a class="btn btn-default" href="https://github.com/laurentkempe/nubot">Learn more &raquo;</a></p>
     </div>
 </div>
-
-
-
-
-

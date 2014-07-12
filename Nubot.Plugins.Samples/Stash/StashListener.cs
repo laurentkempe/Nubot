@@ -1,5 +1,7 @@
 ﻿namespace Nubot.Plugins.Samples.Stash
 {
+    using System;
+    using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Linq;
     using System.Text;
@@ -11,10 +13,18 @@
     [Export(typeof(IRobotPlugin))]
     public class StashListener : HttpPluginBase
     {
+        private readonly IEnumerable<IPluginSetting> _settings;
+
         [ImportingConstructor]
         public StashListener(IRobot robot)
             : base("Stash Listener", "/stash", robot)
         {
+            _settings = new List<IPluginSetting>
+            {
+                new PluginSetting(Robot, "AtlassianStashNotifyRoomName"),
+                new PluginSetting(Robot, "AtlassianStashUrl")
+            };
+
             Post["/"] = x =>
             {
                 var model = this.Bind<StashModel>();
@@ -28,10 +38,15 @@
             };
         }
 
+        public override IEnumerable<IPluginSetting> Settings
+        {
+            get { return _settings; }
+        }
+
         private string BuildMessage(StashModel model)
         {
-            var authorNames = model.Changesets.Values.Select(v => v.ToCommit.Author.Name);
-            var branches = model.RefChanges.Select(r => r.RefId.Replace("refs/heads/", ""));
+            var authorNames = model.Changesets.Values.Select(v => v.ToCommit.Author.Name).Distinct();
+            var branches = model.RefChanges.Select(r => r.RefId.Replace("refs/heads/", "")).Distinct();
 
             var repositoryUrl = string.Format("{0}/projects/{1}/repos/{2}",
                                               Robot.Settings.Get("AtlassianStashUrl"),
@@ -57,13 +72,21 @@
             {
                 stringBuilder
                     .AppendFormat(
-                        @"- {0} (<a href='{1}'>{2}</a>)",
+                        @"- {0} (<a href='{1}'>{2}</a>)<br/>",
                         changeset.ToCommit.Message,
                         repositoryUrl + "/commits/" + changeset.ToCommit.Id,
                         changeset.ToCommit.DisplayId);
             }
 
             return stringBuilder.ToString();
+        }
+
+        private string GetRepositoryUrl(StashModel model)
+        {
+            return string.Format("{0}/projects/{1}/repos/{2}",
+                Robot.Settings.Get("AtlassianStashUrl"),
+                model.Repository.Project.Name,
+                model.Repository.Slug);
         }
     }
 }
