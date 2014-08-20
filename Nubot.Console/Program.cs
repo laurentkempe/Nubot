@@ -1,5 +1,6 @@
 ﻿namespace Nubot.Console
 {
+    using Messaging;
     using Topshelf;
 
     public class Program
@@ -14,7 +15,7 @@
 
                 x.Service<Robot>(s =>
                 {
-                    s.ConstructUsing(name => new Robot(DefaultRobotName, new Log4NetLogger()));
+                    s.ConstructUsing(name => new Robot(DefaultRobotName, new Log4NetLogger(), Messenger.Default));
                     s.WhenStarted(robot => robot.Start());
                     s.WhenStopped(robot => robot.Stop());
                 });
