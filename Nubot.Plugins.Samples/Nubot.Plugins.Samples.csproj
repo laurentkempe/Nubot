@@ -84,6 +84,7 @@
     <Compile Include="TeamCity\Model\Branch.cs" />
     <Compile Include="TeamCity\Model\Build.cs" />
     <Compile Include="TeamCity\Model\TeamCityModel.cs" />
+    <Compile Include="TeamCity\TeamCityAggregator.cs" />
     <Compile Include="TeamCity\TeamCityListener.cs" />
     <Compile Include="YouTube.cs" />
   </ItemGroup>
