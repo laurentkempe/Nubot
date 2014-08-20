@@ -15,7 +15,7 @@
             Robot.Messenger.On<TeamCityModel>("TeamCityBuild", OnTeamCityBuild);
         }
 
-        private void OnTeamCityBuild(GenericMessage<TeamCityModel> message)
+        private void OnTeamCityBuild(IMessage<TeamCityModel> message)
         {
             Robot.SendNotification(
                 Robot.Settings.Get("TeamCityNotifyRoomName").Trim(),
