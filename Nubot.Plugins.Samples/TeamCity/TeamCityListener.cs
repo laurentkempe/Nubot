@@ -26,7 +26,7 @@
             {
                 var model = this.Bind<TeamCityModel>(new BindingConfig {IgnoreErrors = true, BodyOnly = true});
 
-                Robot.Emit("TeamCityBuild", model);
+                Robot.Messenger.Emit("TeamCityBuild", model);
 
                 return HttpStatusCode.OK;
             };

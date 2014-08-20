@@ -12,15 +12,15 @@
         public TeamCityAggregator(IRobot robot)
             : base("TeamCityAggregator", robot)
         {
-            Robot.On<TeamCityModel>("TeamCityBuild", OnTeamCityBuild);
+            Robot.Messenger.On<TeamCityModel>("TeamCityBuild", OnTeamCityBuild);
         }
 
-        private void OnTeamCityBuild(object model)
+        private void OnTeamCityBuild(GenericMessage<TeamCityModel> message)
         {
             Robot.SendNotification(
                 Robot.Settings.Get("TeamCityNotifyRoomName").Trim(),
                 Robot.Settings.Get("TeamCityHipchatAuthToken").Trim(),
-                BuildMessage((TeamCityModel)model),
+                BuildMessage(message.Content),
                 true);
         }
 

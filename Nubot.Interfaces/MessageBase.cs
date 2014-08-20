@@ -13,13 +13,13 @@
 // </license>
 // ****************************************************************************
 
-namespace Nubot.Messaging
+namespace Nubot.Interfaces
 {
     /// <summary>
-    /// Base class for all messages broadcasted by the Messenger.
+    /// Base class for all messages broadcasted by the MvvmLightMessenger.
     /// You can create your own message types by extending this class.
     /// </summary>
-    ////[ClassInfo(typeof(Messenger))]
+    ////[ClassInfo(typeof(MvvmLightMessenger))]
     public class MessageBase
     {
         /// <summary>

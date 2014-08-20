@@ -13,13 +13,13 @@
 // </license>
 // ****************************************************************************
 
-namespace Nubot.Messaging
+namespace Nubot.Interfaces
 {
     /// <summary>
     /// Passes a generic value (Content) to a recipient.
     /// </summary>
     /// <typeparam name="T">The type of the Content property.</typeparam>
-    ////[ClassInfo(typeof(Messenger))]
+    ////[ClassInfo(typeof(MvvmLightMessenger))]
     public class GenericMessage<T> : MessageBase
     {
         /// <summary>
