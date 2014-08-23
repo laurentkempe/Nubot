@@ -31,12 +31,17 @@
             Robot.Messenger.On<TeamCityModel>("TeamCityBuild", OnTeamCityBuild);
         }
 
+        private void OnTeamCityBuild(IMessage<TeamCityModel> message)
+        {
+            _subject.OnNext(message.Content);
+        }
+
         private void SendNotification(IList<TeamCityModel> models)
         {
-            var message = 
-                models.All(model => model.build.buildResult.Equals("success", StringComparison.InvariantCultureIgnoreCase)) ? 
-                BuildSuccessMessage(models.First().build) : 
-                BuildFailureMessage(models.Select(m => m.build));
+            var success = models.All(model => model.build.buildResult.Equals("success", StringComparison.InvariantCultureIgnoreCase));
+            var notify = !success;
+
+            var message = success ? BuildSuccessMessage(models.First().build) : BuildFailureMessage(models.Select(m => m.build));
 
             //todo add color of the line https://www.hipchat.com/docs/api/method/rooms/message
             //todo Background color for message. One of "yellow", "red", "green", "purple", "gray", or "random". (default: yellow)
@@ -45,7 +50,7 @@
                 Robot.Settings.Get("TeamCityNotifyRoomName").Trim(),
                 Robot.Settings.Get("TeamCityHipchatAuthToken").Trim(),
                 message,
-                true);
+                notify);
         }
 
         private string BuildFailureMessage(IEnumerable<Build> builds)
@@ -78,11 +83,6 @@
                     build.projectName, build.branchName, build.buildStatusUrl, build.buildNumber);
 
             return stringBuilder.ToString();
-        }
-
-        private void OnTeamCityBuild(IMessage<TeamCityModel> message)
-        {
-            _subject.OnNext(message.Content);
         }
     }
 }
