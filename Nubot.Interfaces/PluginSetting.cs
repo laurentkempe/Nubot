@@ -14,7 +14,10 @@ namespace Nubot.Interfaces
         public string Value
         {
             get { return _robot.Settings.Get(Key); }
-            set { _robot.Settings.Set(Key , value); }
+            set 
+            {
+                _robot.Settings.Set(Key , value);
+            }
         }
     }
 }

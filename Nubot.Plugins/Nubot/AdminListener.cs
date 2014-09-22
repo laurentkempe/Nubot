@@ -3,8 +3,10 @@
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Diagnostics;
+    using System.IO;
     using System.Net;
     using System.Text;
+    using System.Linq;
     using Interfaces;
     using Nancy;
     using Nancy.ModelBinding;
@@ -39,11 +41,21 @@
             Get["plugins"] = x => View["plugins.cshtml", new IndexViewModel { RobotPlugins = Robot.RobotPlugins, RobotVersion = Robot.Version }];
             Post["plugins/update"] = parameters =>
             {
-                var settings = this.Bind<List<SettingsModel>>();
+                var pluginName = this.Context.Request.Form.PluginName;
+                var plugin = robot.RobotPlugins.FirstOrDefault(p => p.Name == pluginName);
+                var configFileName = string .Empty;
+                if (plugin != null)
+                {
+                    configFileName = plugin.MakeConfigFileName();
+                }
 
+                var settings = this.Bind<List<SettingsModel>>();
                 foreach (var setting in settings)
                 {
                     Robot.Settings.Set(setting.Key, setting.Value);
+
+                    // not only Update App.config but also the corresponding config file
+                    Robot.Settings.Set(setting.Key, setting.Value, configFileName);
                 }
 
                 return Response.AsRedirect("/nubot/plugins");

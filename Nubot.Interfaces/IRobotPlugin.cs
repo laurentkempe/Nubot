@@ -11,6 +11,10 @@
         IEnumerable<IPluginSetting> Settings { get; }
 
         void Respond(string message);
+
+        string ExecutingDirectory { get; }
+        string BasePluginsDirectory { get; }
+        string MakeConfigFileName();
     }
 
     public interface IPluginSetting

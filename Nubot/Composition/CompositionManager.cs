@@ -15,9 +15,9 @@
     public class CompositionManager
     {
         private readonly Robot _robot;
-        private static readonly string ExecutingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        private readonly string _pluginsDirectory = string.Format("{0}\\plugins\\", ExecutingDirectory);
-        private readonly string _adaptersDirectory = string.Format("{0}\\adapters\\", ExecutingDirectory);
+        public static readonly string ExecutingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        public static readonly string PluginsDirectory = Path.Combine(ExecutingDirectory, "plugins");
+        public static readonly string AdaptersDirectory = Path.Combine(ExecutingDirectory, "adapters");
 
         private ApplicationCatalog _applicationCatalog;
         private DirectoryCatalog _adapterdirectoryCatalog;
@@ -30,9 +30,9 @@
 
         public void Compose()
         {
-            if (!Directory.Exists(_pluginsDirectory))
+            if (!Directory.Exists(PluginsDirectory))
             {
-                Directory.CreateDirectory(_pluginsDirectory);
+                Directory.CreateDirectory(PluginsDirectory);
             }
 
             LoadAdapterAndPlugins();
@@ -55,15 +55,16 @@
         private ComposablePartCatalog GetInterceptionCatalog()
         {
             _applicationCatalog = new ApplicationCatalog();
-            _adapterdirectoryCatalog = new DirectoryCatalog(_adaptersDirectory);
-            _pluginsdirectoryCatalog = new DirectoryCatalog(_pluginsDirectory);
+            _adapterdirectoryCatalog = new DirectoryCatalog(AdaptersDirectory);
+            _pluginsdirectoryCatalog = new DirectoryCatalog(PluginsDirectory);
 
             var catalog = new AggregateCatalog(_applicationCatalog, _adapterdirectoryCatalog, _pluginsdirectoryCatalog);
 
             var cfg = new InterceptionConfiguration().AddInterceptionCriteria(
                             new PredicateInterceptionCriteria(
                                 new CopyConfigInterceptor(), 
-                                def => def.ExportDefinitions.First().ContractName.Contains("IAdapter"))); // search for adapters; TODO: add search for plugins
+                                def => def.ExportDefinitions.First().ContractName.Contains("IAdapter") ||
+                                       def.ExportDefinitions.First().ContractName.Contains("IRobotPlugin"))); 
 
             // Create the InterceptingCatalog with above configuration
             var interceptingCatalog = new InterceptingCatalog(catalog, cfg);
@@ -85,6 +86,32 @@
         public void Refresh()
         {
             _pluginsdirectoryCatalog.Refresh();
+        }
+
+        public static string MakeAdapterConfigFileName(IAdapter adapter)
+        {
+            var adapterName = adapter.Name;
+            var file = string.Format("{0}.config", adapterName);
+            var configFileName = Path.Combine(CompositionManager.AdaptersDirectory, file);
+
+            return configFileName;
+        }
+
+        public static string MakePluginConfigFileName(IRobotPlugin plugin)
+        {
+            var subPath = string.Empty;
+
+            var module = plugin as global::Nancy.NancyModule;
+            if (module != null)
+            {
+                subPath = module.ModulePath.StartsWith("/") ? module.ModulePath.Substring(1) : module.ModulePath;
+            }
+
+            var pluginName = plugin.Name.Replace(" ", string.Empty);
+            var file = string.Format("{0}.config", pluginName);
+            var configFileName = Path.Combine(CompositionManager.PluginsDirectory, subPath, file);
+
+            return configFileName;
         }
     }
 }
