@@ -22,8 +22,9 @@
             _settings = new List<IPluginSetting>
             {
                 new PluginSetting(Robot, "AtlassianStashUrl"),
+
                 new PluginSetting(Robot, "AtlassianStashNotifyRoomName"),
-                new PluginSetting(Robot, "AtlassianStashHipchatAuthToken"),
+                new PluginSetting(Robot, "AtlassianStashHipchatAuthToken"), //how to be able to send notification to Slack, too much coupling with hipchat
             };
 
             Post["/"] = x =>
