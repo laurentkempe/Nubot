@@ -87,31 +87,5 @@
         {
             _pluginsdirectoryCatalog.Refresh();
         }
-
-        public static string MakeAdapterConfigFileName(IAdapter adapter)
-        {
-            var adapterName = adapter.Name;
-            var file = string.Format("{0}.config", adapterName);
-            var configFileName = Path.Combine(CompositionManager.AdaptersDirectory, file);
-
-            return configFileName;
-        }
-
-        public static string MakePluginConfigFileName(IRobotPlugin plugin)
-        {
-            var subPath = string.Empty;
-
-            var module = plugin as global::Nancy.NancyModule;
-            if (module != null)
-            {
-                subPath = module.ModulePath.StartsWith("/") ? module.ModulePath.Substring(1) : module.ModulePath;
-            }
-
-            var pluginName = plugin.Name.Replace(" ", string.Empty);
-            var file = string.Format("{0}.config", pluginName);
-            var configFileName = Path.Combine(CompositionManager.PluginsDirectory, subPath, file);
-
-            return configFileName;
-        }
     }
 }
