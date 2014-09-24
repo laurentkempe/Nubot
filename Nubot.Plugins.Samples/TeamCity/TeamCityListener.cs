@@ -19,8 +19,8 @@
         {
             _settings = new List<IPluginSetting>
             {
-                new PluginSetting(Robot, "TeamCityNotifyRoomName"),
-                new PluginSetting(Robot, "TeamCityHipchatAuthToken")
+                new PluginSetting(Robot, this, "TeamCityNotifyRoomName"),
+                new PluginSetting(Robot, this, "TeamCityHipchatAuthToken")
             };
 
             Post["/"] = x =>

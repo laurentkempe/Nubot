@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MefContrib">
+      <HintPath>..\packages\MefContrib.1.2.2.1\lib\net40-Client\MefContrib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Owin">
       <HintPath>..\packages\Microsoft.Owin.2.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
     </Reference>
@@ -70,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Composition\MEFInterception.cs" />
     <Compile Include="Nancy\Bootstrapper.cs" />
     <Compile Include="Composition\CompositionManager.cs" />
     <Compile Include="Nancy\Helper.cs" />

@@ -89,7 +89,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Jira\JiraListener.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
+    <None Include="Stash\StashListener.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TeamCity\TeamCityListener.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="web.config" />
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.IO;
+    using System.Reflection;
 
     public abstract class RobotPluginBase : IRobotPlugin
     {
@@ -16,6 +18,18 @@
             HelpMessages = new List<string>();
         }
 
+        static RobotPluginBase()
+        {
+            ExecutingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            BasePluginsDirectory = Path.Combine(ExecutingDirectory, "plugins");
+        }
+
+        public string Name { get; protected set; }
+
+        public static string ExecutingDirectory { get; private set; }
+
+        public static string BasePluginsDirectory { get; private set; }
+        
         public IEnumerable<string> HelpMessages { get; protected set; }
 
         public virtual IEnumerable<IPluginSetting> Settings { get { return Enumerable.Empty<IPluginSetting>();} }
@@ -24,6 +38,13 @@
         {
         }
 
-        public string Name { get; protected set; }
+        public virtual string MakeConfigFileName()
+        {
+            var pluginName = this.Name.Replace(" ", string.Empty);
+            var file = string.Format("{0}.config", pluginName);
+            var configFileName = Path.Combine(BasePluginsDirectory, file);
+
+            return configFileName;
+        }
     }
 }
