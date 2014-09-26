@@ -19,6 +19,12 @@
         public override void Respond(string message)
         {
             Robot.Respond(@"(help)", message, match => ShowHelp());
+            Robot.Respond(@"(-a|-adapter)", message, match => SwitchAdapter());
+        }
+
+        private object SwitchAdapter()
+        {
+            throw new System.NotImplementedException();
         }
 
         private void ShowHelp()

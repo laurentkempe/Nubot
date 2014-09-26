@@ -36,17 +36,18 @@
         public ISettings Settings { get; private set; }
         public ILogger Logger { get; private set; }
         public List<string> HelpList { get; set; }
+        public IAdapter CurrentAdapter { get; private set; }
 
         public void Message(string message)
         {
-            Adapter.Message(message);
+            CurrentAdapter.Message(message);
         }
 
         public void SendNotification(string room, string authToken, string htmlMessage, bool notify = false)
         {
             if (!string.IsNullOrEmpty(htmlMessage))
             {
-                Adapter.SendNotification(room, authToken, htmlMessage, notify: notify);
+                CurrentAdapter.SendNotification(room, authToken, htmlMessage, notify: notify);
             }
         }
 
@@ -88,19 +89,45 @@
                 stringBuilder.AppendFormat("{0} {1}\n", Settings.Get("RobotName"), message);
             }
 
-            Adapter.Message(stringBuilder.ToString());
+            CurrentAdapter.Message(stringBuilder.ToString());
         }
 
-        [Import(AllowRecomposition = true)]
-        public IAdapter Adapter { private get; set; }
+        // because there got to be only one adapter during runtime, so Lazy was good here
+        [ImportMany(AllowRecomposition = true)]
+        public IEnumerable<Lazy<IAdapter, IAdapterMetadata>> Adapters { private get; set; }
 
         public void Start()
         {
             _compositionManager.Compose();
 
-            Adapter.Start();
+            StartAdapter();
             
             StartWebServer();
+        }
+
+        private void StartAdapter()
+        {
+            // let`s say the shell adapter was the default adapter
+            // later we can load another adapter through shell command
+            IAdapter shell = null;
+            foreach (Lazy<IAdapter, IAdapterMetadata> adapter in Adapters)
+            {
+                if (adapter.Metadata.Name == "Shell")
+                { 
+                    shell = adapter.Value;
+                    CurrentAdapter = shell;
+                    break;
+                }
+            }
+
+            if (CurrentAdapter != null)
+            {
+                CurrentAdapter.Start();
+            }
+            else
+            {
+                throw new Exception("adapter loading error!");
+            }
         }
 
         public void Stop()
