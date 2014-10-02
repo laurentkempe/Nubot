@@ -11,11 +11,14 @@
         IEnumerable<IPluginSetting> Settings { get; }
 
         void Respond(string message);
+
+        string MakeConfigFileName();
     }
 
     public interface IPluginSetting
     {
         string Key { get; }
+
         string Value { get; set; }
     }
 }

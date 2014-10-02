@@ -33,15 +33,15 @@
                             <form action="plugins/update" method="POST" class="form" role="form">
                                 
                                 @{var n = 0;} 
-
+                                <input type="hidden" name="PluginName" value="@plugin.Name" />
                                 @foreach (var setting in plugin.Settings)
                                 {
-                                    <div class="form-group">
+                                    <div class="form-group" name="Settings">
                                         <label for="@setting.Key">@setting.Key</label>
                                         <input type="hidden" name="Key[@n]" value="@setting.Key" />
                                         <input type="text" name="Value[@n]" value="@setting.Value" class="form-control">
                                     </div>
-                                    
+
                                     n++;
                                 }
                                 

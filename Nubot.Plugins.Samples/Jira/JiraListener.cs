@@ -22,9 +22,9 @@
         {
             _settings = new List<IPluginSetting>
             {
-                new PluginSetting(Robot, "AtlassianJiraUrl"),
-                new PluginSetting(Robot, "AtlassianJiraNotifyRoomName"),
-                new PluginSetting(Robot, "AtlassianJiraHipchatAuthToken")
+                new PluginSetting(Robot, this, "AtlassianJiraUrl"),
+                new PluginSetting(Robot, this, "AtlassianJiraNotifyRoomName"),
+                new PluginSetting(Robot, this, "AtlassianJiraHipchatAuthToken")
             };
 
             Post["/"] = x =>

@@ -21,9 +21,9 @@
         {
             _settings = new List<IPluginSetting>
             {
-                new PluginSetting(Robot, "AtlassianStashUrl"),
-                new PluginSetting(Robot, "AtlassianStashNotifyRoomName"),
-                new PluginSetting(Robot, "AtlassianStashHipchatAuthToken"),
+                new PluginSetting(Robot, this, "AtlassianStashUrl"),
+                new PluginSetting(Robot, this, "AtlassianStashNotifyRoomName"),
+                new PluginSetting(Robot, this, "AtlassianStashHipchatAuthToken"),
             };
 
             Post["/"] = x =>

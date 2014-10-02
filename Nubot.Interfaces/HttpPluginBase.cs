@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using Nancy;
+    using System.IO;
+    using System.Reflection;
 
     public abstract class HttpPluginBase : NancyModule, IRobotPlugin
     {
@@ -19,7 +21,17 @@
             HelpMessages = new List<string>();
         }
 
-        public string Name { get; private set; }
+        static HttpPluginBase()
+        {
+            ExecutingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            BasePluginsDirectory = Path.Combine(ExecutingDirectory, "plugins");
+        }
+
+        public string Name { get; protected set; }
+
+        public static string ExecutingDirectory { get; private set; }
+
+        public static string BasePluginsDirectory { get; private set; }
 
         public IEnumerable<string> HelpMessages { get; protected set; }
 
@@ -36,6 +48,17 @@
                 yield return new Tuple<string, string>(ModulePath + "/css", string.Format("plugins{0}/views/css", ModulePath));
                 yield return new Tuple<string, string>(ModulePath + "/scripts", string.Format("plugins{0}/views/scripts", ModulePath));
             }
+        }
+
+        public virtual string MakeConfigFileName()
+        {
+            var subPath = this.ModulePath.StartsWith("/") ? this.ModulePath.Substring(1) : this.ModulePath;
+
+            var pluginName = this.Name.Replace(" ", string.Empty);
+            var file = string.Format("{0}.config", pluginName);
+            var configFileName = Path.Combine(BasePluginsDirectory, subPath, file);
+
+            return configFileName;
         }
     }
 }

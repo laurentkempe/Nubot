@@ -14,23 +14,22 @@
     using Interfaces;
 
     [Export(typeof(IAdapter))]
-    public class Hipchat : IAdapter
+    public class Hipchat : AdapterBase
     {
         private ConcurrentDictionary<string, string> _roster = new ConcurrentDictionary<string, string>();
         private XmppClientConnection _client;
-        private readonly IRobot _robot;
         private List<Jid> JoinedRoomJids { get; set; }
 
         [ImportingConstructor]
         public Hipchat(IRobot robot)
+            : base("Hipchat", robot)
         {
-            _robot = robot;
             JoinedRoomJids = new List<Jid>();
         }
 
-        public void Start()
+        public override void Start()
         {
-            _client = new XmppClientConnection(_robot.Settings.Get("HipChatServer"))
+            _client = new XmppClientConnection(Robot.Settings.Get("HipChatServer"))
             {
                 AutoResolveConnectServer = false
             };
@@ -40,18 +39,18 @@
             _client.OnRosterStart += OnRosterStart;
             _client.OnRosterItem += OnRosterItem;
 
-            _robot.Logger.WriteLine("Connecting...");
-            _client.Resource = _robot.Settings.Get("HipChatResource");
-            _client.Open(_robot.Settings.Get("HipChatUser"), _robot.Settings.Get("HipChatPassword"));
-            _robot.Logger.WriteLine("Connected.");
+            Robot.Logger.WriteLine("Connecting...");
+            _client.Resource = Robot.Settings.Get("HipChatResource");
+            _client.Open(Robot.Settings.Get("HipChatUser"), Robot.Settings.Get("HipChatPassword"));
+            Robot.Logger.WriteLine("Connected.");
         }
 
-        public void Message(string message)
+        public override void Message(string message)
         {
             JoinedRoomJids.ForEach(jid => _client.Send(new Message(jid, _client.MyJID, MessageType.groupchat, message)));
         }
 
-        public bool SendNotification(string roomName, string authToken, string htmlMessage, bool notify = false)
+        public override bool SendNotification(string roomName, string authToken, string htmlMessage, bool notify = false)
         {
             var client = new HipchatClient(authToken);
             return client.SendNotification(roomName, htmlMessage, RoomColors.Green, notify);
@@ -71,13 +70,13 @@
         {
             var mucManager = new MucManager(_client);
 
-            var rooms = _robot.Settings.Get("HipChatRooms").Split(',');
+            var rooms = Robot.Settings.Get("HipChatRooms").Split(',');
 
-            var roomJids = rooms.Select(room => new Jid(room + "@" + _robot.Settings.Get("HipChatConferenceServer")));
+            var roomJids = rooms.Select(room => new Jid(room + "@" + Robot.Settings.Get("HipChatConferenceServer")));
 
             foreach (var jid in roomJids)
             {
-                mucManager.JoinRoom(jid, _robot.Settings.Get("HipChatRoomNick"));
+                mucManager.JoinRoom(jid, Robot.Settings.Get("HipChatRoomNick"));
                 JoinedRoomJids.Add(jid);
             }
         }
@@ -90,12 +89,12 @@
 
             if (MessageIsFromRobot(user)) return;
 
-            _robot.Receive(msg.Body);
+            Robot.Receive(msg.Body);
         }
 
         private bool MessageIsFromRobot(string user)
         {
-            return user == _robot.Settings.Get("HipChatRoomNick");
+            return user == Robot.Settings.Get("HipChatRoomNick");
         }
 
         private string GetUser(Message msg)

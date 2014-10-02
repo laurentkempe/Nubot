@@ -40,6 +40,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdapterBase.cs" />
     <Compile Include="HttpPluginBase.cs" />
     <Compile Include="IAdapter.cs" />
     <Compile Include="ILogger.cs" />
