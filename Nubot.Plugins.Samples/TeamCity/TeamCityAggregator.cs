@@ -13,20 +13,27 @@
     [Export(typeof(IRobotPlugin))]
     public class TeamCityAggregator : RobotPluginBase
     {
+        private readonly IEnumerable<IPluginSetting> _settings;
         private readonly Subject<TeamCityModel> _subject;
+        private const int ExpectedBuildCount = 4;
 
         [ImportingConstructor]
         public TeamCityAggregator(IRobot robot)
             : base("TeamCityAggregator", robot)
         {
+            _settings = new List<IPluginSetting>
+            {
+                new PluginSetting(Robot, this, "TeamCityNotifyRoomName"),
+                new PluginSetting(Robot, this, "TeamCityHipchatAuthToken")
+            };
+
             _subject = new Subject<TeamCityModel>();
 
-            //todo We should give a time so that if no answer are recevied the build should be shown as hanging
+            var bufferClosingSelector = TimeSpan.FromMinutes(5.0);
+
             _subject
                 .GroupBy(model => model.build.buildNumber)
-                .SelectMany(grp => grp)
-                .Buffer(4)
-                .Subscribe(SendNotification);
+                .Subscribe(grp => grp.Buffer(bufferClosingSelector, ExpectedBuildCount).Subscribe(SendNotification));
 
             Robot.Messenger.On<TeamCityModel>("TeamCityBuild", OnTeamCityBuild);
         }
@@ -36,12 +43,15 @@
             _subject.OnNext(message.Content);
         }
 
-        private void SendNotification(IList<TeamCityModel> models)
+        private void SendNotification(IList<TeamCityModel> buildStatuses)
         {
-            var success = models.All(model => model.build.buildResult.Equals("success", StringComparison.InvariantCultureIgnoreCase));
+            var success = buildStatuses.Count == ExpectedBuildCount &&
+                          buildStatuses.All(buildStatus => IsSuccesfullBuild(buildStatus.build));
+
             var notify = !success;
 
-            var message = success ? BuildSuccessMessage(models.First().build) : BuildFailureMessage(models.Select(m => m.build));
+            var message = success ? BuildSuccessMessage(buildStatuses.First().build) :
+                                    BuildFailureMessage(buildStatuses.Select(m => m.build));
 
             //todo add color of the line https://www.hipchat.com/docs/api/method/rooms/message
             //todo Background color for message. One of "yellow", "red", "green", "purple", "gray", or "random". (default: yellow)
@@ -55,9 +65,9 @@
 
         private string BuildFailureMessage(IEnumerable<Build> builds)
         {
-            var build = builds.First();
-            var failedBuilds = builds.Where(b => !b.buildResult.Equals("success", StringComparison.InvariantCultureIgnoreCase)).ToList();
+            var failedBuilds = builds.Where(b => !IsSuccesfullBuild(b)).ToList();
 
+            var build = builds.First();
             var stringBuilder = new StringBuilder();
 
             stringBuilder
@@ -73,6 +83,11 @@
             return stringBuilder.ToString();
         }
 
+        private static bool IsSuccesfullBuild(Build b)
+        {
+            return b.buildResult.Equals("success", StringComparison.InvariantCultureIgnoreCase);
+        }
+
         private string BuildSuccessMessage(Build build)
         {
             var stringBuilder = new StringBuilder();
@@ -83,6 +98,11 @@
                     build.projectName, build.branchName, build.buildStatusUrl, build.buildNumber);
 
             return stringBuilder.ToString();
+        }
+
+        public override IEnumerable<IPluginSetting> Settings
+        {
+            get { return _settings; }
         }
     }
 }
