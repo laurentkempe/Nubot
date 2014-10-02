@@ -9,24 +9,28 @@
     using System.Text.RegularExpressions;
     using Composition;
     using Interfaces;
+    using Messaging;
     using Microsoft.Owin.Hosting;
     using Nancy;
     using Settings;
 
     public class Robot : IRobot
     {
+        private readonly IMessenger _messenger;
         private readonly CompositionManager _compositionManager;
         private IDisposable _webApp;
 
-        public Robot(string name, ILogger logger)
+        public Robot(string name, ILogger logger, IMessenger messenger)
         {
             Name = name;
+            Logger = logger;
+            _messenger = messenger;
+
             Version = "1.0"; //todo replace harcoding of the version number
 
             HelpList = new List<string>();
 
             Settings = new AppSettings();
-            Logger = logger;
 
             _compositionManager = new CompositionManager(this);
         }
@@ -89,6 +93,21 @@
             }
 
             Adapter.Message(stringBuilder.ToString());
+        }
+
+        public void Emit<TModel>(string eventName, TModel model)
+        {
+            _messenger.Send(new GenericMessage<TModel>(this, this, model), eventName);
+        }
+
+        private Action<object> _action;
+
+        public void On<TModel>(string eventName, Action<object> action)
+        {
+            //bug if a second call to On() is made then the _action is overwritten and a wrong action can be executed
+            _action = action;
+
+            _messenger.Register<GenericMessage<TModel>>(this, eventName, message => _action(message.Content));
         }
 
         [Import(AllowRecomposition = true)]
