@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
-    using System.Text;
     using Abstractions;
     using Nancy;
     using Nancy.ModelBinding;
@@ -27,11 +26,7 @@
             {
                 var model = this.Bind<TeamCityModel>(new BindingConfig {IgnoreErrors = true, BodyOnly = true});
 
-                Robot.SendNotification(
-                    Robot.Settings.Get("TeamCityNotifyRoomName").Trim(),
-                    Robot.Settings.Get("TeamCityHipchatAuthToken").Trim(), 
-                    BuildMessage(model),
-                    true);
+                Robot.Messenger.Emit("TeamCityBuild", model);
 
                 return HttpStatusCode.OK;
             };
@@ -40,18 +35,6 @@
         public override IEnumerable<IPluginSetting> Settings
         {
             get { return _settings; }
-        }
-
-        private string BuildMessage(TeamCityModel model)
-        {
-            var stringBuilder = new StringBuilder();
-
-            var buildStatusHtml = model.build.buildStatusHtml.Replace(@"<span class=""tcWebHooksMessage"">", "").Replace("</span>", "");
-
-            stringBuilder
-                .Append(buildStatusHtml);
-
-            return stringBuilder.ToString();
         }
     }
 }
