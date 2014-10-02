@@ -29,11 +29,11 @@
 
             _subject = new Subject<TeamCityModel>();
 
-            var bufferClosingSelector = TimeSpan.FromMinutes(5.0);
+            var maxWaitDuration = TimeSpan.FromMinutes(8.0);
 
             _subject
                 .GroupBy(model => model.build.buildNumber)
-                .Subscribe(grp => grp.Buffer(bufferClosingSelector, ExpectedBuildCount).Subscribe(SendNotification));
+                .Subscribe(grp => grp.Buffer(maxWaitDuration, ExpectedBuildCount).Take(1).Subscribe(SendNotification));
 
             Robot.Messenger.On<TeamCityModel>("TeamCityBuild", OnTeamCityBuild);
         }
@@ -50,8 +50,9 @@
 
             var notify = !success;
 
-            var message = success ? BuildSuccessMessage(buildStatuses.First().build) :
-                                    BuildFailureMessage(buildStatuses.Select(m => m.build));
+            var message = success ?
+                          BuildSuccessMessage(buildStatuses.First().build) :
+                          BuildFailureMessage(buildStatuses.Select(m => m.build));
 
             //todo add color of the line https://www.hipchat.com/docs/api/method/rooms/message
             //todo Background color for message. One of "yellow", "red", "green", "purple", "gray", or "random". (default: yellow)
