@@ -614,9 +614,9 @@
             public object Token;
         }
 
-        public void On<TModel>(string eventName, Action<GenericMessage<TModel>> action)
+        public void On<TModel>(string eventName, Action<IMessage<TModel>> action)
         {
-            Register(this, eventName, action);
+            Register(this, eventName, true, action);
         }
 
         public void Emit<TModel>(string eventName, TModel model)

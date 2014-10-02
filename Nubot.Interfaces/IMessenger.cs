@@ -4,7 +4,7 @@
 
     public interface IMessenger
     {
-        void On<TModel>(string eventName, Action<GenericMessage<TModel>> action);
+        void On<TModel>(string eventName, Action<IMessage<TModel>> action);
 
         void Emit<TModel>(string eventName, TModel model);
     }

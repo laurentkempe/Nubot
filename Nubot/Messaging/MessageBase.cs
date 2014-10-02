@@ -13,7 +13,7 @@
 // </license>
 // ****************************************************************************
 
-namespace Nubot.Interfaces
+namespace Nubot.Messaging
 {
     /// <summary>
     /// Base class for all messages broadcasted by the MvvmLightMessenger.
