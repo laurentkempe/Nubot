@@ -78,9 +78,8 @@
     <Compile Include="Messaging\Helpers\IExecuteWithObject.cs" />
     <Compile Include="Messaging\Helpers\WeakAction.cs" />
     <Compile Include="Messaging\Helpers\WeakActionGeneric.cs" />
-    <Compile Include="Messaging\IMessenger.cs" />
-    <Compile Include="Messaging\MessageBase.cs" />
-    <Compile Include="Messaging\Messenger.cs" />
+    <Compile Include="Messaging\IMvvmLightMessenger.cs" />
+    <Compile Include="Messaging\MvvmLightMessenger.cs" />
     <Compile Include="Nancy\Bootstrapper.cs" />
     <Compile Include="Composition\CompositionManager.cs" />
     <Compile Include="Nancy\Helper.cs" />

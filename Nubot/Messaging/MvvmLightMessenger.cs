@@ -5,17 +5,18 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using Helpers;
+    using Interfaces;
 
     /// <summary>
-    /// The Messenger is a class allowing objects to exchange messages.
+    /// The MvvmLightMessenger is a class allowing objects to exchange messages.
     /// </summary>
-    ////[ClassInfo(typeof(Messenger),
+    ////[ClassInfo(typeof(MvvmLightMessenger),
     ////    VersionString = "4.2.17",
     ////    DateString = "201309262235",
     ////    Description = "A messenger class allowing a class to send a message to multiple recipients",
     ////    UrlContacts = "http://www.galasoft.ch/contact_en.html",
     ////    Email = "laurent@galasoft.ch")]
-    public class Messenger : IMessenger
+    public class MvvmLightMessenger : IMvvmLightMessenger, IMessenger
     {
         private static readonly object CreationLock = new object();
         private static IMessenger _defaultInstance;
@@ -24,7 +25,7 @@
         private Dictionary<Type, List<WeakActionAndToken>> _recipientsStrictAction;
 
         /// <summary>
-        /// Gets the Messenger's default instance, allowing
+        /// Gets the MvvmLightMessenger's default instance, allowing
         /// to register and send messages in a static manner.
         /// </summary>
         public static IMessenger Default
@@ -37,7 +38,7 @@
                     {
                         if (_defaultInstance == null)
                         {
-                            _defaultInstance = new Messenger();
+                            _defaultInstance = new MvvmLightMessenger();
                         }
                     }
                 }
@@ -46,7 +47,7 @@
             }
         }
 
-        #region IMessenger Members
+        #region IMvvmLightMessenger Members
 
         /// <summary>
         /// Registers a recipient for a type of message TMessage. The action
@@ -348,17 +349,17 @@
         #endregion
 
         /// <summary>
-        /// Provides a way to override the Messenger.Default instance with
+        /// Provides a way to override the MvvmLightMessenger.Default instance with
         /// a custom instance, for example for unit testing purposes.
         /// </summary>
-        /// <param name="newMessenger">The instance that will be used as Messenger.Default.</param>
+        /// <param name="newMessenger">The instance that will be used as MvvmLightMessenger.Default.</param>
         public static void OverrideDefault(IMessenger newMessenger)
         {
             _defaultInstance = newMessenger;
         }
 
         /// <summary>
-        /// Sets the Messenger's default (static) instance to null.
+        /// Sets the MvvmLightMessenger's default (static) instance to null.
         /// </summary>
         public static void Reset()
         {
@@ -367,7 +368,7 @@
 
         /// <summary>
         /// Provides a non-static access to the static <see cref="Reset"/> method.
-        /// Sets the Messenger's default (static) instance to null.
+        /// Sets the MvvmLightMessenger's default (static) instance to null.
         /// </summary>
         [SuppressMessage(
             "Microsoft.Performance",
@@ -507,14 +508,14 @@
         }
 
         /// <summary>
-        /// Notifies the Messenger that the lists of recipients should
+        /// Notifies the MvvmLightMessenger that the lists of recipients should
         /// be scanned and cleaned up.
         /// Since recipients are stored as <see cref="WeakReference"/>, 
-        /// recipients can be garbage collected even though the Messenger keeps 
+        /// recipients can be garbage collected even though the MvvmLightMessenger keeps 
         /// them in a list. During the cleanup operation, all "dead"
         /// recipients are removed from the lists. Since this operation
         /// can take a moment, it is only executed when the application is
-        /// idle. For this reason, a user of the Messenger class should use
+        /// idle. For this reason, a user of the MvvmLightMessenger class should use
         /// <see cref="RequestCleanup"/> instead of forcing one with the 
         /// <see cref="Cleanup" /> method.
         /// </summary>
@@ -539,11 +540,11 @@
         /// <summary>
         /// Scans the recipients' lists for "dead" instances and removes them.
         /// Since recipients are stored as <see cref="WeakReference"/>, 
-        /// recipients can be garbage collected even though the Messenger keeps 
+        /// recipients can be garbage collected even though the MvvmLightMessenger keeps 
         /// them in a list. During the cleanup operation, all "dead"
         /// recipients are removed from the lists. Since this operation
         /// can take a moment, it is only executed when the application is
-        /// idle. For this reason, a user of the Messenger class should use
+        /// idle. For this reason, a user of the MvvmLightMessenger class should use
         /// <see cref="RequestCleanup"/> instead of forcing one with the 
         /// <see cref="Cleanup" /> method.
         /// </summary>
@@ -606,8 +607,6 @@
             RequestCleanup();
         }
 
-        #region Nested type: WeakActionAndToken
-
         private struct WeakActionAndToken
         {
             public WeakAction Action;
@@ -615,6 +614,14 @@
             public object Token;
         }
 
-        #endregion
+        public void On<TModel>(string eventName, Action<GenericMessage<TModel>> action)
+        {
+            Register(this, eventName, action);
+        }
+
+        public void Emit<TModel>(string eventName, TModel model)
+        {
+            Send(new GenericMessage<TModel>(this, model), eventName);
+        }
     }
 }

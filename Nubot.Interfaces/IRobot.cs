@@ -24,12 +24,10 @@
 
         IEnumerable<IRobotPlugin> RobotPlugins { get; }
 
+        IMessenger Messenger { get; }
+
         void ReloadPlugins();
 
         void ShowHelp();
-
-        void On<TModel>(string eventName, Action<object> action);
-
-        void Emit<TModel>(string eventName, TModel model);
     }
 }

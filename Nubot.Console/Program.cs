@@ -15,7 +15,7 @@
 
                 x.Service<Robot>(s =>
                 {
-                    s.ConstructUsing(name => new Robot(DefaultRobotName, new Log4NetLogger(), Messenger.Default));
+                    s.ConstructUsing(name => new Robot(DefaultRobotName, new Log4NetLogger(), MvvmLightMessenger.Default));
                     s.WhenStarted(robot => robot.Start());
                     s.WhenStopped(robot => robot.Stop());
                 });

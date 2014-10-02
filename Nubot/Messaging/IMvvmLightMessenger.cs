@@ -1,5 +1,5 @@
 ﻿// **************************************************************************
-// <copyright file="IMessenger.cs" company="GalaSoft Laurent Bugnion">
+// <copyright file="IMvvmLightMessenger.cs" company="GalaSoft Laurent Bugnion">
 // Copyright © GalaSoft Laurent Bugnion 2009-2014
 // </copyright>
 // ****************************************************************************
@@ -19,10 +19,10 @@ namespace Nubot.Messaging
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
-    /// The Messenger is a class allowing objects to exchange messages.
+    /// The MvvmLightMessenger is a class allowing objects to exchange messages.
     /// </summary>
-    ////[ClassInfo(typeof(Messenger))]
-    public interface IMessenger
+    ////[ClassInfo(typeof(MvvmLightMessenger))]
+    public interface IMvvmLightMessenger
     {
         /// <summary>
         /// Registers a recipient for a type of message TMessage. The action
