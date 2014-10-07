@@ -97,6 +97,7 @@
     <Compile Include="TeamCity\Model\Build.cs" />
     <Compile Include="TeamCity\Model\TeamCityModel.cs" />
     <Compile Include="TeamCity\TeamCityAggregator.cs" />
+    <Compile Include="TeamCity\TeamCityBuildTrigger.cs" />
     <Compile Include="TeamCity\TeamCityListener.cs" />
     <Compile Include="YouTube.cs" />
   </ItemGroup>
@@ -109,7 +110,10 @@
     <None Include="Stash\StashListener.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="TeamCity\TeamCityListener.config">
+    <None Include="TeamCity\TeamCityBuildTrigger.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TeamCity\TeamCityAggregator.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="web.config" />

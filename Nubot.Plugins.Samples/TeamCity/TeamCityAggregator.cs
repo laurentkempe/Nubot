@@ -19,7 +19,7 @@
 
         [ImportingConstructor]
         public TeamCityAggregator(IRobot robot)
-            : base("TeamCityAggregator", robot)
+            : base("TeamCity Aggregator", robot)
         {
             _settings = new List<IPluginSetting>
             {
@@ -72,7 +72,7 @@
             var stringBuilder = new StringBuilder();
 
             stringBuilder
-                .AppendFormat(
+                .AppendFormat( //todo externalize this in settings
                     @"<img src='http://ci.innoveo.com/img/buildStates/buildFailed.png' height='16' width='16'/><strong>Failed</strong> to build {0} branch {1} with build number <a href=""{2}""><strong>{3}</strong></a>. Failed build(s) ",
                     build.projectName, build.branchName, build.buildStatusUrl, build.buildNumber);
 
@@ -94,7 +94,7 @@
             var stringBuilder = new StringBuilder();
 
             stringBuilder
-                .AppendFormat(
+                .AppendFormat( //todo externalize this in settings
                     @"<img src='http://ci.innoveo.com/img/buildStates/buildSuccessful.png' height='16' width='16'/><strong>Successfully</strong> built {0} branch {1} with build number <a href=""{2}""><strong>{3}</strong></a>",
                     build.projectName, build.branchName, build.buildStatusUrl, build.buildNumber);
 

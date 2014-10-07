@@ -36,7 +36,9 @@
 
         public virtual string MakeConfigFileName()
         {
-            var pluginName = this.Name.Replace(" ", string.Empty);
+            var pluginName = Name.Replace(" ", string.Empty);
+
+            //Bug it is not defined that the plugin is from the root folder
             var file = string.Format("{0}.config", pluginName);
             var configFileName = Path.Combine(BasePluginsDirectory, file);
 
