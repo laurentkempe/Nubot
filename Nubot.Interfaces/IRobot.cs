@@ -24,6 +24,8 @@
 
         IEnumerable<IRobotPlugin> RobotPlugins { get; }
 
+        IMessenger Messenger { get; }
+
         void ReloadPlugins();
 
         void ShowHelp();

@@ -18,15 +18,17 @@
         private readonly CompositionManager _compositionManager;
         private IDisposable _webApp;
 
-        public Robot(string name, ILogger logger)
+        public Robot(string name, ILogger logger, IMessenger messengerManager)
         {
             Name = name;
+            Logger = logger;
+            Messenger = messengerManager;
+
             Version = "1.0"; //todo replace harcoding of the version number
 
             HelpList = new List<string>();
 
             Settings = new AppSettings();
-            Logger = logger;
 
             _compositionManager = new CompositionManager(this);
         }
@@ -66,6 +68,8 @@
 
         [ImportMany(AllowRecomposition = true)]
         public IEnumerable<IRobotPlugin> RobotPlugins { get; private set; }
+
+        public IMessenger Messenger { get; private set; }
 
         public void ReloadPlugins()
         {
