@@ -141,7 +141,7 @@
             }
         }
 
-        private string GetUserProfileLinkHtml(User user)
+        private string GetUserProfileLinkHtml(Models.User user)
         {
             return string.Format("<a href='{0}'>{1}</a>", GetUserProfileLink(user.name), user.displayName);
         }

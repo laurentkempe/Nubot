@@ -1,6 +1,5 @@
 ﻿namespace Nubot.Plugins.Samples
 {
-    using System;
     using System.ComponentModel.Composition;
     using Interfaces;
 
@@ -15,14 +14,7 @@
         public Rules(IRobot robot)
             : base("Rules", robot)
         {
-        }
-
-        public override void Respond(string message)
-        {
-            if (message.Equals("what are the three rules?", StringComparison.InvariantCultureIgnoreCase))
-            {
-                Robot.Message(string.Join(@"\n", _rules));
-            }
+            Robot.Respond(@"what are the three rules?", msg => msg.Send(string.Join(@"\n", _rules)));
         }
     }
 }

@@ -18,13 +18,10 @@
         {
             HelpMessages = new List<string> {
                 "youtube me <query> - Queries YouTube and returns a random video from the top 15 videos found"};
-        }
 
-        public override void Respond(string message)
-        {
-            Robot.Respond(@"(youtube) (me) (.*)", message, async match =>
+            Robot.Respond(@"(youtube) (me) (.*)", async msg =>
             {
-                var query = match.Groups[3].Value;
+                var query = msg.Match[3];
 
                 var queryString = HttpUtility.ParseQueryString("");
                 queryString["orderBy"] = "relevance";
@@ -45,17 +42,18 @@
 
                 if (videos == null)
                 {
-                    Robot.Message(string.Format("No video results for {0}", query));
+                    msg.Send(string.Format("No video results for {0}", query));
                     return;
                 }
 
                 var links = (from video in videos
-                    from link in video["link"]
-                    where (string)link["rel"] == "alternate" && (string)link["type"] == "text/html"
-                    select (string)link["href"]).ToList();
+                             from link in video["link"]
+                             where (string)link["rel"] == "alternate" && (string)link["type"] == "text/html"
+                             select (string)link["href"]).ToList();
 
-                Robot.Message(links.ElementAt(new Random().Next(0, links.Count())));
+                msg.Send(links.ElementAt(new Random().Next(0, links.Count())));
             });
+
         }
     }
 }

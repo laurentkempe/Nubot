@@ -29,14 +29,10 @@
         public static string ExecutingDirectory { get; private set; }
 
         public static string BasePluginsDirectory { get; private set; }
-        
+
         public IEnumerable<string> HelpMessages { get; protected set; }
 
         public virtual IEnumerable<IPluginSetting> Settings { get { return Enumerable.Empty<IPluginSetting>();} }
-
-        public virtual void Respond(string message)
-        {
-        }
 
         public virtual string MakeConfigFileName()
         {

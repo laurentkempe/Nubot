@@ -37,10 +37,6 @@
 
         public virtual IEnumerable<IPluginSetting> Settings { get {return Enumerable.Empty<IPluginSetting>();} }
 
-        public virtual void Respond(string message)
-        {
-        }
-
         public virtual IEnumerable<Tuple<string, string>> StaticPaths
         {
             get

@@ -14,16 +14,8 @@
             HelpMessages = new List<string> {
                 "help - Show help of all currently loaded plugin(s)"
             };
-        }
 
-        public override void Respond(string message)
-        {
-            Robot.Respond(@"(help)", message, match => ShowHelp());
-        }
-
-        private void ShowHelp()
-        {
-            Robot.ShowHelp();
+            Robot.Respond(@"(help)", msg => Robot.ShowHelp(msg));
         }
     }
 }
