@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Diagnostics;
-    using System.IO;
     using System.Net;
     using System.Text;
     using System.Linq;
@@ -11,6 +10,7 @@
     using Nancy;
     using Nancy.ModelBinding;
     using ViewModel;
+    using Response = global::Nubot.Interfaces.Response;
 
     [Export(typeof(IRobotPlugin))]
     public class Admin : HttpPluginBase
@@ -60,6 +60,9 @@
 
                 return Response.AsRedirect("/nubot/plugins");
             };
+
+            Robot.Respond(@"(admin) (plugins reload)", msg => ReloadPlugins());
+            Robot.Respond(@"(admin) (plugins list)", ShowPluginsAsMessage);
         }
 
         private string ShowPlugins()
@@ -78,18 +81,12 @@
             return stringBuilder.ToString();
         }
 
-        public override void Respond(string message)
-        {
-            Robot.Respond(@"(admin) (plugins reload)", message, match => ReloadPlugins());
-            Robot.Respond(@"(admin) (plugins list)", message, match => ShowPluginsAsMessage());
-        }
-
         private void ReloadPlugins()
         {
             Robot.ReloadPlugins();
         }
 
-        private void ShowPluginsAsMessage()
+        private void ShowPluginsAsMessage(Response message)
         {
             var stringBuilder = new StringBuilder();
 
@@ -98,7 +95,7 @@
                 stringBuilder.AppendFormat("{0}\n", plugin.Name);
             }
 
-            Robot.Message(stringBuilder.ToString());
+            message.Send(stringBuilder.ToString());
         }
 
         private class SettingsModel

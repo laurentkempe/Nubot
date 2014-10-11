@@ -6,7 +6,7 @@
 
         void Start();
 
-        void Message(string message);
+        void Send(Envelope envelope, params string[] messages);
 
         bool SendNotification(string roomName, string authToken, string htmlMessage, bool notify = false);
 

@@ -2,25 +2,34 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Text.RegularExpressions;
 
     public interface IRobot
     {
         string Name { get; }
-        
+
         string Version { get; }
-        
+
         ISettings Settings { get; }
-        
+
         ILogger Logger { get; }
 
-        void Message(string message);
+        void MessageRoom(string room, params string [] messages);
 
         void SendNotification(string room, string authToken, string htmlMessage, bool notify = false);
 
-        void Receive(string body);
+        /// <summary>
+        /// Passes the given message to any interested Listeners.
+        /// </summary>
+        /// <param name="message">A Message instance. Listeners can flag this message as 'done' to prevent further execution.</param>
+        void Receive(Message message);
 
-        void Respond(string regex, string message, Action<Match> action);
+        /// <summary>
+        /// Adds a Listener that attempts to match incoming messages directed at the robot based on a Regex.
+        /// All regexes treat patterns like they begin with a '^'
+        /// </summary>
+        /// <param name="regex">A Regex that determines if the callback should be called.</param>
+        /// <param name="action">An action that is called with a Response object.</param>
+        void Respond(string regex, Action<Response> action);
 
         IEnumerable<IRobotPlugin> RobotPlugins { get; }
 
@@ -28,6 +37,8 @@
 
         void ReloadPlugins();
 
-        void ShowHelp();
+        void ShowHelp(Response msg);
+
+        void Send(Envelope envelope, string[] messages);
     }
 }

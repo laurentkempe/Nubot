@@ -12,12 +12,14 @@
     using HipchatApiV2;
     using HipchatApiV2.Enums;
     using Interfaces;
+    using Message = agsXMPP.protocol.client.Message;
 
     [Export(typeof(IAdapter))]
     public class Hipchat : AdapterBase
     {
         private ConcurrentDictionary<string, string> _roster = new ConcurrentDictionary<string, string>();
         private XmppClientConnection _client;
+        private readonly string _conferenceServer;
         private List<Jid> JoinedRoomJids { get; set; }
 
         [ImportingConstructor]
@@ -25,6 +27,8 @@
             : base("Hipchat", robot)
         {
             JoinedRoomJids = new List<Jid>();
+
+            _conferenceServer = Robot.Settings.Get("HipChatConferenceServer");
         }
 
         public override void Start()
@@ -45,9 +49,16 @@
             Robot.Logger.WriteLine("Connected.");
         }
 
-        public override void Message(string message)
+        public override void Send(Envelope envelope, params string[] messages)
         {
-            JoinedRoomJids.ForEach(jid => _client.Send(new Message(jid, _client.MyJID, MessageType.groupchat, message)));
+            if (messages == null || !messages.Any()) return;
+
+            var to = new Jid(envelope.User.Room);
+
+            foreach (var message in messages)
+            {
+                _client.Send(new Message(to, string.Equals(to.Server, _conferenceServer, StringComparison.InvariantCultureIgnoreCase) ? MessageType.groupchat : MessageType.chat, message));
+            }
         }
 
         public override bool SendNotification(string roomName, string authToken, string htmlMessage, bool notify = false)
@@ -72,7 +83,7 @@
 
             var rooms = Robot.Settings.Get("HipChatRooms").Split(',');
 
-            var roomJids = rooms.Select(room => new Jid(room + "@" + Robot.Settings.Get("HipChatConferenceServer")));
+            var roomJids = rooms.Select(room => new Jid(room + "@" + _conferenceServer));
 
             foreach (var jid in roomJids)
             {
@@ -85,11 +96,13 @@
         {
             if (String.IsNullOrEmpty(msg.Body)) return;
 
-            var user = GetUser(msg);
+            var adapterUser = GetUser(msg);
 
-            if (MessageIsFromRobot(user)) return;
+            if (MessageIsFromRobot(adapterUser)) return;
 
-            Robot.Receive(msg.Body);
+            var user = new Interfaces.User(msg.Id, adapterUser, msg.From.Bare, Name);
+
+            Robot.Receive(new TextMessage(user, msg.Body));
         }
 
         private bool MessageIsFromRobot(string user)

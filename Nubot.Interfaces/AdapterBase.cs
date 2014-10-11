@@ -1,14 +1,13 @@
 ﻿namespace Nubot.Interfaces
 {
-    using System;
     using System.IO;
     using System.Reflection;
 
-    public class AdapterBase : IAdapter
+    public abstract class AdapterBase : IAdapter
     {
         protected readonly IRobot Robot;
 
-        public AdapterBase(string adapterName, IRobot robot)
+        protected AdapterBase(string adapterName, IRobot robot)
         {
             Name = adapterName;
 
@@ -30,6 +29,8 @@
         public virtual void Start()
         {
         }
+
+        public abstract void Send(Envelope envelope, params string[] messages);
 
         public virtual void Message(string message)
         {

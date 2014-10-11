@@ -15,6 +15,7 @@
 
     public class Robot : IRobot
     {
+        private readonly List<Listener> _listeners;
         private readonly CompositionManager _compositionManager;
         private IDisposable _webApp;
 
@@ -26,7 +27,7 @@
 
             Version = "1.0"; //todo replace harcoding of the version number
 
-            HelpList = new List<string>();
+            _listeners = new List<Listener>();
 
             Settings = new AppSettings();
 
@@ -37,11 +38,11 @@
         public string Version { get; private set; }
         public ISettings Settings { get; private set; }
         public ILogger Logger { get; private set; }
-        public List<string> HelpList { get; set; }
 
-        public void Message(string message)
+        public void MessageRoom(string room, params string[] messages)
         {
-            Adapter.Message(message);
+            var user = new User(null, null, room, null);
+            Adapter.Send(new Envelope(new TextMessage(user, string.Join(Environment.NewLine, messages))));
         }
 
         public void SendNotification(string room, string authToken, string htmlMessage, bool notify = false)
@@ -52,17 +53,22 @@
             }
         }
 
-        public void Receive(string message)
+        public void Receive(Message message)
         {
-            RobotPlugins.ToList().ForEach(plugin => plugin.Respond(message));
+            foreach (var listener in _listeners)
+            {
+                listener.Call(message);
+
+                if (message.Done)
+                {
+                    break;
+                }
+            }
         }
 
-        public void Respond(string regex, string message, Action<Match> action)
+        public void Respond(string regex, Action<Response> action)
         {
-            var match = Regex.Match(message, regex);
-            if (!match.Success) return;
-
-            action.Invoke(match);
+            _listeners.Add(new TextListener(this, new Regex(regex, RegexOptions.Compiled | RegexOptions.IgnoreCase), action));
         }
 
         [ImportMany(AllowRecomposition = true)]
@@ -75,13 +81,7 @@
             _compositionManager.Refresh();
         }
 
-        public void AddHelp(params string[] help)
-        {
-            HelpList = help.Concat(HelpList).ToList();
-            HelpList.Sort();
-        }
-
-        public void ShowHelp()
+        public void ShowHelp(Response msg)
         {
             var messages = RobotPlugins.SelectMany(plugin => plugin.HelpMessages ?? Enumerable.Empty<string>()).OrderBy(s => s);
 
@@ -92,7 +92,12 @@
                 stringBuilder.AppendFormat("{0} {1}\n", Settings.Get("RobotName"), message);
             }
 
-            Adapter.Message(stringBuilder.ToString());
+            msg.Send(stringBuilder.ToString());
+        }
+
+        public void Send(Envelope envelope, string[] messages)
+        {
+            Adapter.Send(envelope, messages);
         }
 
         [Import(AllowRecomposition = true)]
@@ -103,7 +108,7 @@
             _compositionManager.Compose();
 
             Adapter.Start();
-            
+
             StartWebServer();
         }
 
@@ -118,7 +123,7 @@
         private void StartWebServer()
         {
             Helper.GetConfiguredContainer().Register<IRobot>(this); 
-            
+
             var url = ConfigurationManager.AppSettings["RobotUrl"];
 
             _webApp = WebApp.Start<Startup>(url);

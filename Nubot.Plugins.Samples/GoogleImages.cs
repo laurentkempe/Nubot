@@ -13,7 +13,7 @@
     public class GoogleImages : RobotPluginBase
     {
         [ImportingConstructor]
-        public GoogleImages(IRobot robot) 
+        public GoogleImages(IRobot robot)
             : base("Google Images", robot)
         {
             HelpMessages = new List<string>
@@ -23,27 +23,24 @@
                 "mustache me <url> - Adds a mustache to the specified URL.",
                 "mustache me <query> - Searches Google Images for the specified query and mustaches it."
             };
-        }
 
-        public override void Respond(string message)
-        {
-            Robot.Respond(@"(image|img) (me) (.*)", message, match => ImageMe(match.Groups[3].Value, url => Robot.Message(url)));
-            Robot.Respond(@"(animate) (me) (.*)", message, match => ImageMe(match.Groups[3].Value, url => Robot.Message(url), true));
-            Robot.Respond(@"(?:mo?u)?sta(?:s|c)he?(?: me)? (.*)", message,
-                match =>
+            Robot.Respond(@"(image|img) (me) (.*)", msg => ImageMe(msg.Match[3], url => msg.Send(url)));
+            Robot.Respond(@"(animate) (me) (.*)", msg => ImageMe(msg.Match[3], url => msg.Send(url), true));
+
+            Robot.Respond(@"(?:mo?u)?sta(?:s|c)he?(?: me)? (.*)", msg =>
+            {
+                const string mustachify = "http://mustachify.me/?";
+                var imagery = msg.Match[1];
+
+                if (imagery.StartsWith("http"))
                 {
-                    const string mustachify = "http://mustachify.me/?";
-                    var imagery = match.Groups[1].Value;
-
-                    if (imagery.StartsWith("http"))
-                    {
-                        Robot.Message(string.Format("{0}{1}", mustachify, string.Format("src={0}", HttpUtility.UrlEncode(imagery))));
-                    }
-                    else
-                    {
-                        ImageMe(imagery, url => Robot.Message(string.Format("{0}src={1}", mustachify, HttpUtility.UrlEncode(url))), false, true);
-                    }
-                });
+                    msg.Send(string.Format("{0}{1}", mustachify, string.Format("src={0}", HttpUtility.UrlEncode(imagery))));
+                }
+                else
+                {
+                    ImageMe(imagery, url => msg.Send(string.Format("{0}src={1}", mustachify, HttpUtility.UrlEncode(url))), false, true);
+                }
+            });
         }
 
         private static async void ImageMe(string query, Action<string> action, bool animated = false, bool faces = false)

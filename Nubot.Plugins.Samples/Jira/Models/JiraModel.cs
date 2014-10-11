@@ -1,7 +1,6 @@
 ﻿namespace Nubot.Plugins.Samples.Jira.Models
 {
     using System;
-    using Newtonsoft.Json;
 
     public class JiraModel
     {

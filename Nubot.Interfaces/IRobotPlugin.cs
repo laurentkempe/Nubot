@@ -10,8 +10,6 @@
 
         IEnumerable<IPluginSetting> Settings { get; }
 
-        void Respond(string message);
-
         string MakeConfigFileName();
     }
 

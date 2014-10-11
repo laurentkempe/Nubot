@@ -10,7 +10,7 @@
     using Interfaces;
     using MefContrib.Hosting.Interception.Configuration;
     using MefContrib.Hosting.Interception;
-    using Nubot.Settings;
+    using Settings;
 
     public class CompositionManager
     {
