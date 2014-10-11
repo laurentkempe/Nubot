@@ -7,7 +7,7 @@
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using System.Text;
-    using Interfaces;
+    using Abstractions;
     using Model;
 
     [Export(typeof(IRobotPlugin))]
@@ -35,7 +35,7 @@
                 .GroupBy(model => model.build.buildNumber)
                 .Subscribe(grp => grp.Buffer(maxWaitDuration, ExpectedBuildCount).Take(1).Subscribe(SendNotification));
 
-            Robot.Messenger.On<TeamCityModel>("TeamCityBuild", OnTeamCityBuild);
+            Robot.EventEmitter.On<TeamCityModel>("TeamCityBuild", OnTeamCityBuild);
         }
 
         private void OnTeamCityBuild(IMessage<TeamCityModel> message)

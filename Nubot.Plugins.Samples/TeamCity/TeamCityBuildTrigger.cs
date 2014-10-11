@@ -9,7 +9,7 @@
     using System.Net;
     using System.Net.Http;
     using System.Text;
-    using Interfaces;
+    using Abstractions;
     using Stash.Models;
 
     #endregion
@@ -32,7 +32,7 @@
                 new PluginSetting(Robot, this, "TeamCityBuildTriggerPassword")
             };
 
-            Robot.Messenger.On<StashModel>("StashCommit", OnCommit);
+            Robot.EventEmitter.On<StashModel>("StashCommit", OnCommit);
         }
 
         private void OnCommit(IMessage<StashModel> message)
