@@ -50,6 +50,7 @@
     <Compile Include="IRobot.cs" />
     <Compile Include="IRobotPlugin.cs" />
     <Compile Include="ISettings.cs" />
+    <Compile Include="Message\Notification.cs" />
     <Compile Include="PluginSetting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RobotPluginBase.cs" />

@@ -1,5 +1,6 @@
 ﻿namespace Nubot.Interfaces
 {
+    using Nubot.Interfaces.Message;
     using System;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
@@ -24,10 +25,16 @@
 
         IEnumerable<IRobotPlugin> RobotPlugins { get; }
 
+        IEnumerable<IAdapter> RobotAdapters { get; }
+
         IMessenger Messenger { get; }
 
         void ReloadPlugins();
 
         void ShowHelp();
+
+        void ChainAdapter(string adapterName);
+
+        void DropAdapter(string adapterName);
     }
 }

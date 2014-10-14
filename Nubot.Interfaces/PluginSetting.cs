@@ -10,6 +10,7 @@ namespace Nubot.Interfaces
         public PluginSetting(IRobot robot, IRobotPlugin plug, string key)
         {
             _robot = robot;
+            _plug = plug;
             Key = key;
         }
         public string Key { get; private set; }

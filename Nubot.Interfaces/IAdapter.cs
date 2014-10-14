@@ -1,4 +1,5 @@
-﻿namespace Nubot.Interfaces
+﻿using Nubot.Interfaces.Message;
+namespace Nubot.Interfaces
 {
     public interface IAdapter
     {
@@ -6,9 +7,9 @@
 
         void Start();
 
-        void Message(string message);
+        void Message(IMessage<string> message);
 
-        bool SendNotification(string roomName, string authToken, string htmlMessage, bool notify = false);
+        bool SendNotification(IMessage<Notification> notify);
 
         string MakeConfigFileName();
     }

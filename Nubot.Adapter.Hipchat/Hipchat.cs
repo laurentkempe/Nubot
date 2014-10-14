@@ -12,8 +12,11 @@
     using HipchatApiV2;
     using HipchatApiV2.Enums;
     using Interfaces;
+    using Nubot.Interfaces.Message;
 
-    [Export(typeof(IAdapter))]
+    [Export(typeof(IAdapter)),
+    ExportMetadata("Name", "Hipchat"),
+    ExportMetadata("Version", "0.1.0")]
     public class Hipchat : AdapterBase
     {
         private ConcurrentDictionary<string, string> _roster = new ConcurrentDictionary<string, string>();
@@ -45,15 +48,16 @@
             Robot.Logger.WriteLine("Connected.");
         }
 
-        public override void Message(string message)
+        public override void Message(IMessage<string> message)
         {
-            JoinedRoomJids.ForEach(jid => _client.Send(new Message(jid, _client.MyJID, MessageType.groupchat, message)));
+            JoinedRoomJids.ForEach(jid => _client.Send(new Message(jid, _client.MyJID, MessageType.groupchat, message.Content)));
         }
 
-        public override bool SendNotification(string roomName, string authToken, string htmlMessage, bool notify = false)
+        public override bool SendNotification(IMessage<Notification> notify)
         {
-            var client = new HipchatClient(authToken);
-            return client.SendNotification(roomName, htmlMessage, RoomColors.Green, notify);
+            var content = notify.Content;
+            var client = new HipchatClient(content.AuthToken);
+            return client.SendNotification(content.Room, content.HtmlMessage, RoomColors.Green, content.Notify.HasValue ? content.Notify.Value : false);
         }
 
         private void OnRosterItem(object sender, RosterItem item)

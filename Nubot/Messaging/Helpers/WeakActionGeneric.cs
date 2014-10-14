@@ -12,6 +12,7 @@
     public class WeakAction<T> : WeakAction, IExecuteWithObject
     {
         private Action<T> _staticAction;
+        private Action<T> _action;
 
         /// <summary>
         /// Gets the name of the method that this WeakAction represents.
@@ -20,12 +21,16 @@
         {
             get
             {
+                // i need a way to identify action, so after chain a adapter i can drop(unregister) it. but, 
+                // according to my experiments, action.Method.Name always depends on the closures, if closures 
+                // are not the same, then we got two different Method.Name.
+                // correct me if i`m wrong
                 if (_staticAction != null)
                 {
-                    return _staticAction.Method.Name;
+                    return _staticAction.ToString();
                 }
 
-                return Method.Name;
+                return _action.ToString();
             }
         }
 
@@ -92,6 +97,7 @@
                 return;
             }
 
+            _action = action;
             Method = action.Method;
             ActionReference = new WeakReference(action.Target);
 

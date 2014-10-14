@@ -1,6 +1,7 @@
 ﻿namespace Nubot.Adapters
 {
     using Interfaces;
+    using Nubot.Interfaces.Message;
     using System;
     using System.ComponentModel.Composition;
 
@@ -20,22 +21,24 @@
         {
             Console.WriteLine("Starting the shell...");
 
+            Console.WriteLine("* 'help' to Show help of all currently loaded plugin(s)");
+            Console.WriteLine("* 'list' to List all available adapters");
+            Console.WriteLine("* 'chain <adapter>' to Add specified adapter to get involved");
+            Console.WriteLine("* 'drop <adapter>' to Drop specified adapter");
+            Console.WriteLine();
+
             var input = string.Empty;
             while (true)
             {
                 input = Console.ReadLine();
                 Robot.Receive(input);
+                Console.WriteLine();
             }
         }
 
-        public override void Message(string message)
+        public override void Message(IMessage<string> message)
         {
-            Console.WriteLine(message);
-        }
-
-        public override bool SendNotification(string roomName, string authToken, string htmlMessage, bool notify = false)
-        {
-            return true;
+            Console.WriteLine(message.Content);
         }
     }
 }

@@ -497,7 +497,7 @@
                     if (weakActionCasted != null
                         && recipient == weakActionCasted.Target
                         && (action == null
-                            || action.Method.Name == weakActionCasted.MethodName)
+                            || action.ToString() == weakActionCasted.MethodName)
                         && (token == null
                             || token.Equals(item.Token)))
                     {

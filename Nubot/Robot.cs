@@ -12,6 +12,8 @@
     using Microsoft.Owin.Hosting;
     using Nancy;
     using Settings;
+    using Nubot.Messaging;
+    using Nubot.Interfaces.Message;
 
     public class Robot : IRobot
     {
@@ -42,14 +44,20 @@
 
         public void Message(string message)
         {
-            CurrentAdapter.Message(message);
+            Messenger.Emit("Message", message);
         }
 
         public void SendNotification(string room, string authToken, string htmlMessage, bool notify = false)
         {
             if (!string.IsNullOrEmpty(htmlMessage))
             {
-                CurrentAdapter.SendNotification(room, authToken, htmlMessage, notify: notify);
+                Messenger.Emit("SendNotification", new Notification
+                {
+                    Room = room,
+                    AuthToken = authToken,
+                    HtmlMessage = htmlMessage,
+                    Notify = notify
+                });
             }
         }
 
@@ -68,6 +76,12 @@
 
         [ImportMany(AllowRecomposition = true)]
         public IEnumerable<IRobotPlugin> RobotPlugins { get; private set; }
+
+        private List<IAdapter> _loadedAdapters = new List<IAdapter>();
+        public IEnumerable<IAdapter> RobotAdapters { get { return _loadedAdapters; } }
+
+        [ImportMany(AllowRecomposition = true)]
+        private IEnumerable<Lazy<IAdapter, IAdapterMetadata>> _adapters { get; set; }
 
         public IMessenger Messenger { get; private set; }
 
@@ -93,20 +107,16 @@
                 stringBuilder.AppendFormat("{0} {1}\n", Settings.Get("RobotName"), message);
             }
 
-            CurrentAdapter.Message(stringBuilder.ToString());
+            Messenger.Emit("Message", stringBuilder.ToString());
         }
-
-        // because there got to be only one adapter during runtime, so Lazy was good here
-        [ImportMany(AllowRecomposition = true)]
-        public IEnumerable<Lazy<IAdapter, IAdapterMetadata>> Adapters { private get; set; }
 
         public void Start()
         {
             _compositionManager.Compose();
 
-            StartAdapter();
-            
             StartWebServer();
+
+            StartAdapter();
         }
 
         private void StartAdapter()
@@ -114,10 +124,10 @@
             // let`s say the shell adapter was the default adapter
             // later we can load another adapter through shell command
             IAdapter shell = null;
-            foreach (Lazy<IAdapter, IAdapterMetadata> adapter in Adapters)
+            foreach (Lazy<IAdapter, IAdapterMetadata> adapter in _adapters)
             {
                 if (adapter.Metadata.Name == "Shell")
-                { 
+                {
                     shell = adapter.Value;
                     CurrentAdapter = shell;
                     break;
@@ -126,6 +136,7 @@
 
             if (CurrentAdapter != null)
             {
+                _loadedAdapters.Add(CurrentAdapter);
                 CurrentAdapter.Start();
             }
             else
@@ -144,13 +155,67 @@
 
         private void StartWebServer()
         {
-            Helper.GetConfiguredContainer().Register<IRobot>(this); 
-            
+            Helper.GetConfiguredContainer().Register<IRobot>(this);
+
             var url = ConfigurationManager.AppSettings["RobotUrl"];
 
             _webApp = WebApp.Start<Startup>(url);
 
-           Logger.WriteLine("Running on {0}", url);
+            Logger.WriteLine("Running on {0}", url);
+        }
+
+        public void ChainAdapter(string adapterName)
+        {
+            if (string.IsNullOrEmpty(adapterName) || adapterName.ToLower() == "shell")
+            {
+                return;
+            }
+
+            bool alreadyCreated = false;
+            IAdapter chainAdapter = null;
+            foreach (Lazy<IAdapter, IAdapterMetadata> adapter in _adapters)
+            {
+                if (adapter.Metadata.Name == adapterName)
+                {
+                    alreadyCreated = adapter.IsValueCreated;
+                    chainAdapter = adapter.Value;
+                    break;
+                }
+            }
+
+            if (!alreadyCreated)
+            {
+                _loadedAdapters.Add(chainAdapter);
+                chainAdapter.Start();
+            }
+            else
+            {
+                Messenger.On<string>("Message", message => { chainAdapter.Message(message); });
+                Messenger.On<Notification>("SendNotification", notify => { chainAdapter.SendNotification(notify); });
+            }
+        }
+
+        public void DropAdapter(string adapterName)
+        {
+            if (string.IsNullOrEmpty(adapterName) || adapterName.ToLower() == "shell")
+            {
+                return;
+            }
+
+            IAdapter dropAdapter = null;
+            foreach (Lazy<IAdapter, IAdapterMetadata> adapter in _adapters)
+            {
+                if (adapter.Metadata.Name == adapterName)
+                {
+                    dropAdapter = adapter.Value;
+                    _loadedAdapters.Remove(dropAdapter);
+                    break;
+                }
+            }
+
+            // a little bit uncomfortable here
+            ((IMvvmLightMessenger)Messenger).Unregister<IMessage<string>>(Messenger, message => { dropAdapter.Message(message); });
+            ((IMvvmLightMessenger)Messenger).Unregister<IMessage<Notification>>(Messenger, notify => { dropAdapter.SendNotification(notify); });
         }
     }
 }

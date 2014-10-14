@@ -1,5 +1,6 @@
 ﻿namespace Nubot.Interfaces
 {
+    using Nubot.Interfaces.Message;
     using System;
     using System.IO;
     using System.Reflection;
@@ -13,6 +14,9 @@
             Name = adapterName;
 
             Robot = robot;
+
+            Robot.Messenger.On<string>("Message", message => { this.Message(message); });
+            Robot.Messenger.On<Notification>("SendNotification", notify => { this.SendNotification(notify); });
         }
 
         static AdapterBase()
@@ -31,13 +35,13 @@
         {
         }
 
-        public virtual void Message(string message)
+        public virtual void Message(IMessage<string> message)
         {
         }
 
-        public virtual bool SendNotification(string roomName, string authToken, string htmlMessage, bool notify = false)
+        public virtual bool SendNotification(IMessage<Notification> notify)
         {
-            return false;
+            return true;
         }
 
         public virtual string MakeConfigFileName()
