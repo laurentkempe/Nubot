@@ -7,8 +7,8 @@
     <ProjectGuid>{B439C6D5-5666-443B-BB2E-B21420393388}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nubot.Console</RootNamespace>
-    <AssemblyName>Nubot.Console</AssemblyName>
+    <RootNamespace>Nubot</RootNamespace>
+    <AssemblyName>Nubot</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

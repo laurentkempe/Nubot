@@ -1,4 +1,4 @@
-﻿namespace Nubot.Console
+﻿namespace Nubot
 {
     using Core;
     using Core.Messaging;

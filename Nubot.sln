@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nubot.Core", "Nubot\Nubot.Core.csproj", "{EF03D817-CF50-4C74-82B6-92355D587B5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nubot.Console", "Nubot.Console\Nubot.Console.csproj", "{B439C6D5-5666-443B-BB2E-B21420393388}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nubot", "Nubot.Console\Nubot.csproj", "{B439C6D5-5666-443B-BB2E-B21420393388}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nubot.Abstractions", "Nubot.Interfaces\Nubot.Abstractions.csproj", "{4486CADC-A768-4BAC-8249-7CD3B8F0993D}"
 EndProject

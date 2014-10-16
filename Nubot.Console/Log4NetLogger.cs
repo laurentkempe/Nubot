@@ -1,4 +1,4 @@
-﻿namespace Nubot.Console
+﻿namespace Nubot
 {
     using System.Reflection;
     using Abstractions;
