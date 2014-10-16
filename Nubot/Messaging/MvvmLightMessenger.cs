@@ -1,4 +1,4 @@
-﻿namespace Nubot.Messaging
+﻿namespace Nubot.Core.Messaging
 {
     using System;
     using System.Collections.Generic;

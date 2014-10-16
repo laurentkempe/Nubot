@@ -1,4 +1,4 @@
-﻿namespace Nubot.Loggers
+﻿namespace Nubot.Core.Loggers
 {
     using System;
     using Abstractions;

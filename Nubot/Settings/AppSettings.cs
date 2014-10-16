@@ -1,4 +1,4 @@
-﻿namespace Nubot.Settings
+﻿namespace Nubot.Core.Settings
 {
     using System.Configuration;
     using System.Linq;

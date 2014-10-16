@@ -13,7 +13,7 @@
 // </license>
 // ****************************************************************************
 
-namespace Nubot.Messaging
+namespace Nubot.Core.Messaging
 {
     using Abstractions;
 

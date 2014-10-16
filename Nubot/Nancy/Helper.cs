@@ -1,4 +1,4 @@
-﻿namespace Nubot.Nancy
+﻿namespace Nubot.Core.Nancy
 {
     using System;
     using global::Nancy.TinyIoc;

@@ -13,7 +13,7 @@
 // </license>
 // ****************************************************************************
 
-namespace Nubot.Messaging.Helpers
+namespace Nubot.Core.Messaging.Helpers
 {
     /// <summary>
     /// This interface is meant for the <see cref="WeakAction{T}" /> class and can be 

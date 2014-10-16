@@ -1,16 +1,15 @@
-﻿namespace Nubot.Composition
+﻿namespace Nubot.Core.Composition
 {
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.ComponentModel.Composition.Primitives;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Text;
-    using System.Linq;
     using Abstractions;
-    using MefContrib.Hosting.Interception.Configuration;
     using MefContrib.Hosting.Interception;
-    using Settings;
+    using MefContrib.Hosting.Interception.Configuration;
 
     public class CompositionManager
     {

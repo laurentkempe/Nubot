@@ -63,9 +63,9 @@
       <Project>{4486CADC-A768-4BAC-8249-7CD3B8F0993D}</Project>
       <Name>Nubot.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Nubot\Nubot.csproj">
+    <ProjectReference Include="..\Nubot\Nubot.Core.csproj">
       <Project>{ef03d817-cf50-4c74-82b6-92355d587b5c}</Project>
-      <Name>Nubot</Name>
+      <Name>Nubot.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

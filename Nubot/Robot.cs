@@ -1,4 +1,4 @@
-﻿namespace Nubot
+﻿namespace Nubot.Core
 {
     using System;
     using System.Collections.Generic;
