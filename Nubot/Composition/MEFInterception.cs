@@ -1,16 +1,9 @@
-﻿namespace Nubot.Settings
+﻿namespace Nubot.Core.Composition
 {
-    using MefContrib.Hosting.Interception;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Nubot.Interfaces;
     using System.Configuration;
-    using System.Reflection;
-    using System.IO;
-    using Nubot.Composition;
+    using Abstractions;
+    using MefContrib.Hosting.Interception;
+    using Settings;
 
     // see: http://pwlodek.blogspot.com/2010/11/introduction-to-interceptingcatalog.html
     public class CopyConfigInterceptor : IExportedValueInterceptor

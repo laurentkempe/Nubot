@@ -1,5 +1,7 @@
 namespace Nubot.Plugins.Samples.Stash.Models
 {
+    // ReSharper disable InconsistentNaming
+
     public class Path
     {
         public string[] Components { get; set; }
@@ -8,4 +10,6 @@ namespace Nubot.Plugins.Samples.Stash.Models
         public string Extension { get; set; }
         public string toString { get; set; }
     }
+
+    // ReSharper restore InconsistentNaming
 }

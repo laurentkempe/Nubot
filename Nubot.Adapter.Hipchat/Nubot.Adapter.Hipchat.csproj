@@ -52,9 +52,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Nubot.Interfaces\Nubot.Interfaces.csproj">
+    <ProjectReference Include="..\Nubot.Interfaces\Nubot.Abstractions.csproj">
       <Project>{4486cadc-a768-4bac-8249-7cd3b8f0993d}</Project>
-      <Name>Nubot.Interfaces</Name>
+      <Name>Nubot.Abstractions</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

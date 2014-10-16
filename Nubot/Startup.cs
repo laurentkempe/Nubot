@@ -1,11 +1,11 @@
-﻿namespace Nubot
+﻿namespace Nubot.Core
 {
-    using Annotations;
+    using Abstractions;
     using global::Nancy;
     using global::Nancy.Owin;
-    using Interfaces;
     using Nancy;
     using Owin;
+    using Properties;
 
     [UsedImplicitly]
     public class Startup

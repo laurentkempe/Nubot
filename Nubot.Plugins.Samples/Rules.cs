@@ -1,7 +1,7 @@
 ﻿namespace Nubot.Plugins.Samples
 {
     using System.ComponentModel.Composition;
-    using Interfaces;
+    using Abstractions;
 
     [Export(typeof(IRobotPlugin))]
     public class Rules : RobotPluginBase

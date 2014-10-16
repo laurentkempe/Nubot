@@ -4,69 +4,64 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B439C6D5-5666-443B-BB2E-B21420393388}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{4486CADC-A768-4BAC-8249-7CD3B8F0993D}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nubot.Console</RootNamespace>
-    <AssemblyName>Nubot.Console</AssemblyName>
+    <RootNamespace>Nubot.Abstractions</RootNamespace>
+    <AssemblyName>Nubot.Abstractions</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Output\bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Output\bin\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Nancy, Version=0.22.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Nancy.0.23.1\lib\net40\Nancy.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="Topshelf">
-      <HintPath>..\packages\Topshelf.3.1.3\lib\net40-full\Topshelf.dll</HintPath>
-    </Reference>
-    <Reference Include="Topshelf.Log4Net">
-      <HintPath>..\packages\Topshelf.Log4Net.3.1.3\lib\net40-full\Topshelf.Log4Net.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Log4NetLogger.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="AdapterBase.cs" />
+    <Compile Include="Envelope.cs" />
+    <Compile Include="HttpPluginBase.cs" />
+    <Compile Include="IAdapter.cs" />
+    <Compile Include="IMessage.cs" />
+    <Compile Include="IEventEmitter.cs" />
+    <Compile Include="ILogger.cs" />
+    <Compile Include="IRobot.cs" />
+    <Compile Include="IRobotPlugin.cs" />
+    <Compile Include="ISettings.cs" />
+    <Compile Include="Listener.cs" />
+    <Compile Include="Message.cs" />
+    <Compile Include="PluginSetting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Response.cs" />
+    <Compile Include="RobotPluginBase.cs" />
+    <Compile Include="TextListener.cs" />
+    <Compile Include="TextMessage.cs" />
+    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="nubot.console.exe.log4net">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Nubot.Interfaces\Nubot.Interfaces.csproj">
-      <Project>{4486CADC-A768-4BAC-8249-7CD3B8F0993D}</Project>
-      <Name>Nubot.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Nubot\Nubot.csproj">
-      <Project>{ef03d817-cf50-4c74-82b6-92355d587b5c}</Project>
-      <Name>Nubot</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

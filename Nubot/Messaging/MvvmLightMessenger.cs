@@ -1,11 +1,11 @@
-﻿namespace Nubot.Messaging
+﻿namespace Nubot.Core.Messaging
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Abstractions;
     using Helpers;
-    using Interfaces;
 
     /// <summary>
     /// The MvvmLightMessenger is a class allowing objects to exchange messages.
@@ -16,10 +16,10 @@
     ////    Description = "A messenger class allowing a class to send a message to multiple recipients",
     ////    UrlContacts = "http://www.galasoft.ch/contact_en.html",
     ////    Email = "laurent@galasoft.ch")]
-    public class MvvmLightMessenger : IMvvmLightMessenger, IMessenger
+    public class MvvmLightMessenger : IMvvmLightMessenger, IEventEmitter
     {
         private static readonly object CreationLock = new object();
-        private static IMessenger _defaultInstance;
+        private static IEventEmitter _defaultInstance;
         private readonly object _registerLock = new object();
         private Dictionary<Type, List<WeakActionAndToken>> _recipientsOfSubclassesAction;
         private Dictionary<Type, List<WeakActionAndToken>> _recipientsStrictAction;
@@ -28,7 +28,7 @@
         /// Gets the MvvmLightMessenger's default instance, allowing
         /// to register and send messages in a static manner.
         /// </summary>
-        public static IMessenger Default
+        public static IEventEmitter Default
         {
             get
             {
@@ -352,10 +352,10 @@
         /// Provides a way to override the MvvmLightMessenger.Default instance with
         /// a custom instance, for example for unit testing purposes.
         /// </summary>
-        /// <param name="newMessenger">The instance that will be used as MvvmLightMessenger.Default.</param>
-        public static void OverrideDefault(IMessenger newMessenger)
+        /// <param name="newEventEmitter">The instance that will be used as MvvmLightMessenger.Default.</param>
+        public static void OverrideDefault(IEventEmitter newEventEmitter)
         {
-            _defaultInstance = newMessenger;
+            _defaultInstance = newEventEmitter;
         }
 
         /// <summary>

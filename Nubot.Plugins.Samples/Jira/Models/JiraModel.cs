@@ -2,6 +2,8 @@
 {
     using System;
 
+    // ReSharper disable InconsistentNaming
+
     public class JiraModel
     {
         public string webhookEvent { get; set; }
@@ -247,4 +249,6 @@
         public string to { get; set; }
         public string toString { get; set; }
     }
+
+    // ReSharper restore InconsistentNaming
 }

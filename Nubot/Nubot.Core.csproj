@@ -7,8 +7,8 @@
     <ProjectGuid>{EF03D817-CF50-4C74-82B6-92355D587B5C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nubot</RootNamespace>
-    <AssemblyName>Nubot</AssemblyName>
+    <RootNamespace>Nubot.Core</RootNamespace>
+    <AssemblyName>Nubot.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -92,9 +92,9 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Nubot.Interfaces\Nubot.Interfaces.csproj">
+    <ProjectReference Include="..\Nubot.Interfaces\Nubot.Abstractions.csproj">
       <Project>{4486cadc-a768-4bac-8249-7cd3b8f0993d}</Project>
-      <Name>Nubot.Interfaces</Name>
+      <Name>Nubot.Abstractions</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

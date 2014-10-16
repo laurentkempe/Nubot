@@ -1,4 +1,4 @@
-namespace Nubot.Interfaces
+namespace Nubot.Abstractions
 {
     /// <summary>
     /// Responses are sent to matching listeners.

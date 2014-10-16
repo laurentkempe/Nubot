@@ -1,6 +1,7 @@
-﻿namespace Nubot.Console
+﻿namespace Nubot
 {
-    using Messaging;
+    using Core;
+    using Core.Messaging;
     using Topshelf;
 
     public class Program

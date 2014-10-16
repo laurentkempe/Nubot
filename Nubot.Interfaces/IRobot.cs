@@ -1,4 +1,4 @@
-﻿namespace Nubot.Interfaces
+﻿namespace Nubot.Abstractions
 {
     using System;
     using System.Collections.Generic;
@@ -33,7 +33,7 @@
 
         IEnumerable<IRobotPlugin> RobotPlugins { get; }
 
-        IMessenger Messenger { get; }
+        IEventEmitter EventEmitter { get; }
 
         void ReloadPlugins();
 

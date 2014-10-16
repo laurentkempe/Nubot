@@ -1,10 +1,10 @@
-namespace Nubot.Nancy
+namespace Nubot.Core.Nancy
 {
     using System.Linq;
+    using Abstractions;
     using global::Nancy;
     using global::Nancy.Conventions;
     using global::Nancy.TinyIoc;
-    using Interfaces;
 
     public class Bootstrapper : DefaultNancyBootstrapper
     {

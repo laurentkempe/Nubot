@@ -1,4 +1,4 @@
-﻿namespace Nubot.Messaging.Helpers
+﻿namespace Nubot.Core.Messaging.Helpers
 {
     using System;
     using System.Diagnostics.CodeAnalysis;

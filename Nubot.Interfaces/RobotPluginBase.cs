@@ -1,8 +1,8 @@
-﻿namespace Nubot.Interfaces
+﻿namespace Nubot.Abstractions
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
 
     public abstract class RobotPluginBase : IRobotPlugin

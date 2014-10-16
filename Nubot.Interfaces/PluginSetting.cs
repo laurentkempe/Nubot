@@ -1,7 +1,5 @@
-namespace Nubot.Interfaces
+namespace Nubot.Abstractions
 {
-    using System.Linq;
-
     public class PluginSetting : IPluginSetting
     {
         private readonly IRobot _robot;

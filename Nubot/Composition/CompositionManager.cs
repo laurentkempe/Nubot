@@ -1,23 +1,22 @@
-﻿namespace Nubot.Composition
+﻿namespace Nubot.Core.Composition
 {
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.ComponentModel.Composition.Primitives;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Text;
-    using System.Linq;
-    using Interfaces;
-    using MefContrib.Hosting.Interception.Configuration;
+    using Abstractions;
     using MefContrib.Hosting.Interception;
-    using Settings;
+    using MefContrib.Hosting.Interception.Configuration;
 
     public class CompositionManager
     {
         private readonly Robot _robot;
-        private static readonly string _executingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        private static readonly string _pluginsDirectory = Path.Combine(_executingDirectory, RobotPluginBase.BasePluginsDirectory);
-        private static readonly string _adaptersDirectory = Path.Combine(_executingDirectory, AdapterBase.BaseAdapterDirectory);
+        private static readonly string ExecutingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        private static readonly string PluginsDirectory = Path.Combine(ExecutingDirectory, RobotPluginBase.BasePluginsDirectory);
+        private static readonly string AdaptersDirectory = Path.Combine(ExecutingDirectory, AdapterBase.BaseAdapterDirectory);
 
         private ApplicationCatalog _applicationCatalog;
         private DirectoryCatalog _adapterdirectoryCatalog;
@@ -30,9 +29,9 @@
 
         public void Compose()
         {
-            if (!Directory.Exists(_pluginsDirectory))
+            if (!Directory.Exists(PluginsDirectory))
             {
-                Directory.CreateDirectory(_pluginsDirectory);
+                Directory.CreateDirectory(PluginsDirectory);
             }
 
             LoadAdapterAndPlugins();
@@ -55,8 +54,8 @@
         private ComposablePartCatalog GetInterceptionCatalog()
         {
             _applicationCatalog = new ApplicationCatalog();
-            _adapterdirectoryCatalog = new DirectoryCatalog(_adaptersDirectory);
-            _pluginsdirectoryCatalog = new DirectoryCatalog(_pluginsDirectory);
+            _adapterdirectoryCatalog = new DirectoryCatalog(AdaptersDirectory);
+            _pluginsdirectoryCatalog = new DirectoryCatalog(PluginsDirectory);
 
             var catalog = new AggregateCatalog(_applicationCatalog, _adapterdirectoryCatalog, _pluginsdirectoryCatalog);
 
