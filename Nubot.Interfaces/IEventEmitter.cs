@@ -2,7 +2,7 @@
 {
     using System;
 
-    public interface IMessenger
+    public interface IEventEmitter
     {
         void On<TModel>(string eventName, Action<IMessage<TModel>> action);
 
