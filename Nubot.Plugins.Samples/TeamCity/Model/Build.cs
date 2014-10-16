@@ -1,5 +1,7 @@
 ﻿namespace Nubot.Plugins.Samples.TeamCity.Model
 {
+    // ReSharper disable InconsistentNaming
+
     public class Build
     {
         public string buildStatus { get; set; }
@@ -35,4 +37,6 @@
         public string[] buildRunners { get; set; }
         public object[] extraParameters { get; set; }
     }
+
+    // ReSharper restore InconsistentNaming
 }
