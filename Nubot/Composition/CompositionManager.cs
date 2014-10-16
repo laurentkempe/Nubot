@@ -61,9 +61,9 @@
 
             var cfg = new InterceptionConfiguration().AddInterceptionCriteria(
                             new PredicateInterceptionCriteria(
-                                new CopyConfigInterceptor(), 
+                                new CopyConfigInterceptor(),
                                 def => def.ExportDefinitions.First().ContractName.Contains("IAdapter") ||
-                                       def.ExportDefinitions.First().ContractName.Contains("IRobotPlugin"))); 
+                                       def.ExportDefinitions.First().ContractName.Contains("IRobotPlugin")));
 
             // Create the InterceptingCatalog with above configuration
             var interceptingCatalog = new InterceptingCatalog(catalog, cfg);

@@ -48,9 +48,9 @@
 
         public virtual string MakeConfigFileName()
         {
-            var subPath = this.ModulePath.StartsWith("/") ? this.ModulePath.Substring(1) : this.ModulePath;
+            var subPath = ModulePath.StartsWith("/") ? ModulePath.Substring(1) : ModulePath;
 
-            var pluginName = this.Name.Replace(" ", string.Empty);
+            var pluginName = Name.Replace(" ", string.Empty);
             var file = string.Format("{0}.config", pluginName);
             var configFileName = Path.Combine(BasePluginsDirectory, subPath, file);
 
