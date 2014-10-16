@@ -15,7 +15,7 @@
 
 namespace Nubot.Messaging
 {
-    using Interfaces;
+    using Abstractions;
 
     /// <summary>
     /// Passes a generic value (Content) to a recipient.

@@ -1,4 +1,4 @@
-﻿namespace Nubot.Interfaces
+﻿namespace Nubot.Abstractions
 {
     public interface IAdapter
     {

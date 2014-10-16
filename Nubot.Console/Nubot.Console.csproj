@@ -59,9 +59,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Nubot.Interfaces\Nubot.Interfaces.csproj">
+    <ProjectReference Include="..\Nubot.Interfaces\Nubot.Abstractions.csproj">
       <Project>{4486CADC-A768-4BAC-8249-7CD3B8F0993D}</Project>
-      <Name>Nubot.Interfaces</Name>
+      <Name>Nubot.Abstractions</Name>
     </ProjectReference>
     <ProjectReference Include="..\Nubot\Nubot.csproj">
       <Project>{ef03d817-cf50-4c74-82b6-92355d587b5c}</Project>

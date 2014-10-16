@@ -1,7 +1,7 @@
 ﻿namespace Nubot.Plugins.Nubot.ViewModel
 {
     using System.Collections.Generic;
-    using Interfaces;
+    using Abstractions;
 
     public class IndexViewModel
     {

@@ -1,9 +1,9 @@
 ﻿namespace Nubot
 {
+    using Abstractions;
     using Annotations;
     using global::Nancy;
     using global::Nancy.Owin;
-    using Interfaces;
     using Nancy;
     using Owin;
 

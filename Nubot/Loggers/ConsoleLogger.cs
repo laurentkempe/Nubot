@@ -1,7 +1,7 @@
 ﻿namespace Nubot.Loggers
 {
     using System;
-    using Interfaces;
+    using Abstractions;
 
     public class ConsoleLogger : ILogger
     {

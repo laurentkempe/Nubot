@@ -1,4 +1,4 @@
-﻿namespace Nubot.Interfaces
+﻿namespace Nubot.Abstractions
 {
     using System.Collections.Generic;
 

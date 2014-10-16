@@ -5,7 +5,7 @@
     using System.ComponentModel.Composition;
     using System.Linq;
     using System.Net.Http;
-    using Interfaces;
+    using Abstractions;
     using Nancy.Helpers;
     using Newtonsoft.Json.Linq;
 

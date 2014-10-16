@@ -1,12 +1,12 @@
 ﻿namespace Nubot.Settings
 {
+    using Abstractions;
     using MefContrib.Hosting.Interception;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using Nubot.Interfaces;
     using System.Configuration;
     using System.Reflection;
     using System.IO;

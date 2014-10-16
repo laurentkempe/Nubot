@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Abstractions;
     using Helpers;
-    using Interfaces;
 
     /// <summary>
     /// The MvvmLightMessenger is a class allowing objects to exchange messages.

@@ -1,11 +1,11 @@
-﻿namespace Nubot.Interfaces
+﻿namespace Nubot.Abstractions
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using Nancy;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
+    using Nancy;
 
     public abstract class HttpPluginBase : NancyModule, IRobotPlugin
     {

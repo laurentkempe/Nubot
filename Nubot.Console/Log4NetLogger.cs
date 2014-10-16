@@ -1,7 +1,7 @@
 ﻿namespace Nubot.Console
 {
     using System.Reflection;
-    using Interfaces;
+    using Abstractions;
     using log4net;
 
     public class Log4NetLogger : ILogger

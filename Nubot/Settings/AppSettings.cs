@@ -2,7 +2,7 @@
 {
     using System.Configuration;
     using System.Linq;
-    using Interfaces;
+    using Abstractions;
 
     public class AppSettings : ISettings
     {

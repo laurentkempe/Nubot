@@ -1,4 +1,5 @@
 ﻿namespace Nubot.Plugins.Nubot {
+
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
@@ -6,11 +7,11 @@
     using System.Net;
     using System.Text;
     using System.Linq;
-    using Interfaces;
+    using Abstractions;
     using Nancy;
     using Nancy.ModelBinding;
     using ViewModel;
-    using Response = global::Nubot.Interfaces.Response;
+    using Response = Abstractions.Response;
 
     [Export(typeof(IRobotPlugin))]
     public class Admin : HttpPluginBase

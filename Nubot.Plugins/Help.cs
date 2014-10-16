@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
-    using Interfaces;
+    using Abstractions;
 
     [Export(typeof(IRobotPlugin))]
     public class Default : RobotPluginBase

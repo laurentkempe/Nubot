@@ -7,7 +7,7 @@
     using System.Reflection;
     using System.Text;
     using System.Linq;
-    using Interfaces;
+    using Abstractions;
     using MefContrib.Hosting.Interception.Configuration;
     using MefContrib.Hosting.Interception;
     using Settings;

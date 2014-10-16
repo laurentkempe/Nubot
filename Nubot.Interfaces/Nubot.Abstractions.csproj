@@ -7,8 +7,8 @@
     <ProjectGuid>{4486CADC-A768-4BAC-8249-7CD3B8F0993D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nubot.Interfaces</RootNamespace>
-    <AssemblyName>Nubot.Interfaces</AssemblyName>
+    <RootNamespace>Nubot.Abstractions</RootNamespace>
+    <AssemblyName>Nubot.Abstractions</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

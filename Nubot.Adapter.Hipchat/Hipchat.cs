@@ -5,14 +5,15 @@
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Linq;
+    using Abstractions;
     using agsXMPP;
     using agsXMPP.protocol.client;
     using agsXMPP.protocol.iq.roster;
     using agsXMPP.protocol.x.muc;
     using HipchatApiV2;
     using HipchatApiV2.Enums;
-    using Interfaces;
     using Message = agsXMPP.protocol.client.Message;
+    using User = Abstractions.User;
 
     [Export(typeof(IAdapter))]
     public class Hipchat : AdapterBase
@@ -100,7 +101,7 @@
 
             if (MessageIsFromRobot(adapterUser)) return;
 
-            var user = new Interfaces.User(msg.Id, adapterUser, msg.From.Bare, Name);
+            var user = new User(msg.Id, adapterUser, msg.From.Bare, Name);
 
             Robot.Receive(new TextMessage(user, msg.Body));
         }
