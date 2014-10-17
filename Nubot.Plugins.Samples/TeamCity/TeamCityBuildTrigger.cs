@@ -62,7 +62,9 @@
                 {
                     //todo this seems not to work check http://ci.innoveo.com/viewType.html?buildTypeId=SkyeEditor_Release&branch_SkyeEditor_Releases=skye-editor-4.23.0&tab=buildTypeStatusDiv
                     buildConfId = "SkyeEditor_Release";
-                    branchName = branch.Substring(branch.LastIndexOf("/skye-editor-", StringComparison.Ordinal) + 1);
+                    //LAURENT: TODO move to settings
+                    var releaseBranchNamePrefix = "/skye-editor-";
+                    branchName = branch.Substring(branch.LastIndexOf(releaseBranchNamePrefix, StringComparison.Ordinal) + releaseBranchNamePrefix.Length);
                 }
 
                 if (string.IsNullOrWhiteSpace(branchName)) return;
