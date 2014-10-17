@@ -103,6 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="AppHarbor\AppharborListener.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Jira\JiraListener.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
