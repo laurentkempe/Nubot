@@ -49,28 +49,22 @@
 
         private string BuildMessage(StashModel model)
         {
-            var stringBuilder = new StringBuilder();
-
             var repositoryUrl = string.Format("{0}/projects/{1}/repos/{2}",
                                               Robot.Settings.Get("AtlassianStashUrl"),
                                               model.Repository.Project.Name,
                                               model.Repository.Slug);
 
-            var branches = model.RefChanges.Select(r => r.RefId.Replace("refs/heads/", "")).Distinct();
+            var branches = model.RefChanges.Select(r => r.RefId.Replace("refs/heads/", "")).Distinct().ToList();
 
-            if (model.RefChanges.Count() == 1 && model.RefChanges[0].Type.Equals("DELETE", StringComparison.InvariantCultureIgnoreCase))
-            {
-                stringBuilder
-                    .AppendFormat(
-                        "Branch <b>{0}</b> of <b>{1}/{2}</b> has been deleted<br/>",
-                        string.Join(", ", branches),
-                        model.Repository.Project.Name,
-                        model.Repository.Name);
+            string deleteMessage;
+            if (BuildDeleteMessage(model, branches, out deleteMessage)) return deleteMessage;
 
-                return stringBuilder.ToString();
-            }
+            var authorNames = model.Changesets.Values.Select(v => v.ToCommit.Author.Name).Distinct().ToList();
 
-            var authorNames = model.Changesets.Values.Select(v => v.ToCommit.Author.Name).Distinct();
+            string mergeMessage;
+            if (BuildMergeMessage(model, repositoryUrl, branches, authorNames, out mergeMessage)) return mergeMessage;
+
+            var stringBuilder = new StringBuilder();
 
             stringBuilder
                 .AppendFormat(
@@ -97,6 +91,90 @@
             }
 
             return stringBuilder.ToString();
+        }
+
+        private static bool BuildDeleteMessage(StashModel model, IEnumerable<string> branches, out string deleteMessage)
+        {
+            if (!IsBranchDelete(model))
+            {
+                deleteMessage = string.Empty;
+                return false;
+            }
+
+            var stringBuilder = new StringBuilder();
+
+            stringBuilder
+                .AppendFormat(
+                    "Branch <b>{0}</b> of <b>{1}/{2}</b> has been deleted<br/>",
+                    string.Join(", ", branches),
+                    model.Repository.Project.Name,
+                    model.Repository.Name);
+
+            deleteMessage = stringBuilder.ToString();
+            return true;
+        }
+
+        private static bool IsBranchDelete(StashModel model)
+        {
+            return model.RefChanges.Count() == 1 && model.RefChanges[0].Type.Equals("DELETE", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private static bool BuildMergeMessage(StashModel model, string repositoryUrl, IEnumerable<string> branches, List<string> authorNames, out string mergeMessage)
+        {
+            var changeset = model.Changesets.Values[0];
+
+            if (!IsPullRequestMerge(changeset))
+            {
+                mergeMessage = string.Empty;
+                return false;
+            }
+
+            const string commit = "* commit ";
+            var commitMessage = changeset.ToCommit.Message;
+
+            var restMessage = commitMessage.Substring(0, commitMessage.LastIndexOf(commit, StringComparison.Ordinal)).Trim();
+
+            var pullRequestNumber = GetPullRequestNumber(restMessage);
+
+            var fromTo = restMessage.Substring(restMessage.IndexOf(" from ", StringComparison.Ordinal)).Trim();
+
+            var pullRequestUrl = string.Format(@"{0}/pull-requests/{1}/overview", repositoryUrl, pullRequestNumber);
+
+            var stringBuilder = new StringBuilder();
+
+            stringBuilder
+                .AppendFormat(
+                    "<b>Pull request #<a href='{0}'>{1}</a></b> has been merged ",
+                    pullRequestUrl,
+                    pullRequestNumber);
+
+            stringBuilder
+                .AppendFormat(
+                    "in <a href='{0}'>{1}/{2}</a><br/>",
+                    repositoryUrl + "/browse",
+                    model.Repository.Project.Name,
+                    model.Repository.Name);
+
+            stringBuilder
+                .AppendFormat(
+                    @"{0} (<a href='{1}'>{2}</a>)<br/>",
+                    fromTo,
+                    repositoryUrl + "/commits/" + changeset.ToCommit.Id,
+                    changeset.ToCommit.DisplayId);
+
+            mergeMessage = stringBuilder.ToString();
+            return true;
+        }
+
+        private static string GetPullRequestNumber(string restMessage)
+        {
+            var substring = restMessage.Substring(restMessage.IndexOf('#') + 1);
+            return substring.Substring(0, substring.IndexOf(' ')).Trim();
+        }
+
+        private static bool IsPullRequestMerge(Value changeset)
+        {
+            return changeset.ToCommit.Message.StartsWith("Merge pull request #");
         }
     }
 }
