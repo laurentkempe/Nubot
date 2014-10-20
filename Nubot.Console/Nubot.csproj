@@ -53,7 +53,9 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="nubot.exe.log4net" />
+    <None Include="Nubot.exe.log4net">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
