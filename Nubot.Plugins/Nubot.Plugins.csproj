@@ -55,7 +55,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Nubot.Interfaces\Nubot.Abstractions.csproj">
+    <ProjectReference Include="..\Nubot.Abstractions\Nubot.Abstractions.csproj">
       <Project>{4486CADC-A768-4BAC-8249-7CD3B8F0993D}</Project>
       <Name>Nubot.Abstractions</Name>
     </ProjectReference>

@@ -92,7 +92,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Nubot.Interfaces\Nubot.Abstractions.csproj">
+    <ProjectReference Include="..\Nubot.Abstractions\Nubot.Abstractions.csproj">
       <Project>{4486cadc-a768-4bac-8249-7cd3b8f0993d}</Project>
       <Name>Nubot.Abstractions</Name>
     </ProjectReference>
