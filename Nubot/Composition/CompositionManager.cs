@@ -15,6 +15,8 @@
     public class CompositionManager
     {
         private readonly Robot _robot;
+
+        //LAURENT: TODO remove the static
         private static readonly string ExecutingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         private static readonly string PluginsDirectory = Path.Combine(ExecutingDirectory, RobotPluginBase.BasePluginsDirectory);
         private static readonly string AdaptersDirectory = Path.Combine(ExecutingDirectory, AdapterBase.BaseAdapterDirectory);
@@ -46,10 +48,9 @@
             container.ComposeExportedValue<IRobot>(_robot);
             container.ComposeParts(_robot);
 
-            // log loadings
-            ShowLoadedPlugins(_applicationCatalog, "Loaded the following Nubot plugins");
-            ShowLoadedPlugins(_adapterdirectoryCatalog, "Loaded the following adapter");
-            ShowLoadedPlugins(_pluginsdirectoryCatalog, "Loaded the following plugins");
+            ShowLoaded(_applicationCatalog, "Loaded the following Nubot plugins");
+            ShowLoaded(_adapterdirectoryCatalog, "Loaded the following adapter");
+            ShowLoaded(_pluginsdirectoryCatalog, "Loaded the following plugins");
         }
 
         private ComposablePartCatalog GetInterceptionCatalog()
@@ -66,12 +67,10 @@
                                 def => def.ExportDefinitions.First().ContractName.Contains("IAdapter") ||
                                        def.ExportDefinitions.First().ContractName.Contains("IRobotPlugin")));
 
-            // Create the InterceptingCatalog with above configuration
-            var interceptingCatalog = new InterceptingCatalog(catalog, cfg);
-            return interceptingCatalog;
+            return new InterceptingCatalog(catalog, cfg);
         }
 
-        private void ShowLoadedPlugins(ComposablePartCatalog catalog, string message)
+        private void ShowLoaded(ComposablePartCatalog catalog, string message)
         {
             var builder = new StringBuilder();
             builder.AppendLine(message);

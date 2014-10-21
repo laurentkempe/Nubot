@@ -20,7 +20,7 @@
             BaseAdapterDirectory = Path.Combine(ExecutingDirectory, "adapters");
         }
 
-        public string Name { protected set; get; }
+        public string Name { get; private set; }
 
         public static string ExecutingDirectory { get; private set; }
 
@@ -43,11 +43,10 @@
 
         public virtual string MakeConfigFileName()
         {
-            var adapterName = this.Name;
+            var adapterName = Name;
             var file = string.Format("{0}.config", adapterName);
-            var configFileName = Path.Combine(BaseAdapterDirectory, file);
 
-            return configFileName;
+            return Path.Combine(BaseAdapterDirectory, file);
         }
     }
 }
