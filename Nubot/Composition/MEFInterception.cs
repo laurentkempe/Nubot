@@ -3,12 +3,16 @@
     using System.Configuration;
     using Abstractions;
     using MefContrib.Hosting.Interception;
-    using Settings;
 
     // see: http://pwlodek.blogspot.com/2010/11/introduction-to-interceptingcatalog.html
     public class CopyConfigInterceptor : IExportedValueInterceptor
     {
-        protected ISettings Settings = new AppSettings();
+        private readonly ISettings _settings;
+
+        public CopyConfigInterceptor(ISettings settings)
+        {
+            _settings = settings;
+        }
 
         public object Intercept(object value)
         {
@@ -16,14 +20,14 @@
             if (adapter != null)
             {
                 var configFileName = adapter.MakeConfigFileName();
-                ReadAndCopy(configFileName);
+                if (configFileName != null) ReadAndCopy(configFileName);
             }
 
             var plugin = value as IRobotPlugin;
             if (plugin != null)
             {
                 var configFileName = plugin.MakeConfigFileName();
-                ReadAndCopy(configFileName);
+                if (configFileName != null) ReadAndCopy(configFileName);
             }
 
             return value;
@@ -36,7 +40,7 @@
 
             foreach (var key in config.AppSettings.Settings.AllKeys)
             {
-                Settings.Create(key, config.AppSettings.Settings[key].Value);
+                _settings.Create(key, config.AppSettings.Settings[key].Value);
             }
         }
     }

@@ -24,7 +24,7 @@
             BasePluginsDirectory = Path.Combine(ExecutingDirectory, "plugins");
         }
 
-        public string Name { get; protected set; }
+        public string Name { get; private set; }
 
         public static string ExecutingDirectory { get; private set; }
 
@@ -38,11 +38,9 @@
         {
             var pluginName = Name.Replace(" ", string.Empty);
 
-            //Bug it is not defined that the plugin is from the root folder
             var file = string.Format("{0}.config", pluginName);
-            var configFileName = Path.Combine(BasePluginsDirectory, file);
 
-            return configFileName;
+            return Directory.GetFiles(BasePluginsDirectory, file, SearchOption.AllDirectories).FirstOrDefault();
         }
     }
 }

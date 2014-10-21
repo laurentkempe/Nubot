@@ -12,7 +12,7 @@
         {
             HostFactory.Run(x =>
             {
-                x.UseLog4Net("nubot.console.exe.log4net");
+                x.UseLog4Net("nubot.exe.log4net");
 
                 x.Service<Robot>(s =>
                 {
