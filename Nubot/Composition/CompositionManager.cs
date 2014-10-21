@@ -1,5 +1,6 @@
 ﻿namespace Nubot.Core.Composition
 {
+    using System;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.ComponentModel.Composition.Primitives;
@@ -61,7 +62,7 @@
 
             var cfg = new InterceptionConfiguration().AddInterceptionCriteria(
                             new PredicateInterceptionCriteria(
-                                new CopyConfigInterceptor(),
+                                new CopyConfigInterceptor(_robot.Settings),
                                 def => def.ExportDefinitions.First().ContractName.Contains("IAdapter") ||
                                        def.ExportDefinitions.First().ContractName.Contains("IRobotPlugin")));
 
