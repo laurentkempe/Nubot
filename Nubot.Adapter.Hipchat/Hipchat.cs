@@ -20,7 +20,7 @@
     {
         private ConcurrentDictionary<string, string> _roster = new ConcurrentDictionary<string, string>();
         private XmppClientConnection _client;
-        private readonly string _conferenceServer;
+        private string _conferenceServer;
         private List<Jid> JoinedRoomJids { get; set; }
 
         [ImportingConstructor]
@@ -28,12 +28,12 @@
             : base("Hipchat", robot)
         {
             JoinedRoomJids = new List<Jid>();
-
-            _conferenceServer = Robot.Settings.Get("HipChatConferenceServer");
         }
 
         public override void Start()
         {
+            _conferenceServer = Robot.Settings.Get("HipChatConferenceServer");
+
             _client = new XmppClientConnection(Robot.Settings.Get("HipChatServer"))
             {
                 AutoResolveConnectServer = false
