@@ -68,10 +68,12 @@
 
         public void Respond(string regex, Action<Response> action)
         {
-            if (!_listeners.Exists(p => p.RegexText == regex))
+            if (_listeners.Exists(p => p.RegexText == regex))
             {
-                _listeners.Add(new TextListener(this, new Regex(regex, RegexOptions.Compiled | RegexOptions.IgnoreCase), action));
+                return;
             }
+
+            _listeners.Add(new TextListener(this, new Regex(regex, RegexOptions.Compiled | RegexOptions.IgnoreCase), action));
         }
 
         [ImportMany(AllowRecomposition = true)]
