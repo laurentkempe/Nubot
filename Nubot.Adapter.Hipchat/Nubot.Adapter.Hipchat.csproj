@@ -35,13 +35,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\agsXMPP.1.1.1.0\lib\agsXMPP.dll</HintPath>
     </Reference>
-    <Reference Include="HipchatApiV2">
-      <HintPath>..\packages\Hipchat-CS.0.0.27\lib\HipchatApiV2.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="HipchatApiV2, Version=0.0.32.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Hipchat-CS.0.0.32\lib\HipchatApiV2.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\packages\ServiceStack.Text.4.0.18\lib\net40\ServiceStack.Text.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="ServiceStack.Text, Version=4.0.32.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ServiceStack.Text.4.0.32\lib\net40\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -52,7 +52,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Nubot.Interfaces\Nubot.Abstractions.csproj">
+    <ProjectReference Include="..\Nubot.Abstractions\Nubot.Abstractions.csproj">
       <Project>{4486cadc-a768-4bac-8249-7cd3b8f0993d}</Project>
       <Name>Nubot.Abstractions</Name>
     </ProjectReference>
