@@ -8,6 +8,8 @@
         public TextListener(IRobot robot, Regex regex, Action<Response> responseAction)
             : base(robot, responseAction)
         {
+            RegexText = regex.ToString();
+
             Matcher = msg  =>
             {
                 var textMessage = msg as TextMessage;

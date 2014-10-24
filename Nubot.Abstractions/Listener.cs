@@ -11,6 +11,7 @@
     {
         private readonly IRobot _robot;
         private readonly Action<Response> _responseAction;
+        public string RegexText { protected set; get; }
 
         protected Listener(IRobot robot, Action<Response> responseAction)
         {
