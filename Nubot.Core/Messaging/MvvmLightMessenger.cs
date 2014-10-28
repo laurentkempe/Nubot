@@ -497,7 +497,8 @@
                     if (weakActionCasted != null
                         && recipient == weakActionCasted.Target
                         && (action == null
-                            || action.Method.Name == weakActionCasted.MethodName)
+                            || action.Method.Name == weakActionCasted.MethodName 
+                            || action.Target == weakActionCasted.ActionRef)
                         && (token == null
                             || token.Equals(item.Token)))
                     {
@@ -614,7 +615,7 @@
             public object Token;
         }
 
-        public void On<TModel>(string eventName, Action<IMessage<TModel>> action)
+        public void On<TModel>(string eventName, Action<IEventMessage<TModel>> action)
         {
             Register(this, eventName, true, action);
         }

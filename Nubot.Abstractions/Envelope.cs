@@ -12,5 +12,7 @@
         public User User { get { return _message.User; } }
 
         public string Room { get { return _message.Room; } }
+
+        public string[] AppendMessages { set; get; }
     }
 }

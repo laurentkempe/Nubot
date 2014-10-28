@@ -57,6 +57,15 @@
             }
         }
 
+        public WeakReference ActionRef
+        {
+            get
+            {
+                return base.ActionReference;
+            }
+        }
+
+
         /// <summary>
         /// Initializes a new instance of the WeakAction class.
         /// </summary>

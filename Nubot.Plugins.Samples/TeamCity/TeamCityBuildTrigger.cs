@@ -35,7 +35,7 @@
             Robot.EventEmitter.On<StashModel>("StashCommit", OnCommit);
         }
 
-        private void OnCommit(IMessage<StashModel> message)
+        private void OnCommit(IEventMessage<StashModel> message)
         {
             TriggerTeamCityBuild(message.Content);
         }

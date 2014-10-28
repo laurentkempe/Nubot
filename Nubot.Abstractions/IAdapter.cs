@@ -6,9 +6,9 @@
 
         void Start();
 
-        void Send(Envelope envelope, params string[] messages);
+        void Send(IEventMessage<Envelope> eventMessage);
 
-        bool SendNotification(string roomName, string authToken, string htmlMessage, bool notify = false);
+        bool SendNotification(IEventMessage<Notification> eventMessage);
 
         string MakeConfigFileName();
     }

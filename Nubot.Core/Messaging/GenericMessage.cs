@@ -22,7 +22,7 @@ namespace Nubot.Core.Messaging
     /// </summary>
     /// <typeparam name="T">The type of the Content property.</typeparam>
     ////[ClassInfo(typeof(MvvmLightMessenger))]
-    public class GenericMessage<T> : MessageBase, IMessage<T>
+    public class GenericMessage<T> : MessageBase, IEventMessage<T>
     {
         /// <summary>
         /// Initializes a new instance of the GenericMessage class.
