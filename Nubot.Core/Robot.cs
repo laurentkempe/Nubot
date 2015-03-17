@@ -68,12 +68,14 @@
 
         public void Respond(string regex, Action<Response> action)
         {
-            if (_listeners.Exists(p => p.RegexText == regex))
+            var regexWithRobotName = string.Format("{0} {1}", Name, regex);
+
+            if (_listeners.Exists(p => p.RegexText == regexWithRobotName))
             {
                 return;
             }
 
-            _listeners.Add(new TextListener(this, new Regex(regex, RegexOptions.Compiled | RegexOptions.IgnoreCase), action));
+            _listeners.Add(new TextListener(this, new Regex(regexWithRobotName, RegexOptions.Compiled | RegexOptions.IgnoreCase), action));
         }
 
         [ImportMany(AllowRecomposition = true)]
