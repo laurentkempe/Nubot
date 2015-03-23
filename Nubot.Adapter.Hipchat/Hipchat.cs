@@ -15,7 +15,9 @@
     using Message = agsXMPP.protocol.client.Message;
     using User = Abstractions.User;
 
-    [Export(typeof(IAdapter))]
+    [Export(typeof(IAdapter)),
+    ExportMetadata("Name", "Hipchat"),
+    ExportMetadata("Version", "0.1.0")]
     public class Hipchat : AdapterBase
     {
         private ConcurrentDictionary<string, string> _roster = new ConcurrentDictionary<string, string>();
@@ -50,22 +52,24 @@
             Robot.Logger.WriteLine("Connected.");
         }
 
-        public override void Send(Envelope envelope, params string[] messages)
+        public override void Send(IEventMessage<Envelope> eventMessage)
         {
-            if (messages == null || !messages.Any()) return;
+            var envelope = eventMessage.Content;
+            if (envelope.AppendMessages == null || !envelope.AppendMessages.Any()) return;
 
             var to = new Jid(envelope.User.Room);
 
-            foreach (var message in messages)
+            foreach (var message in envelope.AppendMessages)
             {
                 _client.Send(new Message(to, string.Equals(to.Server, _conferenceServer, StringComparison.InvariantCultureIgnoreCase) ? MessageType.groupchat : MessageType.chat, message));
             }
         }
 
-        public override bool SendNotification(string roomName, string authToken, string htmlMessage, bool notify = false)
+        public override bool SendNotification(IEventMessage<Notification> eventMessage)
         {
-            var client = new HipchatClient(authToken);
-            return client.SendNotification(roomName, htmlMessage, RoomColors.Green, notify);
+            var notify = eventMessage.Content;
+            var client = new HipchatClient(notify.AuthToken);
+            return client.SendNotification(notify.Room, notify.HtmlMessage, RoomColors.Green, notify.Notify.HasValue ? notify.Notify.Value : false);
         }
 
         private void OnRosterItem(object sender, RosterItem item)

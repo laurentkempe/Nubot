@@ -12,12 +12,25 @@
             Name = adapterName;
 
             Robot = robot;
+
+            Robot.EventEmitter.On<Envelope>("Send", OnSendEvent);
+            Robot.EventEmitter.On<Notification>("SendNotification", OnSendNotificationEvent);
         }
 
         static AdapterBase()
         {
             ExecutingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             BaseAdapterDirectory = Path.Combine(ExecutingDirectory, "adapters");
+        }
+
+        private void OnSendEvent(IEventMessage<Envelope> eventMessage)
+        {
+            Send(eventMessage);
+        }
+
+        private void OnSendNotificationEvent(IEventMessage<Notification> eventMessage) 
+        {
+            SendNotification(eventMessage);
         }
 
         public string Name { get; private set; }
@@ -30,13 +43,9 @@
         {
         }
 
-        public abstract void Send(Envelope envelope, params string[] messages);
+        public abstract void Send(IEventMessage<Envelope> eventMessage);
 
-        public virtual void Message(string message)
-        {
-        }
-
-        public virtual bool SendNotification(string roomName, string authToken, string htmlMessage, bool notify = false)
+        public virtual bool SendNotification(IEventMessage<Notification> eventMessage)
         {
             return false;
         }

@@ -33,6 +33,8 @@
 
         IEnumerable<IRobotPlugin> RobotPlugins { get; }
 
+        IEnumerable<IAdapter> RobotAdapters { get; }
+
         IEventEmitter EventEmitter { get; }
 
         void ReloadPlugins();
@@ -40,5 +42,9 @@
         void ShowHelp(Response msg);
 
         void Send(Envelope envelope, string[] messages);
+
+        void ChainAdapter(string adapterName);
+
+        void DropAdapter(string adapterName);
     }
 }

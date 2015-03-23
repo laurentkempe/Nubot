@@ -38,7 +38,7 @@
             Robot.EventEmitter.On<TeamCityModel>("TeamCityBuild", OnTeamCityBuild);
         }
 
-        private void OnTeamCityBuild(IMessage<TeamCityModel> message)
+        private void OnTeamCityBuild(IEventMessage<TeamCityModel> message)
         {
             _subject.OnNext(message.Content);
         }
