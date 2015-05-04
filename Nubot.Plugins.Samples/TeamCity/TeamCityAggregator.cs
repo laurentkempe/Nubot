@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Linq;
+    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using System.Text;
@@ -33,9 +34,14 @@
 
             _subject
                 .GroupBy(model => model.build.buildNumber)
-                .Subscribe(grp => grp.Buffer(maxWaitDuration, ExpectedBuildCount).Take(1).Subscribe(SendNotification));
+                .Subscribe(grp => grp.Buffer(maxWaitDuration, ExpectedBuildCount, Scheduler).Take(1).Subscribe(SendNotification));
 
             Robot.EventEmitter.On<TeamCityModel>("TeamCityBuild", OnTeamCityBuild);
+        }
+
+        protected virtual IScheduler Scheduler
+        {
+            get { return DefaultScheduler.Instance; }
         }
 
         private void OnTeamCityBuild(IMessage<TeamCityModel> message)
