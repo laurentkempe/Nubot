@@ -10,7 +10,7 @@
         {
             var config = GetConfiguration(path);
 
-            return config.AppSettings.Settings[key].Value;
+            return config.AppSettings.Settings[key].Value.Trim();
         }
 
         public void Set(string key, string value, string path = "")

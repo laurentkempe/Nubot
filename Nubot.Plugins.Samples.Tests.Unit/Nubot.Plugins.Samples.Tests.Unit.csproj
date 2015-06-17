@@ -68,6 +68,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Jira\JiraAggregatorTests.cs" />
+    <Compile Include="Jira\JiraMessageBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeamCity\TeamCityAggregatorTests.cs" />
   </ItemGroup>
