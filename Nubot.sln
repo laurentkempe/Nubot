@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nubot.Core", "Nubot.Core\Nubot.Core.csproj", "{EF03D817-CF50-4C74-82B6-92355D587B5C}"
 EndProject
@@ -14,6 +14,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nubot.Plugins.Samples", "Nubot.Plugins.Samples\Nubot.Plugins.Samples.csproj", "{992BCF4F-F8AF-488F-8E90-3E2C3B713101}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nubot.Adapter.Hipchat", "Nubot.Adapter.Hipchat\Nubot.Adapter.Hipchat.csproj", "{4769636E-D4F1-4112-B7C4-11B465627ECF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7C0C0E17-7BEE-4418-9C4A-7AA2C5C4E0DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nubot.Plugins.Samples.Tests.Unit", "Nubot.Plugins.Samples.Tests.Unit\Nubot.Plugins.Samples.Tests.Unit.csproj", "{93BC97FB-9B2F-4454-B1DD-A824242F21FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,8 +49,15 @@ Global
 		{4769636E-D4F1-4112-B7C4-11B465627ECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4769636E-D4F1-4112-B7C4-11B465627ECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4769636E-D4F1-4112-B7C4-11B465627ECF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93BC97FB-9B2F-4454-B1DD-A824242F21FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93BC97FB-9B2F-4454-B1DD-A824242F21FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93BC97FB-9B2F-4454-B1DD-A824242F21FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93BC97FB-9B2F-4454-B1DD-A824242F21FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{93BC97FB-9B2F-4454-B1DD-A824242F21FF} = {7C0C0E17-7BEE-4418-9C4A-7AA2C5C4E0DF}
 	EndGlobalSection
 EndGlobal
