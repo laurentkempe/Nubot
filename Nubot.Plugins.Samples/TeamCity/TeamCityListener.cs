@@ -2,9 +2,9 @@
 {
     using System.ComponentModel.Composition;
     using Abstractions;
+    using Model;
     using Nancy;
     using Nancy.ModelBinding;
-    using Model;
 
     [Export(typeof(IRobotPlugin))]
     public class TeamCityListener : HttpPluginBase

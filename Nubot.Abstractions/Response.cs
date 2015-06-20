@@ -1,10 +1,16 @@
 namespace Nubot.Abstractions
 {
+    public interface IResponse
+    {
+        string[] Match { get; }
+        void Send(params string[] messages);
+    }
+
     /// <summary>
     /// Responses are sent to matching listeners.
     /// Messages know about the content and user that made the original message, and how to reply back to them.
     /// </summary>
-    public class Response
+    public class Response : IResponse
     {
         private readonly IRobot _robot;
         private readonly Envelope _envelope;

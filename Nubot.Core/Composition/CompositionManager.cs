@@ -1,6 +1,5 @@
 ﻿namespace Nubot.Core.Composition
 {
-    using System;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.ComponentModel.Composition.Primitives;
@@ -14,7 +13,7 @@
 
     public class CompositionManager
     {
-        private readonly Robot _robot;
+        private readonly IRobot _robot;
 
         //LAURENT: TODO remove the static
         private static readonly string ExecutingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -25,7 +24,7 @@
         private DirectoryCatalog _adapterdirectoryCatalog;
         private DirectoryCatalog _pluginsdirectoryCatalog;
 
-        public CompositionManager(Robot robot)
+        public CompositionManager(IRobot robot)
         {
             _robot = robot;
         }

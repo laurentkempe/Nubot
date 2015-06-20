@@ -66,7 +66,7 @@
             }
         }
 
-        public void Respond(string regex, Action<Response> action)
+        public void Respond(string regex, Action<IResponse> action)
         {
             var regexWithRobotName = string.Format("{0} {1}", Name, regex);
 
@@ -88,7 +88,7 @@
             _compositionManager.Refresh();
         }
 
-        public void ShowHelp(Response msg)
+        public void ShowHelp(IResponse msg)
         {
             var messages = RobotPlugins.SelectMany(plugin => plugin.HelpMessages ?? Enumerable.Empty<string>()).OrderBy(s => s);
 
