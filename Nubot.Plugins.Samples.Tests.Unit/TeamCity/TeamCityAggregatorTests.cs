@@ -12,11 +12,8 @@
 
     public class TeamCityAggregatorTests
     {
-        private const string BuildSuccessfulHtmlMessage = @"<img src='http://ci.innoveo.com/img/buildStates/buildSuccessful.png' height='16' width='16'/><strong>Successfully</strong> built  branch  with build number <a href=""""><strong>10</strong></a>";
-        private const string BuildFailedHtmlMessage = @"<img src='http://ci.innoveo.com/img/buildStates/buildFailed.png' height='16' width='16'/><strong>Failed</strong> to build  branch  with build number <a href=""""><strong>10</strong></a>. Failed build(s) <a href=""""><strong></strong></a>";
-
         [Test]
-        public void SendNotification_4SuccessfulForSameBuildEventSent_ExpectSuccessfulNotificationSentWithCorrectMessage()
+        public void SendNotification_4SuccessfulForSameBuildEventSentUnderThe6MinutesTimeOut_ExpectSuccessfulNotificationSentWithCorrectMessage()
         {
             //Arrange
             var eventEmitter = new MvvmLightMessenger();
@@ -38,7 +35,33 @@
             scheduler.AdvanceTo(TimeSpan.FromMinutes(8).Ticks);
 
             //Assert
-            robot.Received(1).SendNotification("", "", BuildSuccessfulHtmlMessage);
+            robot.Received(1).SendNotification(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+        }
+
+        [Test]
+        public void SendNotification_4SuccessfulForSameBuildEventSentUnderThe6MinutesTimeOutSliding_ExpectSuccessfulNotificationSentWithCorrectMessage()
+        {
+            //Arrange
+            var eventEmitter = new MvvmLightMessenger();
+
+            var robot = Substitute.For<IRobot>();
+            robot.EventEmitter.Returns(eventEmitter);
+
+            var scheduler = new TestScheduler();
+            var teamCityAggregator = new TeamCityAggregatorSut(robot, scheduler);
+
+            var successfulTeamCityBuildModel = new TeamCityModel { build = new Build { buildNumber = "10", buildResult = "success" } };
+
+            //Act
+            scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(3), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(7), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
+
+            scheduler.AdvanceTo(TimeSpan.FromMinutes(8).Ticks);
+
+            //Assert
+            robot.Received(1).SendNotification(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
         }
 
         [Test]
@@ -62,10 +85,10 @@
             scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
             scheduler.Schedule(TimeSpan.FromMinutes(3), () => eventEmitter.Emit("TeamCityBuild", failedTeamCityBuildModel));
 
-            scheduler.AdvanceTo(TimeSpan.FromMinutes(8).Ticks);
+            scheduler.AdvanceTo(TimeSpan.FromMinutes(3).Ticks);
 
             //Assert
-            robot.Received(1).SendNotification("", "", BuildFailedHtmlMessage, true);
+            robot.Received(1).SendNotification(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), true);
         }
 
         [Test]
@@ -91,7 +114,7 @@
             scheduler.AdvanceBy(TimeSpan.FromMinutes(9).Ticks);
 
             //Assert
-            robot.Received(1).SendNotification("", "", @"<img src='http://ci.innoveo.com/img/buildStates/buildFailed.png' height='16' width='16'/><strong>Failed</strong> to build  branch  with build number <a href=""""><strong>10</strong></a>. Failed build(s) ", true);
+            robot.Received(1).SendNotification(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), true);
         }
 
         private class TeamCityAggregatorSut : TeamCityAggregator

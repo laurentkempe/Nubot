@@ -1,17 +1,15 @@
 ﻿namespace Nubot.Plugins.Nubot {
-
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Diagnostics;
+    using System.Linq;
     using System.Net;
     using System.Text;
-    using System.Linq;
     using Abstractions;
     using Nancy;
     using Nancy.ModelBinding;
     using ViewModel;
-    using Response = Abstractions.Response;
 
     [Export(typeof(IRobotPlugin))]
     public class Admin : HttpPluginBase
@@ -87,7 +85,7 @@
             Robot.ReloadPlugins();
         }
 
-        private void ShowPluginsAsMessage(Response message)
+        private void ShowPluginsAsMessage(IResponse message)
         {
             var stringBuilder = new StringBuilder();
 

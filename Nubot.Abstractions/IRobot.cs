@@ -29,7 +29,7 @@
         /// </summary>
         /// <param name="regex">A Regex that determines if the callback should be called.</param>
         /// <param name="action">An action that is called with a Response object.</param>
-        void Respond(string regex, Action<Response> action);
+        void Respond(string regex, Action<IResponse> action);
 
         IEnumerable<IRobotPlugin> RobotPlugins { get; }
 
@@ -37,7 +37,7 @@
 
         void ReloadPlugins();
 
-        void ShowHelp(Response msg);
+        void ShowHelp(IResponse msg);
 
         void Send(Envelope envelope, string[] messages);
     }

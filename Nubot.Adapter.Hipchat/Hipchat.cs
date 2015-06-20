@@ -5,11 +5,11 @@
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.Linq;
-    using Abstractions;
     using agsXMPP;
     using agsXMPP.protocol.client;
     using agsXMPP.protocol.iq.roster;
     using agsXMPP.protocol.x.muc;
+    using Abstractions;
     using HipchatApiV2;
     using HipchatApiV2.Enums;
     using Message = agsXMPP.protocol.client.Message;
