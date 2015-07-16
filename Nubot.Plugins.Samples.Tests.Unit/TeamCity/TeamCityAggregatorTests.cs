@@ -13,7 +13,7 @@
     public class TeamCityAggregatorTests
     {
         [Test]
-        public void SendNotification_4SuccessfulForSameBuildEventSentUnderThe6MinutesTimeOut_ExpectSuccessfulNotificationSentWithCorrectMessage()
+        public void SendNotification_5SuccessfulForSameBuildEventSentUnderThe6MinutesTimeOut_ExpectSuccessfulNotificationSentWithCorrectMessage()
         {
             //Arrange
             var eventEmitter = new MvvmLightMessenger();
@@ -31,6 +31,7 @@
             scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
             scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
             scheduler.Schedule(TimeSpan.FromMinutes(3), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(5), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
 
             scheduler.AdvanceTo(TimeSpan.FromMinutes(8).Ticks);
 
@@ -39,7 +40,7 @@
         }
 
         [Test]
-        public void SendNotification_4SuccessfulForSameBuildEventSentUnderThe6MinutesTimeOutSliding_ExpectSuccessfulNotificationSentWithCorrectMessage()
+        public void SendNotification_5SuccessfulForSameBuildEventSentUnderThe6MinutesTimeOutSliding_ExpectSuccessfulNotificationSentWithCorrectMessage()
         {
             //Arrange
             var eventEmitter = new MvvmLightMessenger();
@@ -53,19 +54,20 @@
             var successfulTeamCityBuildModel = new TeamCityModel { build = new Build { buildNumber = "10", buildResult = "success" } };
 
             //Act
-            scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
             scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
             scheduler.Schedule(TimeSpan.FromMinutes(3), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(7), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(5), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(10.9), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
 
-            scheduler.AdvanceTo(TimeSpan.FromMinutes(8).Ticks);
+            scheduler.AdvanceTo(TimeSpan.FromMinutes(12).Ticks);
 
             //Assert
             robot.Received(1).SendNotification(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
         }
 
         [Test]
-        public void SendNotification_3SuccessfulAnd1FailedForSameBuildEventSent_ExpectFailedNotificationSentWithCorrectMessage()
+        public void SendNotification_4SuccessfulAnd1FailedForSameBuildEventSent_ExpectFailedNotificationSentWithCorrectMessage()
         {
             //Arrange
             var eventEmitter = new MvvmLightMessenger();
@@ -84,15 +86,16 @@
             scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
             scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
             scheduler.Schedule(TimeSpan.FromMinutes(3), () => eventEmitter.Emit("TeamCityBuild", failedTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
 
-            scheduler.AdvanceTo(TimeSpan.FromMinutes(3).Ticks);
+            scheduler.AdvanceTo(TimeSpan.FromMinutes(5).Ticks);
 
             //Assert
             robot.Received(1).SendNotification(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), true);
         }
 
         [Test]
-        public void SendNotification_4SuccessfulForSameBuildEventSentButOneNotInTime_ExpectFailedNotificationSentWithCorrectMessage()
+        public void SendNotification_5SuccessfulForSameBuildEventSentButOneNotInTime_ExpectFailedNotificationSentWithCorrectMessage()
         {
             //Arrange
             var eventEmitter = new MvvmLightMessenger();
@@ -109,6 +112,7 @@
             scheduler.Schedule(TimeSpan.FromMinutes(0), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
             scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
             scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(5), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
             scheduler.Schedule(TimeSpan.FromMinutes(9), () => eventEmitter.Emit("TeamCityBuild", successfulTeamCityBuildModel));
 
             scheduler.AdvanceBy(TimeSpan.FromMinutes(9).Ticks);

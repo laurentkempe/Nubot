@@ -13,6 +13,7 @@
     using HipchatApiV2;
     using HipchatApiV2.Enums;
     using Message = agsXMPP.protocol.client.Message;
+    using MessageType = agsXMPP.protocol.client.MessageType;
     using User = Abstractions.User;
 
     [Export(typeof(IAdapter))]
