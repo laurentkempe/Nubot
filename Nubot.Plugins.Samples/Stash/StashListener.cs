@@ -51,15 +51,15 @@
         {
             var repositoryUrl = string.Format("{0}/projects/{1}/repos/{2}",
                                               Robot.Settings.Get("AtlassianStashUrl"),
-                                              model.Repository.Project.Name,
-                                              model.Repository.Slug);
+                                              model.repository.Project.Name,
+                                              model.repository.Slug);
 
-            var branches = model.RefChanges.Select(r => r.RefId.Replace("refs/heads/", "")).Distinct().ToList();
+            var branches = model.refChanges.Select(r => r.RefId.Replace("refs/heads/", "")).Distinct().ToList();
 
             string deleteMessage;
             if (BuildDeleteMessage(model, branches, out deleteMessage)) return deleteMessage;
 
-            var authorNames = model.Changesets.Values.Select(v => v.ToCommit.Author.Name).Distinct().ToList();
+            var authorNames = model.changesets.Values.Select(v => v.ToCommit.Author.Name).Distinct().ToList();
 
             string mergeMessage;
             if (BuildMergeMessage(model, repositoryUrl, branches, authorNames, out mergeMessage)) return mergeMessage;
@@ -70,17 +70,17 @@
                 .AppendFormat(
                     "<b>{0}</b> committed to {1} branch at <a href='{2}'>{3}/{4}</a><br/>",
                     string.Join(", ", authorNames),
-                    model.RefChanges.Count(),
+                    model.refChanges.Count(),
                     repositoryUrl + "/browse",
-                    model.Repository.Project.Name,
-                    model.Repository.Name);
+                    model.repository.Project.Name,
+                    model.repository.Name);
 
             stringBuilder
                 .AppendFormat(
                     @"<b>On branch ""{0}""</b><br/>",
                     string.Join(", ", branches));
 
-            foreach (var changeset in model.Changesets.Values)
+            foreach (var changeset in model.changesets.Values)
             {
                 stringBuilder
                     .AppendFormat(
@@ -107,8 +107,8 @@
                 .AppendFormat(
                     "Branch <b>{0}</b> of <b>{1}/{2}</b> has been deleted<br/>",
                     string.Join(", ", branches),
-                    model.Repository.Project.Name,
-                    model.Repository.Name);
+                    model.repository.Project.Name,
+                    model.repository.Name);
 
             deleteMessage = stringBuilder.ToString();
             return true;
@@ -116,12 +116,12 @@
 
         private static bool IsBranchDelete(StashModel model)
         {
-            return model.RefChanges.Count() == 1 && model.RefChanges[0].Type.Equals("DELETE", StringComparison.InvariantCultureIgnoreCase);
+            return model.refChanges.Count() == 1 && model.refChanges[0].Type.Equals("DELETE", StringComparison.InvariantCultureIgnoreCase);
         }
 
         private static bool BuildMergeMessage(StashModel model, string repositoryUrl, IEnumerable<string> branches, List<string> authorNames, out string mergeMessage)
         {
-            var changeset = model.Changesets.Values[0];
+            var changeset = model.changesets.Values[0];
 
             if (!IsPullRequestMerge(changeset))
             {
@@ -152,8 +152,8 @@
                 .AppendFormat(
                     "in <a href='{0}'>{1}/{2}</a><br/>",
                     repositoryUrl + "/browse",
-                    model.Repository.Project.Name,
-                    model.Repository.Name);
+                    model.repository.Project.Name,
+                    model.repository.Name);
 
             stringBuilder
                 .AppendFormat(

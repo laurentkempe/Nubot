@@ -14,7 +14,7 @@
     {
         private readonly IEnumerable<IPluginSetting> _settings;
         private readonly Subject<TeamCityModel> _subject;
-        private const int ExpectedBuildCount = 4;
+        private const int ExpectedBuildCount = 5;
 
         [ImportingConstructor]
         public TeamCityAggregator(IRobot robot)
@@ -32,8 +32,7 @@
 
             _subject
                 .GroupBy(model => model.build.buildNumber)
-                .SelectMany(grp => grp.Publish(hot => hot.Buffer(() => hot.Buffer(maxWaitDuration, ExpectedBuildCount, Scheduler))))
-                .Subscribe(SendNotification);
+                .Subscribe(grp => grp.Buffer(maxWaitDuration, ExpectedBuildCount, Scheduler).Subscribe(SendNotification));
 
             Robot.EventEmitter.On<TeamCityModel>("TeamCityBuild", OnTeamCityBuild);
         }

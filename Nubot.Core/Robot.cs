@@ -129,7 +129,7 @@
 
         private void StartWebServer()
         {
-            Helper.GetConfiguredContainer().Register<IRobot>(this); 
+            Helper.GetConfiguredContainer().Register<IRobot>(this);
 
             var url = ConfigurationManager.AppSettings["RobotUrl"];
 

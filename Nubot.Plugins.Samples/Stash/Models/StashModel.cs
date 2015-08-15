@@ -2,8 +2,8 @@
 {
     public class StashModel
     {
-        public Repository Repository { get; set; }
-        public RefChange[] RefChanges { get; set; }
-        public Changesets Changesets { get; set; }
+        public Repository repository { get; set; }
+        public RefChange[] refChanges { get; set; }
+        public Changesets changesets { get; set; }
     }
 }

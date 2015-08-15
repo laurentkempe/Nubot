@@ -8,6 +8,7 @@
     using System.Reflection;
     using System.Text;
     using Abstractions;
+    using log4net;
     using MefContrib.Hosting.Interception;
     using MefContrib.Hosting.Interception.Configuration;
 
@@ -43,13 +44,22 @@
         {
             var interceptingCatalog = GetInterceptionCatalog();
 
-            var container = new CompositionContainer(interceptingCatalog);
-            container.ComposeExportedValue<IRobot>(_robot);
-            container.ComposeParts(_robot);
+            try
+            {
+                var container = new CompositionContainer(interceptingCatalog);
+                container.ComposeExportedValue(_robot);
+                container.ComposeParts(_robot);
 
-            ShowLoaded(_applicationCatalog, "Loaded the following Nubot plugins");
-            ShowLoaded(_adapterdirectoryCatalog, "Loaded the following adapter");
-            ShowLoaded(_pluginsdirectoryCatalog, "Loaded the following plugins");
+                ShowLoaded(_applicationCatalog, "Loaded the following Nubot plugins");
+                ShowLoaded(_adapterdirectoryCatalog, "Loaded the following adapter");
+                ShowLoaded(_pluginsdirectoryCatalog, "Loaded the following plugins");
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                var logger = LogManager.GetLogger("Robot");
+
+                if (logger.IsDebugEnabled) logger.Debug(e.LoaderExceptions);
+            }
         }
 
         private ComposablePartCatalog GetInterceptionCatalog()

@@ -42,7 +42,7 @@
 
         private void TriggerTeamCityBuild(StashModel model)
         {
-            var updatedBranches = model.RefChanges.Where(r => r.Type.Equals("UPDATE", StringComparison.InvariantCultureIgnoreCase));
+            var updatedBranches = model.refChanges.Where(r => r.Type.Equals("UPDATE", StringComparison.InvariantCultureIgnoreCase));
 
             var updatedBrancheNames = updatedBranches.Select(r => r.RefId.Replace("refs/heads/", "")).Distinct();
 

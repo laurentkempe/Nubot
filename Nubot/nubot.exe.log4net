@@ -2,8 +2,56 @@
 
 <log4net>
 
+  <appender name="FileAppender" type="log4net.Appender.RollingFileAppender">
+    <file value="Logs\" />
+    <datePattern value="yyyy-MM-dd'-nubot.log'" />
+    <staticLogFileName value="false" />
+    <appendToFile value="true" />
+    <rollingStyle value="Composite" />
+    <maxSizeRollBackups value="100" />
+    <maximumFileSize value="5MB" />
+    <layout type="log4net.Layout.PatternLayout">
+      <conversionPattern value="%date [%thread] %-5level %logger - %message%newline" />
+    </layout>
+  </appender>
+
+  <appender name="Robot" type="log4net.Appender.RollingFileAppender">
+    <file value="Logs\" />
+    <datePattern value="yyyy-MM-dd'-nubot-robot.log'" />
+    <staticLogFileName value="false" />
+    <appendToFile value="true" />
+    <rollingStyle value="Composite" />
+    <maxSizeRollBackups value="100" />
+    <maximumFileSize value="5MB" />
+    <layout type="log4net.Layout.PatternLayout">
+      <conversionPattern value="%date [%thread] %-5level %logger - %message%newline" />
+    </layout>
+  </appender>
+
+  <root>
+    <level value="DEBUG" />
+    <appender-ref ref="FileAppender" />
+  </root>
+
+  <logger additivity="false" name="Robot">
+    <level value="ALL" />
+    <appender-ref ref="Robot" />
+  </logger>
+
+</log4net>
+
+<!--<log4net>
+
   <appender name="FileAppender" type="log4net.Appender.FileAppender">
-    <file value="log-file.txt" />
+    <file value="nubot-log.txt" />
+    <appendToFile value="true" />
+    <layout type="log4net.Layout.PatternLayout">
+      <conversionPattern value="%date [%thread] %-5level %logger - %message%newline" />
+    </layout>
+  </appender>
+
+  <appender name="Robot" type="log4net.Appender.FileAppender">
+    <file value="nubot-log-robot.txt" />
     <appendToFile value="true" />
     <layout type="log4net.Layout.PatternLayout">
       <conversionPattern value="%date [%thread] %-5level %logger - %message%newline" />
@@ -15,4 +63,9 @@
     <appender-ref ref="FileAppender" />
   </root>
 
-</log4net>
+  <logger additivity="false" name="Robot">
+    <level value="ALL" />
+    <appender-ref ref="Robot" />
+  </logger>
+
+</log4net>-->

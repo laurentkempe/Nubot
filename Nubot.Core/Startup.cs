@@ -3,6 +3,7 @@
     using Abstractions;
     using global::Nancy;
     using global::Nancy.Owin;
+    using log4net;
     using Nancy;
     using Owin;
     using Properties;
@@ -12,9 +13,15 @@
     {
         public void Configuration(IAppBuilder app)
         {
-            app.UseNancy(new NancyOptions
+            var robot = Helper.GetConfiguredContainer().Resolve<IRobot>();
+
+            var logger = LogManager.GetLogger("Robot");
+
+            app
+                .UseSimpleLogger(logger)
+                .UseNancy(new NancyOptions
             {
-                Bootstrapper = new Bootstrapper(Helper.GetConfiguredContainer().Resolve<IRobot>())
+                Bootstrapper = new Bootstrapper(robot)
             });
 
             StaticConfiguration.DisableErrorTraces = false;
