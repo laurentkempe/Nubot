@@ -1,4 +1,5 @@
-﻿@using System.Linq
+﻿@using Nancy.ViewEngines.Razor
+@using System.Linq
 @inherits NancyRazorViewBase<Nubot.Plugins.Nubot.ViewModel.IndexViewModel>
 
 @{
@@ -23,14 +24,14 @@
                                 <li><small>@message</small></li>
                             }
                         </ul>
-                        
+
                         @if (plugin.Settings.Any())
                         {
                             <span class="label label-info">Settings</span>
 
                             <form action="plugins/update" method="POST" class="form" role="form">
-                                
-                                @{var n = 0;} 
+
+                                @{var n = 0;}
                                 <input type="hidden" name="PluginName" value="@plugin.Name" />
                                 @foreach (var setting in plugin.Settings)
                                 {
@@ -42,7 +43,7 @@
 
                                     n++;
                                 }
-                                
+
                                 <button type="submit" class="btn btn-default btn-xs">Update</button>
                             </form>
                         }
