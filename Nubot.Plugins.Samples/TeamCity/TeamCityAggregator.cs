@@ -32,7 +32,7 @@
 
             _subject
                 .GroupBy(model => model.build.buildNumber)
-                .Subscribe(grp => grp.Buffer(maxWaitDuration, ExpectedBuildCount, Scheduler).Subscribe(SendNotification));
+                .Subscribe(grp => grp.Buffer(maxWaitDuration, ExpectedBuildCount, Scheduler).Take(1).Subscribe(SendNotification));
 
             Robot.EventEmitter.On<TeamCityModel>("TeamCityBuild", OnTeamCityBuild);
         }
