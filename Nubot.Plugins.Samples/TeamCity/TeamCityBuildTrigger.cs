@@ -5,12 +5,11 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
-    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Text;
     using Abstractions;
-    using Stash.Models;
+    using Github.Models;
 
     #endregion
 
@@ -32,45 +31,40 @@
                 new PluginSetting(Robot, this, "TeamCityBuildTriggerPassword")
             };
 
-            Robot.EventEmitter.On<StashModel>("StashCommit", OnCommit);
+            Robot.EventEmitter.On<GithubModel>("Github.Push", OnCommit);
         }
 
-        private void OnCommit(IMessage<StashModel> message)
+        private void OnCommit(IMessage<GithubModel> message)
         {
             TriggerTeamCityBuild(message.Content);
         }
 
-        private void TriggerTeamCityBuild(StashModel model)
+        private void TriggerTeamCityBuild(GithubModel model)
         {
-            var updatedBranches = model.refChanges.Where(r => r.Type.Equals("UPDATE", StringComparison.InvariantCultureIgnoreCase));
-
-            var updatedBrancheNames = updatedBranches.Select(r => r.RefId.Replace("refs/heads/", "")).Distinct();
+            var branch = model.Ref.Replace("refs/heads/", "");
 
             var buildConfId = "";
 
-            foreach (var branch in updatedBrancheNames)
+            var branchName = string.Empty;
+
+            if (branch.StartsWith("feature") || branch.StartsWith("bugfix"))
             {
-                var branchName = string.Empty;
-
-                if (branch.StartsWith("feature") || branch.StartsWith("bugfix"))
-                {
-                    buildConfId = "SkyeEditor_Features";
-                    branchName = branch.Substring(branch.LastIndexOf('/') + 1);
-                }
-
-                if (branch.StartsWith("release"))
-                {
-                    //todo this seems not to work check http://ci.innoveo.com/viewType.html?buildTypeId=SkyeEditor_Release&branch_SkyeEditor_Releases=skye-editor-4.23.0&tab=buildTypeStatusDiv
-                    buildConfId = "SkyeEditor_Release";
-                    //LAURENT: TODO move to settings
-                    var releaseBranchNamePrefix = "/skye-editor-";
-                    branchName = branch.Substring(branch.LastIndexOf(releaseBranchNamePrefix, StringComparison.Ordinal) + releaseBranchNamePrefix.Length);
-                }
-
-                if (string.IsNullOrWhiteSpace(branchName)) return;
-
-                StartBuildAsync(buildConfId, branchName);
+                buildConfId = "SkyeEditor_Features";
+                branchName = branch.Substring(branch.LastIndexOf('/') + 1);
             }
+
+            if (branch.StartsWith("release"))
+            {
+                //todo this seems not to work check http://ci.innoveo.com/viewType.html?buildTypeId=SkyeEditor_Release&branch_SkyeEditor_Releases=skye-editor-4.23.0&tab=buildTypeStatusDiv
+                buildConfId = "SkyeEditor_Release";
+                //LAURENT: TODO move to settings
+                var releaseBranchNamePrefix = "/skye-editor-";
+                branchName = branch.Substring(branch.LastIndexOf(releaseBranchNamePrefix, StringComparison.Ordinal) + releaseBranchNamePrefix.Length);
+            }
+
+            if (string.IsNullOrWhiteSpace(branchName)) return;
+
+            StartBuildAsync(buildConfId, branchName);
         }
 
         private async void StartBuildAsync(string buildConfId, string branchName)

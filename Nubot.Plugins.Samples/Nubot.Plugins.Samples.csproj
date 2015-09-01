@@ -74,6 +74,8 @@
     <Compile Include="AppHarbor\Models\Application.cs" />
     <Compile Include="AppHarbor\Models\Build.cs" />
     <Compile Include="AppHarbor\Models\Commit.cs" />
+    <Compile Include="Github\GithubListener.cs" />
+    <Compile Include="Github\Models\GithubModel.cs" />
     <Compile Include="GoogleImages.cs" />
     <Compile Include="Jira\JiraAggregator.cs" />
     <Compile Include="Jira\JiraListener.cs" />
@@ -108,6 +110,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="AppHarbor\AppharborListener.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Github\GithubListener.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Jira\JiraListener.config">

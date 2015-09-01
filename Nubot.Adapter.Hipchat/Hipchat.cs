@@ -6,7 +6,6 @@
     using System.ComponentModel.Composition;
     using System.Linq;
     using agsXMPP;
-    using agsXMPP.protocol.client;
     using agsXMPP.protocol.iq.roster;
     using agsXMPP.protocol.x.muc;
     using Abstractions;
