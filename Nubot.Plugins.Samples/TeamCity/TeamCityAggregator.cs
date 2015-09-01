@@ -23,12 +23,13 @@
             _settings = new List<IPluginSetting>
             {
                 new PluginSetting(Robot, this, "TeamCityNotifyRoomName"),
-                new PluginSetting(Robot, this, "TeamCityHipchatAuthToken")
+                new PluginSetting(Robot, this, "TeamCityHipchatAuthToken"),
+                new PluginSetting(Robot, this, "TeamCityBuildsMaxDuration")
             };
 
             _subject = new Subject<TeamCityModel>();
 
-            var maxWaitDuration = TimeSpan.FromMinutes(6.0);
+            var maxWaitDuration = TimeSpan.FromMinutes(double.Parse(Robot.Settings.Get("TeamCityBuildsMaxDuration")));
 
             _subject
                 .GroupBy(model => model.build.buildNumber)
