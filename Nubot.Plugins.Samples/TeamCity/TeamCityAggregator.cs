@@ -7,6 +7,7 @@
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using Abstractions;
+    using Abstractions.ReactiveExtensions;
     using Model;
 
     [Export(typeof(IRobotPlugin))]
@@ -31,9 +32,9 @@
 
             var maxWaitDuration = TimeSpan.FromMinutes(double.Parse(Robot.Settings.Get("TeamCityBuildsMaxDuration")));
 
-            _subject
-                .GroupBy(model => model.build.buildNumber)
-                .Subscribe(grp => grp.Buffer(maxWaitDuration, ExpectedBuildCount, Scheduler).Take(1).Subscribe(SendNotification));
+            var buildsPerBuildNumber = _subject.GroupBy(model => model.build.buildNumber);
+
+            buildsPerBuildNumber.Subscribe(grp => grp.BufferUntilInactive(maxWaitDuration, Scheduler, ExpectedBuildCount).Take(1).Subscribe(SendNotification));
 
             Robot.EventEmitter.On<TeamCityModel>("TeamCity.BuildStatus", OnTeamCityBuild);
         }

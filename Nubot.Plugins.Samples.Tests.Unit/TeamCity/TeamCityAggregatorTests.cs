@@ -43,37 +43,36 @@
             robot.Received(1).SendNotification(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
         }
 
-        //todo Find a way to introduce a sliding timeout
-        //[Test]
-        //public void SendNotification_5SuccessfulForSameBuildEventSentUnderThe6MinutesTimeOutSliding_ExpectSuccessfulNotificationSentWithCorrectMessage()
-        //{
-        //    //Arrange
-        //    var robot = Substitute.For<IRobot>();
+        [Test]
+        public void SendNotification_5SuccessfulForSameBuildEventSentUnderThe8MinutesTimeOutSliding_ExpectSuccessfulNotificationSentWithCorrectMessage()
+        {
+            //Arrange
+            var robot = Substitute.For<IRobot>();
 
-        //    var eventEmitter = new MvvmLightMessenger();
-        //    robot.EventEmitter.Returns(eventEmitter);
+            var eventEmitter = new MvvmLightMessenger();
+            robot.EventEmitter.Returns(eventEmitter);
 
-        //    var settings = Substitute.For<ISettings>();
-        //    settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
-        //    robot.Settings.Returns(settings);
+            var settings = Substitute.For<ISettings>();
+            settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
+            robot.Settings.Returns(settings);
 
-        //    var scheduler = new TestScheduler();
-        //    var teamCityAggregator = new TeamCityAggregatorSut(robot, scheduler);
+            var scheduler = new TestScheduler();
+            var teamCityAggregator = new TeamCityAggregatorSut(robot, scheduler);
 
-        //    var successfulTeamCityBuildModel = new TeamCityModel { build = new Build { buildNumber = "10", buildResult = "success" } };
+            var successfulTeamCityBuildModel = new TeamCityModel { build = new Build { buildNumber = "10", buildResult = "success" } };
 
-        //    //Act
-        //    scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-        //    scheduler.Schedule(TimeSpan.FromMinutes(3), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-        //    scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-        //    scheduler.Schedule(TimeSpan.FromMinutes(5), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-        //    scheduler.Schedule(TimeSpan.FromMinutes(10.9), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            //Act
+            scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(3), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(5), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(13), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
 
-        //    scheduler.AdvanceTo(TimeSpan.FromMinutes(12).Ticks);
+            scheduler.AdvanceTo(TimeSpan.FromMinutes(14).Ticks);
 
-        //    //Assert
-        //    robot.Received(1).SendNotification(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
-        //}
+            //Assert
+            robot.Received(1).SendNotification(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+        }
 
         [Test]
         public void SendNotification_4SuccessfulAnd1FailedForSameBuildEventSent_ExpectFailedNotificationSentWithCorrectMessage()
@@ -130,9 +129,9 @@
             scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
             scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
             scheduler.Schedule(TimeSpan.FromMinutes(5), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(9), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(14), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
 
-            scheduler.AdvanceBy(TimeSpan.FromMinutes(9).Ticks);
+            scheduler.AdvanceBy(TimeSpan.FromMinutes(14).Ticks);
 
             //Assert
             robot.Received(1).SendNotification(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), true);
