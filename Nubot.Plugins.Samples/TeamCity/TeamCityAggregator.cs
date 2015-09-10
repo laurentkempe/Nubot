@@ -35,7 +35,7 @@
                 .GroupBy(model => model.build.buildNumber)
                 .Subscribe(grp => grp.Buffer(maxWaitDuration, ExpectedBuildCount, Scheduler).Take(1).Subscribe(SendNotification));
 
-            Robot.EventEmitter.On<TeamCityModel>("TeamCityBuild", OnTeamCityBuild);
+            Robot.EventEmitter.On<TeamCityModel>("TeamCity.BuildStatus", OnTeamCityBuild);
         }
 
         protected virtual IScheduler Scheduler
