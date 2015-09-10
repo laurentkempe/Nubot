@@ -31,20 +31,16 @@
 
                 Robot.EventEmitter.Emit("Github.Push", model);
 
-
-                foreach (var buildMessage in BuildMessages(model))
-                {
-                    Robot.SendNotification(
-                        Robot.Settings.Get("GithubNotifyRoomName"),
-                        Robot.Settings.Get("GithubHipchatAuthToken"),
-                        buildMessage);
-                }
+                Robot.SendNotification(
+                    Robot.Settings.Get("GithubNotifyRoomName"),
+                    Robot.Settings.Get("GithubHipchatAuthToken"),
+                    BuildMessage(model));
 
                 return HttpStatusCode.OK;
             };
         }
 
-        private IEnumerable<string> BuildMessages(GithubModel model)
+        private static string BuildMessage(GithubModel model)
         {
             var branch = model.Ref.Replace("refs/heads/", "");
             var authorNames = model.Commits.Select(c => c.Author.Name).Distinct();
@@ -67,9 +63,9 @@
                         commit.Message,
                         commit.Url,
                         commit.Id.Substring(0, 11));
-
-                yield return stringBuilder.ToString();
             }
+
+            return stringBuilder.ToString();
         }
 
         public override IEnumerable<IPluginSetting> Settings
