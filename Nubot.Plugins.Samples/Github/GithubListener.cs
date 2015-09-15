@@ -29,13 +29,15 @@
             {
                 var model = this.Bind<GithubModel>();
 
-                Robot.EventEmitter.Emit("Github.Push", model);
+                if (model.Commits.Any())
+                {
+                    Robot.EventEmitter.Emit("Github.Push", model);
 
-                Robot.SendNotification(
-                    Robot.Settings.Get("GithubNotifyRoomName"),
-                    Robot.Settings.Get("GithubHipchatAuthToken"),
-                    BuildMessage(model));
-
+                    Robot.SendNotification(
+                        Robot.Settings.Get("GithubNotifyRoomName"),
+                        Robot.Settings.Get("GithubHipchatAuthToken"),
+                        BuildMessage(model));
+                }
                 return HttpStatusCode.OK;
             };
         }
