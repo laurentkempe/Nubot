@@ -614,14 +614,14 @@
             public object Token;
         }
 
-        public void Subscribe<TModel>(string eventName, Action<IMessage<TModel>> action)
+        public void Subscribe<TModel>(string eventName, Action<TModel> action)
         {
             Register(this, eventName, true, action);
         }
 
         public void Publish<TModel>(string eventName, TModel model)
         {
-            Send(new GenericMessage<TModel>(this, model), eventName);
+            Send(model, eventName);
         }
     }
 }

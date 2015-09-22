@@ -44,9 +44,9 @@
             get { return DefaultScheduler.Instance; }
         }
 
-        private void OnTeamCityBuild(IMessage<TeamCityModel> message)
+        private void OnTeamCityBuild(TeamCityModel teamCityModel)
         {
-            _subject.OnNext(message.Content);
+            _subject.OnNext(teamCityModel);
         }
 
         private void SendNotification(IList<TeamCityModel> buildStatuses)

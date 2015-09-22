@@ -43,9 +43,9 @@
             Robot.Messenger.Subscribe<JiraModel>("JiraEvent", OnJiraEvent);
         }
 
-        private void OnJiraEvent(IMessage<JiraModel> message)
+        private void OnJiraEvent(JiraModel jiraModel)
         {
-            _subject.OnNext(message.Content);
+            _subject.OnNext(jiraModel);
         }
 
         private void SendNotification(IList<JiraModel> jiraEvents)
