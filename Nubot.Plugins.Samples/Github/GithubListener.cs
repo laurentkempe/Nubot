@@ -31,7 +31,7 @@
 
                 if (model.Commits.Any())
                 {
-                    Robot.EventEmitter.Emit("Github.Push", model);
+                    Robot.Messenger.Publish("Github.Push", model);
 
                     Robot.SendNotification(
                         Robot.Settings.Get("GithubNotifyRoomName"),

@@ -33,7 +33,7 @@
 
         IEnumerable<IRobotPlugin> RobotPlugins { get; }
 
-        IEventEmitter EventEmitter { get; }
+        IMessenger Messenger { get; }
 
         void ReloadPlugins();
 

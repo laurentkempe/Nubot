@@ -19,11 +19,11 @@
         private readonly CompositionManager _compositionManager;
         private IDisposable _webApp;
 
-        public Robot(string name, ILogger logger, IEventEmitter eventEmitter)
+        public Robot(string name, ILogger logger, IMessenger messenger)
         {
             Name = name;
             Logger = logger;
-            EventEmitter = eventEmitter;
+            Messenger = messenger;
 
             Version = "1.0"; //todo replace harcoding of the version number
 
@@ -81,7 +81,7 @@
         [ImportMany(AllowRecomposition = true)]
         public IEnumerable<IRobotPlugin> RobotPlugins { get; private set; }
 
-        public IEventEmitter EventEmitter { get; private set; }
+        public IMessenger Messenger { get; private set; }
 
         public void ReloadPlugins()
         {

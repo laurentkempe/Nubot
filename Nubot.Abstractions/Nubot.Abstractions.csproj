@@ -57,7 +57,7 @@
     <Compile Include="HttpPluginBase.cs" />
     <Compile Include="IAdapter.cs" />
     <Compile Include="IMessage.cs" />
-    <Compile Include="IEventEmitter.cs" />
+    <Compile Include="IMessenger.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="IRobot.cs" />
     <Compile Include="IRobotPlugin.cs" />

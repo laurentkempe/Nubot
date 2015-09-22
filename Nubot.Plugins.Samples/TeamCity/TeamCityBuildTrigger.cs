@@ -31,7 +31,7 @@
                 new PluginSetting(Robot, this, "TeamCityBuildTriggerPassword")
             };
 
-            Robot.EventEmitter.On<GithubModel>("Github.Push", OnPush);
+            Robot.Messenger.Subscribe<GithubModel>("Github.Push", OnPush);
         }
 
         private void OnPush(IMessage<GithubModel> message)
