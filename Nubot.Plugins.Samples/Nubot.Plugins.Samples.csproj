@@ -105,6 +105,8 @@
     <Compile Include="TeamCity\TeamCityBuildTrigger.cs" />
     <Compile Include="TeamCity\TeamCityListener.cs" />
     <Compile Include="TeamCity\TeamCityMessageBuilder.cs" />
+    <Compile Include="Xkcd\HipchatRequest.cs" />
+    <Compile Include="Xkcd\XkcdListener.cs" />
     <Compile Include="YouTube.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +131,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="web.config" />
+    <None Include="Xkcd\XkcdListener.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nubot.Abstractions\Nubot.Abstractions.csproj">
