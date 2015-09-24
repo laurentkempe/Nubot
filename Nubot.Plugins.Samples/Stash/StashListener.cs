@@ -30,7 +30,7 @@
             {
                 var model = this.Bind<StashModel>();
 
-                Robot.EventEmitter.Emit("StashCommit", model);
+                Robot.Messenger.Publish("StashCommit", model);
 
                 Robot.SendNotification(
                     Robot.Settings.Get("AtlassianStashNotifyRoomName"),

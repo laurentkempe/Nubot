@@ -16,10 +16,10 @@
     ////    Description = "A messenger class allowing a class to send a message to multiple recipients",
     ////    UrlContacts = "http://www.galasoft.ch/contact_en.html",
     ////    Email = "laurent@galasoft.ch")]
-    public class MvvmLightMessenger : IMvvmLightMessenger, IEventEmitter
+    public class MvvmLightMessenger : IMvvmLightMessenger, IMessenger
     {
         private static readonly object CreationLock = new object();
-        private static IEventEmitter _defaultInstance;
+        private static IMessenger _defaultInstance;
         private readonly object _registerLock = new object();
         private Dictionary<Type, List<WeakActionAndToken>> _recipientsOfSubclassesAction;
         private Dictionary<Type, List<WeakActionAndToken>> _recipientsStrictAction;
@@ -28,7 +28,7 @@
         /// Gets the MvvmLightMessenger's default instance, allowing
         /// to register and send messages in a static manner.
         /// </summary>
-        public static IEventEmitter Default
+        public static IMessenger Default
         {
             get
             {
@@ -67,7 +67,7 @@
 
         /// <summary>
         /// Registers a recipient for a type of message TMessage.
-        /// The action parameter will be executed when a corresponding 
+        /// The action parameter will be executed when a corresponding
         /// message is sent. See the receiveDerivedMessagesToo parameter
         /// for details on how messages deriving from TMessage (or, if TMessage is an interface,
         /// messages implementing TMessage) can be received too.
@@ -97,7 +97,7 @@
 
         /// <summary>
         /// Registers a recipient for a type of message TMessage.
-        /// The action parameter will be executed when a corresponding 
+        /// The action parameter will be executed when a corresponding
         /// message is sent.
         /// <para>Registering a recipient does not create a hard reference to it,
         /// so if this recipient is deleted, no memory leak is caused.</para>
@@ -120,7 +120,7 @@
 
         /// <summary>
         /// Registers a recipient for a type of message TMessage.
-        /// The action parameter will be executed when a corresponding 
+        /// The action parameter will be executed when a corresponding
         /// message is sent. See the receiveDerivedMessagesToo parameter
         /// for details on how messages deriving from TMessage (or, if TMessage is an interface,
         /// messages implementing TMessage) can be received too.
@@ -273,7 +273,7 @@
         }
 
         /// <summary>
-        /// Unregisters a message recipient for a given type of messages only. 
+        /// Unregisters a message recipient for a given type of messages only.
         /// After this method is executed, the recipient will not receive messages
         /// of type TMessage anymore, but will still receive other message types (if it
         /// registered for them previously).
@@ -291,7 +291,7 @@
         }
 
         /// <summary>
-        /// Unregisters a message recipient for a given type of messages only and for a given token. 
+        /// Unregisters a message recipient for a given type of messages only and for a given token.
         /// After this method is executed, the recipient will not receive messages
         /// of type TMessage anymore with the given token, but will still receive other message types
         /// or messages with other tokens (if it registered for them previously).
@@ -352,10 +352,10 @@
         /// Provides a way to override the MvvmLightMessenger.Default instance with
         /// a custom instance, for example for unit testing purposes.
         /// </summary>
-        /// <param name="newEventEmitter">The instance that will be used as MvvmLightMessenger.Default.</param>
-        public static void OverrideDefault(IEventEmitter newEventEmitter)
+        /// <param name="newMessenger">The instance that will be used as MvvmLightMessenger.Default.</param>
+        public static void OverrideDefault(IMessenger newMessenger)
         {
-            _defaultInstance = newEventEmitter;
+            _defaultInstance = newMessenger;
         }
 
         /// <summary>
@@ -510,13 +510,13 @@
         /// <summary>
         /// Notifies the MvvmLightMessenger that the lists of recipients should
         /// be scanned and cleaned up.
-        /// Since recipients are stored as <see cref="WeakReference"/>, 
-        /// recipients can be garbage collected even though the MvvmLightMessenger keeps 
+        /// Since recipients are stored as <see cref="WeakReference"/>,
+        /// recipients can be garbage collected even though the MvvmLightMessenger keeps
         /// them in a list. During the cleanup operation, all "dead"
         /// recipients are removed from the lists. Since this operation
         /// can take a moment, it is only executed when the application is
         /// idle. For this reason, a user of the MvvmLightMessenger class should use
-        /// <see cref="RequestCleanup"/> instead of forcing one with the 
+        /// <see cref="RequestCleanup"/> instead of forcing one with the
         /// <see cref="Cleanup" /> method.
         /// </summary>
         public void RequestCleanup()
@@ -539,13 +539,13 @@
 
         /// <summary>
         /// Scans the recipients' lists for "dead" instances and removes them.
-        /// Since recipients are stored as <see cref="WeakReference"/>, 
-        /// recipients can be garbage collected even though the MvvmLightMessenger keeps 
+        /// Since recipients are stored as <see cref="WeakReference"/>,
+        /// recipients can be garbage collected even though the MvvmLightMessenger keeps
         /// them in a list. During the cleanup operation, all "dead"
         /// recipients are removed from the lists. Since this operation
         /// can take a moment, it is only executed when the application is
         /// idle. For this reason, a user of the MvvmLightMessenger class should use
-        /// <see cref="RequestCleanup"/> instead of forcing one with the 
+        /// <see cref="RequestCleanup"/> instead of forcing one with the
         /// <see cref="Cleanup" /> method.
         /// </summary>
         public void Cleanup()
@@ -614,14 +614,14 @@
             public object Token;
         }
 
-        public void On<TModel>(string eventName, Action<IMessage<TModel>> action)
+        public void Subscribe<TModel>(string eventName, Action<TModel> action)
         {
             Register(this, eventName, true, action);
         }
 
-        public void Emit<TModel>(string eventName, TModel model)
+        public void Publish<TModel>(string eventName, TModel model)
         {
-            Send(new GenericMessage<TModel>(this, model), eventName);
+            Send(model, eventName);
         }
     }
 }

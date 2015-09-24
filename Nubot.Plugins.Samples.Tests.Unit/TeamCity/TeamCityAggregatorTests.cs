@@ -19,7 +19,7 @@
             var robot = Substitute.For<IRobot>();
 
             var eventEmitter = new MvvmLightMessenger();
-            robot.EventEmitter.Returns(eventEmitter);
+            robot.Messenger.Returns(eventEmitter);
 
             var settings = Substitute.For<ISettings>();
             settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
@@ -31,11 +31,11 @@
             var successfulTeamCityBuildModel = new TeamCityModel { build = new Build { buildNumber = "10", buildResult = "success" } };
 
             //Act
-            scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(3), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(5), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(3), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(5), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
 
             scheduler.AdvanceTo(TimeSpan.FromMinutes(8).Ticks);
 
@@ -50,7 +50,7 @@
             var robot = Substitute.For<IRobot>();
 
             var eventEmitter = new MvvmLightMessenger();
-            robot.EventEmitter.Returns(eventEmitter);
+            robot.Messenger.Returns(eventEmitter);
 
             var settings = Substitute.For<ISettings>();
             settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
@@ -62,11 +62,11 @@
             var successfulTeamCityBuildModel = new TeamCityModel { build = new Build { buildNumber = "10", buildResult = "success" } };
 
             //Act
-            scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(3), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(5), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(13), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(3), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(5), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(13), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
 
             scheduler.AdvanceTo(TimeSpan.FromMinutes(14).Ticks);
 
@@ -81,7 +81,7 @@
             var robot = Substitute.For<IRobot>();
 
             var eventEmitter = new MvvmLightMessenger();
-            robot.EventEmitter.Returns(eventEmitter);
+            robot.Messenger.Returns(eventEmitter);
 
             var settings = Substitute.For<ISettings>();
             settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
@@ -94,11 +94,11 @@
             var failedTeamCityBuildModel = new TeamCityModel { build = new Build { buildNumber = "10", buildResult = "failed" } };
 
             //Act
-            scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(3), () => eventEmitter.Emit("TeamCity.BuildStatus", failedTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(3), () => eventEmitter.Publish("TeamCity.BuildStatus", failedTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
 
             scheduler.AdvanceTo(TimeSpan.FromMinutes(5).Ticks);
 
@@ -113,7 +113,7 @@
             var robot = Substitute.For<IRobot>();
 
             var eventEmitter = new MvvmLightMessenger();
-            robot.EventEmitter.Returns(eventEmitter);
+            robot.Messenger.Returns(eventEmitter);
 
             var settings = Substitute.For<ISettings>();
             settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
@@ -125,11 +125,11 @@
             var successfulTeamCityBuildModel = new TeamCityModel { build = new Build { buildNumber = "10", buildResult = "success" } };
 
             //Act
-            scheduler.Schedule(TimeSpan.FromMinutes(0), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(5), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(14), () => eventEmitter.Emit("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(0), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(5), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(14), () => eventEmitter.Publish("TeamCity.BuildStatus", successfulTeamCityBuildModel));
 
             scheduler.AdvanceBy(TimeSpan.FromMinutes(14).Ticks);
 
@@ -144,7 +144,7 @@
             var robot = Substitute.For<IRobot>();
 
             var eventEmitter = new MvvmLightMessenger();
-            robot.EventEmitter.Returns(eventEmitter);
+            robot.Messenger.Returns(eventEmitter);
 
             var settings = Substitute.For<ISettings>();
             settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
@@ -158,23 +158,23 @@
             var failed3TeamCityBuildModel = new TeamCityModel { build = new Build { buildNumber = "30", buildResult = "failed" } };
 
             //Act
-            scheduler.Schedule(TimeSpan.FromMinutes(0), () => eventEmitter.Emit("TeamCity.BuildStatus", successful1TeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Emit("TeamCity.BuildStatus", successful1TeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Emit("TeamCity.BuildStatus", successful1TeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(5), () => eventEmitter.Emit("TeamCity.BuildStatus", successful1TeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(5.5), () => eventEmitter.Emit("TeamCity.BuildStatus", successful1TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(0), () => eventEmitter.Publish("TeamCity.BuildStatus", successful1TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Publish("TeamCity.BuildStatus", successful1TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Publish("TeamCity.BuildStatus", successful1TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(5), () => eventEmitter.Publish("TeamCity.BuildStatus", successful1TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(5.5), () => eventEmitter.Publish("TeamCity.BuildStatus", successful1TeamCityBuildModel));
 
-            scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Emit("TeamCity.BuildStatus", successful2TeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(3), () => eventEmitter.Emit("TeamCity.BuildStatus", successful2TeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Emit("TeamCity.BuildStatus", successful2TeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(6), () => eventEmitter.Emit("TeamCity.BuildStatus", successful2TeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(7), () => eventEmitter.Emit("TeamCity.BuildStatus", successful2TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Publish("TeamCity.BuildStatus", successful2TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(3), () => eventEmitter.Publish("TeamCity.BuildStatus", successful2TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Publish("TeamCity.BuildStatus", successful2TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(6), () => eventEmitter.Publish("TeamCity.BuildStatus", successful2TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(7), () => eventEmitter.Publish("TeamCity.BuildStatus", successful2TeamCityBuildModel));
 
-            scheduler.Schedule(TimeSpan.FromMinutes(0.1), () => eventEmitter.Emit("TeamCity.BuildStatus", failed3TeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(3), () => eventEmitter.Emit("TeamCity.BuildStatus", failed3TeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Emit("TeamCity.BuildStatus", failed3TeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Emit("TeamCity.BuildStatus", failed3TeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(4.1), () => eventEmitter.Emit("TeamCity.BuildStatus", failed3TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(0.1), () => eventEmitter.Publish("TeamCity.BuildStatus", failed3TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(3), () => eventEmitter.Publish("TeamCity.BuildStatus", failed3TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Publish("TeamCity.BuildStatus", failed3TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Publish("TeamCity.BuildStatus", failed3TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(4.1), () => eventEmitter.Publish("TeamCity.BuildStatus", failed3TeamCityBuildModel));
 
             scheduler.AdvanceBy(TimeSpan.FromMinutes(9).Ticks);
 
@@ -190,7 +190,7 @@
             var robot = Substitute.For<IRobot>();
 
             var eventEmitter = new MvvmLightMessenger();
-            robot.EventEmitter.Returns(eventEmitter);
+            robot.Messenger.Returns(eventEmitter);
 
             var settings = Substitute.For<ISettings>();
             settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
@@ -202,11 +202,11 @@
             var successful1TeamCityBuildModel = new TeamCityModel { build = new Build { buildNumber = "10", buildResult = "success" } };
 
             //Act
-            scheduler.Schedule(TimeSpan.FromMinutes(0), () => eventEmitter.Emit("TeamCity.BuildStatus", successful1TeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Emit("TeamCity.BuildStatus", successful1TeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Emit("TeamCity.BuildStatus", successful1TeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(5), () => eventEmitter.Emit("TeamCity.BuildStatus", successful1TeamCityBuildModel));
-            scheduler.Schedule(TimeSpan.FromMinutes(5.5), () => eventEmitter.Emit("TeamCity.BuildStatus", successful1TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(0), () => eventEmitter.Publish("TeamCity.BuildStatus", successful1TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(2), () => eventEmitter.Publish("TeamCity.BuildStatus", successful1TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(4), () => eventEmitter.Publish("TeamCity.BuildStatus", successful1TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(5), () => eventEmitter.Publish("TeamCity.BuildStatus", successful1TeamCityBuildModel));
+            scheduler.Schedule(TimeSpan.FromMinutes(5.5), () => eventEmitter.Publish("TeamCity.BuildStatus", successful1TeamCityBuildModel));
 
             scheduler.AdvanceBy(TimeSpan.FromMinutes(15).Ticks);
 

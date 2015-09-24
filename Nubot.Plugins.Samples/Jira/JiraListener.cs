@@ -27,7 +27,7 @@
             {
                 var model = this.Bind<JiraModel>(new BindingConfig { IgnoreErrors = true, BodyOnly = true, Overwrite = true });
 
-                Robot.EventEmitter.Emit("JiraEvent", model);
+                Robot.Messenger.Publish("JiraEvent", model);
 
                 //Robot.SendNotification(
                 //    Robot.Settings.Get("AtlassianJiraNotifyRoomName").Trim(),

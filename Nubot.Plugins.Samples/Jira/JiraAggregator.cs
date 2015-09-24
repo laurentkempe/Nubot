@@ -40,12 +40,12 @@
                 .SelectMany(grp => grp.Publish(hot => hot.Buffer(() => hot.Throttle(maxWaitDuration, Scheduler))))
                 .Subscribe(SendNotification);
 
-            Robot.EventEmitter.On<JiraModel>("JiraEvent", OnJiraEvent);
+            Robot.Messenger.Subscribe<JiraModel>("JiraEvent", OnJiraEvent);
         }
 
-        private void OnJiraEvent(IMessage<JiraModel> message)
+        private void OnJiraEvent(JiraModel jiraModel)
         {
-            _subject.OnNext(message.Content);
+            _subject.OnNext(jiraModel);
         }
 
         private void SendNotification(IList<JiraModel> jiraEvents)

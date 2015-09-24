@@ -36,7 +36,7 @@
 
             buildsPerBuildNumber.Subscribe(grp => grp.BufferUntilInactive(maxWaitDuration, Scheduler, ExpectedBuildCount).Take(1).Subscribe(SendNotification));
 
-            Robot.EventEmitter.On<TeamCityModel>("TeamCity.BuildStatus", OnTeamCityBuild);
+            Robot.Messenger.Subscribe<TeamCityModel>("TeamCity.BuildStatus", OnTeamCityBuild);
         }
 
         protected virtual IScheduler Scheduler
@@ -44,9 +44,9 @@
             get { return DefaultScheduler.Instance; }
         }
 
-        private void OnTeamCityBuild(IMessage<TeamCityModel> message)
+        private void OnTeamCityBuild(TeamCityModel teamCityModel)
         {
-            _subject.OnNext(message.Content);
+            _subject.OnNext(teamCityModel);
         }
 
         private void SendNotification(IList<TeamCityModel> buildStatuses)

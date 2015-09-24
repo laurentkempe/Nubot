@@ -31,13 +31,11 @@
                 new PluginSetting(Robot, this, "TeamCityBuildTriggerPassword")
             };
 
-            Robot.EventEmitter.On<GithubModel>("Github.Push", OnPush);
+            Robot.Messenger.Subscribe<GithubModel>("Github.Push", OnPush);
         }
 
-        private void OnPush(IMessage<GithubModel> message)
+        private void OnPush(GithubModel githubModel)
         {
-            var githubModel = message.Content;
-
             if (githubModel.Deleted) return;
 
             TriggerTeamCityBuild(githubModel);

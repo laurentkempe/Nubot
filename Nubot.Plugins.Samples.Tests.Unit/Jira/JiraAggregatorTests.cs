@@ -20,7 +20,7 @@
             var eventEmitter = new MvvmLightMessenger();
 
             var robot = Substitute.For<IRobot>();
-            robot.EventEmitter.Returns(eventEmitter);
+            robot.Messenger.Returns(eventEmitter);
 
             var scheduler = new TestScheduler();
             var jiraAggregator = new JiraAggregatorSut(robot, scheduler);
@@ -44,8 +44,8 @@
             };
 
             //Act
-            scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Emit("JiraEvent", addCommentEvent1));
-            scheduler.Schedule(TimeSpan.FromSeconds(90), () => eventEmitter.Emit("JiraEvent", addCommentEvent2));
+            scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Publish("JiraEvent", addCommentEvent1));
+            scheduler.Schedule(TimeSpan.FromSeconds(90), () => eventEmitter.Publish("JiraEvent", addCommentEvent2));
 
             scheduler.AdvanceTo(TimeSpan.FromMinutes(5).Ticks);
 
@@ -60,7 +60,7 @@
             var eventEmitter = new MvvmLightMessenger();
 
             var robot = Substitute.For<IRobot>();
-            robot.EventEmitter.Returns(eventEmitter);
+            robot.Messenger.Returns(eventEmitter);
 
             var scheduler = new TestScheduler();
             var jiraAggregator = new JiraAggregatorSut(robot, scheduler);
@@ -76,7 +76,7 @@
             };
 
             //Act
-            scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Emit("JiraEvent", addCommentEvent1));
+            scheduler.Schedule(TimeSpan.FromMinutes(1), () => eventEmitter.Publish("JiraEvent", addCommentEvent1));
 
             scheduler.AdvanceTo(TimeSpan.FromMinutes(8).Ticks);
 
@@ -91,7 +91,7 @@
             var eventEmitter = new MvvmLightMessenger();
 
             var robot = Substitute.For<IRobot>();
-            robot.EventEmitter.Returns(eventEmitter);
+            robot.Messenger.Returns(eventEmitter);
 
             var scheduler = new TestScheduler();
             var jiraAggregator = new JiraAggregatorSut(robot, scheduler);
@@ -115,8 +115,8 @@
             };
 
             //Act
-            scheduler.Schedule(TimeSpan.FromSeconds(0), () => eventEmitter.Emit("JiraEvent", addCommentEvent1));
-            scheduler.Schedule(TimeSpan.FromSeconds(120), () => eventEmitter.Emit("JiraEvent", addCommentEvent2));
+            scheduler.Schedule(TimeSpan.FromSeconds(0), () => eventEmitter.Publish("JiraEvent", addCommentEvent1));
+            scheduler.Schedule(TimeSpan.FromSeconds(120), () => eventEmitter.Publish("JiraEvent", addCommentEvent2));
 
             scheduler.AdvanceTo(TimeSpan.FromSeconds(181).Ticks);
             robot.Received(0).SendNotification("", "", "Message", true);
