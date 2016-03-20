@@ -43,6 +43,7 @@
             {
                 yield return new Tuple<string, string>(ModulePath + "/css", string.Format("plugins{0}/views/css", ModulePath));
                 yield return new Tuple<string, string>(ModulePath + "/scripts", string.Format("plugins{0}/views/scripts", ModulePath));
+                yield return new Tuple<string, string>(ModulePath + "/images", string.Format("plugins{0}/views/images", ModulePath));
             }
         }
 

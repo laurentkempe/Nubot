@@ -78,6 +78,7 @@
     <Compile Include="Github\GithubListener.cs" />
     <Compile Include="Github\Models\GithubModel.cs" />
     <Compile Include="GoogleImages.cs" />
+    <Compile Include="HipChatConnect\HipChatConnect.cs" />
     <Compile Include="Jira\JiraAggregator.cs" />
     <Compile Include="Jira\JiraListener.cs" />
     <Compile Include="Jira\JiraMessageBuilder.cs" />
@@ -118,6 +119,9 @@
     <None Include="Github\GithubListener.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="HipChatConnect\atlassian-connect.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Jira\JiraListener.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -144,6 +148,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="AppHarbor\Views\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HipChatConnect\Views\images\TC.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HipChatConnect\Views\images\TC2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

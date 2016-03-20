@@ -1,0 +1,23 @@
+﻿{
+    "key": "nubot-addon",
+    "name": "Nubot",
+    "description": "An add-on to talk to Nubot.",
+    "vendor": {
+        "name": "Laurent Kempé",
+        "url": "http://www.laurentkempe.com"
+    },
+    "links": {
+        "self": "{{localBaseUrl}}/atlassian-connect.json",
+        "homepage": "{{localBaseUrl}}/atlassian-connect.json"
+    },
+    "capabilities": {
+        "hipchatApiConsumer": {
+            "scopes": [
+                "send_notification"
+            ]
+        },
+        "installable": {
+            "callbackUrl": "{{localBaseUrl}}/installable"
+        }
+    }
+}
