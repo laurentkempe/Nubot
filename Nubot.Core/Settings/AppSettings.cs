@@ -1,5 +1,6 @@
 ﻿namespace Nubot.Core.Settings
 {
+    using System;
     using System.Configuration;
     using System.Linq;
     using Abstractions;
@@ -11,6 +12,13 @@
             var config = GetConfiguration(path);
 
             return config.AppSettings.Settings[key].Value.Trim();
+        }
+
+        public T Get<T>(string key, string path = "") where T : IConvertible
+        {
+            var configValue = Get(key, path);
+
+            return (T) Convert.ChangeType(configValue, typeof (T));
         }
 
         public void Set(string key, string value, string path = "")
