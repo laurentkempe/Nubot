@@ -22,7 +22,8 @@
             robot.Messenger.Returns(eventEmitter);
 
             var settings = Substitute.For<ISettings>();
-            settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
+            settings.Get<double>("TeamCityBuildsMaxDuration").Returns(8.0);
+            settings.Get<int>("TeamCityExpectedBuildCount").Returns(5);
             robot.Settings.Returns(settings);
 
             var scheduler = new TestScheduler();
@@ -53,7 +54,8 @@
             robot.Messenger.Returns(eventEmitter);
 
             var settings = Substitute.For<ISettings>();
-            settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
+            settings.Get<double>("TeamCityBuildsMaxDuration").Returns(8.0);
+            settings.Get<int>("TeamCityExpectedBuildCount").Returns(5);
             robot.Settings.Returns(settings);
 
             var scheduler = new TestScheduler();
@@ -84,7 +86,8 @@
             robot.Messenger.Returns(eventEmitter);
 
             var settings = Substitute.For<ISettings>();
-            settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
+            settings.Get<double>("TeamCityBuildsMaxDuration").Returns(8.0);
+            settings.Get<int>("TeamCityExpectedBuildCount").Returns(5);
             robot.Settings.Returns(settings);
 
             var scheduler = new TestScheduler();
@@ -116,7 +119,8 @@
             robot.Messenger.Returns(eventEmitter);
 
             var settings = Substitute.For<ISettings>();
-            settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
+            settings.Get<double>("TeamCityBuildsMaxDuration").Returns(8.0);
+            settings.Get<int>("TeamCityExpectedBuildCount").Returns(5);
             robot.Settings.Returns(settings);
 
             var scheduler = new TestScheduler();
@@ -147,7 +151,8 @@
             robot.Messenger.Returns(eventEmitter);
 
             var settings = Substitute.For<ISettings>();
-            settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
+            settings.Get<double>("TeamCityBuildsMaxDuration").Returns(8.0);
+            settings.Get<int>("TeamCityExpectedBuildCount").Returns(5);
             robot.Settings.Returns(settings);
 
             var scheduler = new TestScheduler();
@@ -193,7 +198,8 @@
             robot.Messenger.Returns(eventEmitter);
 
             var settings = Substitute.For<ISettings>();
-            settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
+            settings.Get<double>("TeamCityBuildsMaxDuration").Returns(8.0);
+            settings.Get<int>("TeamCityExpectedBuildCount").Returns(5);
             robot.Settings.Returns(settings);
 
             var scheduler = new TestScheduler();
@@ -216,18 +222,13 @@
 
         private class TeamCityAggregatorSut : TeamCityAggregator
         {
-            private readonly IScheduler _testScheduler;
-
             public TeamCityAggregatorSut(IRobot robot, TestScheduler testScheduler)
                 : base(robot)
             {
-                _testScheduler = testScheduler;
+                Scheduler = testScheduler;
             }
 
-            protected override IScheduler Scheduler
-            {
-                get { return _testScheduler; }
-            }
+            protected override IScheduler Scheduler { get; }
         }
     }
 }
