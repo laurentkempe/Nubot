@@ -9,6 +9,7 @@
     using System.Threading.Tasks;
     using Abstractions;
     using Models;
+    using Nancy;
     using Nancy.ModelBinding;
     using Newtonsoft.Json;
     using HttpStatusCode = Nancy.HttpStatusCode;
@@ -16,20 +17,20 @@
     [Export(typeof (IRobotPlugin))]
     public class HipChatConnect : HttpPluginBase
     {
-        private const string BaseUri = "https://27be5628.ngrok.io";
+        private const string BaseUri = "https://8b053996.ngrok.io";
 
         [ImportingConstructor]
         public HipChatConnect(IRobot robot)
             : base("HipChat Connect", "/hipchat", robot)
         {
-            //After.AddItemToEndOfPipeline((ctx) => ctx.Response
-            //            .WithHeader("Access-Control-Allow-Origin", "*")
-            //            .WithHeader("Access-Control-Allow-Methods", "GET")
-            //            .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type"));
-
-            //After.AddItemToEndOfPipeline(x =>
-            //    x.Response.WithHeaders("Access-Control-Allow-Origin", "*")
-            //        .WithHeaders("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"));
+            //See HipChat Connect https://developer.atlassian.com/hipchat/tutorials/building-an-add-on-with-your-own-technology-stackdocumentation - https://developer.atlassian.com/hipchat/tutorials/building-an-add-on-with-your-own-technology-stack
+            // Glance queryUrl
+            // When a user opens a room where your add - on is installed in the HipChat App, the HipChat App retrieves the initial glance
+            // value by calling the queryUrl endpoint.This is a cross domain HTTP request, so you need to include CORS headers.
+            After.AddItemToEndOfPipeline(ctx => ctx.Response
+                        .WithHeader("Access-Control-Allow-Origin", "*")
+                        .WithHeader("Access-Control-Allow-Methods", "GET")
+                        .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type"));
 
             Get["atlassian-connect.json", runAsync: true] = async (_, ct) =>
             {
