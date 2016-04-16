@@ -19,11 +19,12 @@
         private readonly CompositionManager _compositionManager;
         private IDisposable _webApp;
 
-        public Robot(string name, ILogger logger, IMessenger messenger)
+        public Robot(string name, ILogger logger, IMessenger messenger, IBrain brain)
         {
             Name = name;
             Logger = logger;
             Messenger = messenger;
+            Brain = brain;
 
             Version = "1.0"; //todo replace harcoding of the version number
 
@@ -34,10 +35,11 @@
             _compositionManager = new CompositionManager(this);
         }
 
-        public string Name { get; private set; }
-        public string Version { get; private set; }
-        public ISettings Settings { get; private set; }
-        public ILogger Logger { get; private set; }
+        public string Name { get; }
+        public string Version { get; }
+        public ISettings Settings { get; }
+        public ILogger Logger { get; }
+        public IBrain Brain { get; }
 
         public void MessageRoom(string room, params string[] messages)
         {
@@ -68,7 +70,7 @@
 
         public void Respond(string regex, Action<IResponse> action)
         {
-            var regexWithRobotName = string.Format("{0} {1}", Name, regex);
+            var regexWithRobotName = $"{Name} {regex}";
 
             if (_listeners.Exists(p => p.RegexText == regexWithRobotName))
             {
@@ -81,7 +83,7 @@
         [ImportMany(AllowRecomposition = true)]
         public IEnumerable<IRobotPlugin> RobotPlugins { get; private set; }
 
-        public IMessenger Messenger { get; private set; }
+        public IMessenger Messenger { get; }
 
         public void ReloadPlugins()
         {
@@ -121,10 +123,7 @@
 
         public void Stop()
         {
-            if (_webApp != null)
-            {
-                _webApp.Dispose();
-            }
+            _webApp?.Dispose();
         }
 
         private void StartWebServer()

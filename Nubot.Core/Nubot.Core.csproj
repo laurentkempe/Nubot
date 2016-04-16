@@ -90,6 +90,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Brains\InMemoryBrain.cs" />
     <Compile Include="Composition\MEFInterception.cs" />
     <Compile Include="Messaging\Helpers\IExecuteWithObject.cs" />
     <Compile Include="Messaging\Helpers\WeakAction.cs" />

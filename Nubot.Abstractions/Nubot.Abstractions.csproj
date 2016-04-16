@@ -57,6 +57,7 @@
     <Compile Include="Envelope.cs" />
     <Compile Include="HttpPluginBase.cs" />
     <Compile Include="IAdapter.cs" />
+    <Compile Include="IBrain.cs" />
     <Compile Include="IMessenger.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="IRobot.cs" />

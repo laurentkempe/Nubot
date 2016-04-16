@@ -13,6 +13,8 @@
 
         ILogger Logger { get; }
 
+        IBrain Brain { get; }
+
         void MessageRoom(string room, params string [] messages);
 
         void SendNotification(string room, string authToken, string htmlMessage, bool notify = false);

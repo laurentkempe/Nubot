@@ -132,7 +132,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="web.config" />
-    <None Include="Xkcd\XkcdListener.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nubot.Abstractions\Nubot.Abstractions.csproj">
