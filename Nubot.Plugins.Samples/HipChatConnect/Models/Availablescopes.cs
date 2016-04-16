@@ -1,4 +1,4 @@
-namespace Nubot.Plugins.Samples.HipChatConnect
+namespace Nubot.Plugins.Samples.HipChatConnect.Models
 {
     public class Availablescopes
     {
