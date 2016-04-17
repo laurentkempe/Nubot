@@ -38,9 +38,7 @@
                 //var baseUri = Context.Request.Url.SiteBase;
                 var baseUri = "https://8b053996.ngrok.io";
 
-                var response = GetCapabilitiesDescriptorAsJson(baseUri);
-
-                return await Task.Run(() => JsonConvert.SerializeObject(response));
+                return await Task.Run(() => GetCapabilitiesDescriptor(baseUri));
             };
 
             Post["installable", runAsync: true] = async (_, ctx) =>
@@ -67,6 +65,61 @@
 
                 return Task.FromResult(HttpStatusCode.Unauthorized);
             };
+        }
+
+        private static string GetCapabilitiesDescriptor(string baseUri)
+        {
+            var capabilitiesDescriptor = new
+            {
+                name = "Nubot",
+                description = "An add-on to talk to Nubot.",
+                key = "nubot-addon",
+                links = new
+                {
+                    self = $"{baseUri}/hipchat/atlassian-connect.json",
+                    homepage = $"{baseUri}/hipchat/atlassian-connect.json"
+                },
+                vendor = new
+                {
+                    name = "Laurent Kempe",
+                    url = "http://laurentkempe.com"
+                },
+                capabilities = new
+                {
+                    hipchatApiConsumer = new
+                    {
+                        scopes = new[]
+                        {
+                            "send_notification",
+                            "view_room"
+                        }
+                    },
+                    installable = new
+                    {
+                        callbackUrl = $"{baseUri}/hipchat/installable"
+                    },
+                    glance = new[]
+                    {
+                        new
+                        {
+                            name = new
+                            {
+                                value = "Hello TC"
+                            },
+                            queryUrl = $"{baseUri}/hipchat/glance",
+                            key = "nubot.glance",
+                            target = "nubot.sidebar",
+                            icon = new Icon
+                            {
+                                url = $"{baseUri}/nubot/css/TC.png",
+                                url2 = $"{baseUri}/nubot/css/TC2.png"
+                            }
+                        }
+                    }
+                }
+            };
+
+            return JsonConvert.SerializeObject(capabilitiesDescriptor);
         }
 
         private static string BuildInitialGlance()
@@ -99,7 +152,10 @@
 
         private async Task<bool> ValidateToken(dynamic jwt)
         {
-            var installationData = await Robot.Brain.GetAsync<InstallationData>("installationData");
+            var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+            var readToken = jwtSecurityTokenHandler.ReadToken(jwt);
+
+            var installationData = await Robot.Brain.GetAsync<InstallationData>(readToken.Issuer);
 
             var validationParameters = new TokenValidationParameters
             {
@@ -109,8 +165,6 @@
                 ValidateLifetime = true,
                 IssuerSigningToken = new BinarySecretSecurityToken(Encoding.UTF8.GetBytes(installationData.oauthSecret))
             };
-
-            var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
             try
             {
@@ -134,7 +188,7 @@
                     style = "link",
                     url = "http://laurentkempe.com",
                     id = "fee4d9a3-685d-4cbd-abaa-c8850d9b1960",
-                    title = "First Integration of Nubot by Laurent Kempé",
+                    title = "First Integration of Nubot by Laurent Kempe",
                     description = new
                     {
                         format = "html",
@@ -202,62 +256,9 @@
         {
             var installationData = this.Bind<InstallationData>();
 
-            await Robot.Brain.SetAsync("installationData", installationData);
+            await Robot.Brain.SetAsync(installationData.oauthId, installationData);
 
             return installationData;
-        }
-
-        private static object GetCapabilitiesDescriptorAsJson(string baseUri)
-        {
-            return new
-            {
-                name = "Nubot",
-                description = "An add-on to talk to Nubot.",
-                key = "nubot-addon",
-                links = new
-                {
-                    self = $"{baseUri}/hipchat/atlassian-connect.json",
-                    homepage = $"{baseUri}/hipchat/atlassian-connect.json"
-                },
-                vendor = new
-                {
-                    name = "Laurent Kempé",
-                    url = "http://laurentkempe.com"
-                },
-                capabilities = new
-                {
-                    hipchatApiConsumer = new
-                    {
-                        scopes = new[]
-                        {
-                            "send_notification",
-                            "view_room"
-                        }
-                    },
-                    installable = new
-                    {
-                        callbackUrl = $"{baseUri}/hipchat/installable"
-                    },
-                    glance = new[]
-                    {
-                        new
-                        {
-                            name = new
-                            {
-                                value = "Hello TC"
-                            },
-                            queryUrl = $"{baseUri}/hipchat/glance",
-                            key = "nubot.glance",
-                            target = "nubot.sidebar",
-                            icon = new Icon
-                            {
-                                url = $"{baseUri}/nubot/css/TC.png",
-                                url2 = $"{baseUri}/nubot/css/TC2.png"
-                            }
-                        }
-                    }
-                }
-            };
         }
     }
 }
