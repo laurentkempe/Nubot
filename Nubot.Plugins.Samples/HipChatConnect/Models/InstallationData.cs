@@ -1,6 +1,6 @@
 namespace Nubot.Plugins.Samples.HipChatConnect.Models
 {
-    public class Root
+    public class InstallationData
     {
         public string capabilitiesUrl { get; set; }
         public string oauthId { get; set; }
