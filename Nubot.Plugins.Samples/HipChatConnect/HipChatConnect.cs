@@ -13,7 +13,9 @@
     using Models;
     using Nancy;
     using Nancy.ModelBinding;
+    using Nancy.Responses;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
     using HttpStatusCode = Nancy.HttpStatusCode;
 
     [Export(typeof (IRobotPlugin))]
@@ -52,6 +54,25 @@
                 await InstallationNotifyRoom(installationData, accessToken);
 
                 return HttpStatusCode.OK;
+            };
+
+            Get["uninstalled", runAsync: true] = async (_, ct) =>
+            {
+                var redirectUrl = Request.Query["redirect_url"];
+                var installableUrl = Request.Query["installable_url"];
+
+                var client = new HttpClient();
+
+                var httpResponse = await client.GetAsync((string)installableUrl);
+                httpResponse.EnsureSuccessStatusCode();
+
+                var responseBody = await httpResponse.Content.ReadAsStringAsync();
+
+                var jObject = JObject.Parse(responseBody);
+
+                await Robot.Brain.Remove<InstallationData>((string)jObject["oauthId"]);
+
+                return Response.AsRedirect((string)redirectUrl.ToString(), RedirectResponse.RedirectType.Temporary);
             };
 
             Get["glance", runAsync: true] = async (_, ct) =>
@@ -96,7 +117,8 @@
                     },
                     installable = new
                     {
-                        callbackUrl = $"{baseUri}/hipchat/installable"
+                        callbackUrl = $"{baseUri}/hipchat/installable",
+                        uninstalledUrl = $"{baseUri}/hipchat/uninstalled"
                     },
                     glance = new[]
                     {
