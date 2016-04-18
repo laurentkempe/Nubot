@@ -17,7 +17,7 @@
 
                 x.Service<Robot>(s =>
                 {
-                    s.ConstructUsing(name => new Robot(DefaultRobotName, new Log4NetLogger(), MvvmLightMessenger.Default, new InMemoryBrain()));
+                    s.ConstructUsing(name => new Robot(DefaultRobotName, new Log4NetLogger(), MvvmLightMessenger.Default, new AkavacheBrain()));
                     s.WhenStarted(robot => robot.Start());
                     s.WhenStopped(robot => robot.Stop());
                 });
