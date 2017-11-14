@@ -15,7 +15,7 @@
     {
         private readonly IEnumerable<IPluginSetting> _settings;
         private readonly Subject<TeamCityModel> _subject;
-        private const int ExpectedBuildCount = 5;
+        private readonly int _expectedBuildCount;
 
         [ImportingConstructor]
         public TeamCityAggregator(IRobot robot)
@@ -25,16 +25,20 @@
             {
                 new PluginSetting(Robot, this, "TeamCityNotifyRoomName"),
                 new PluginSetting(Robot, this, "TeamCityHipchatAuthToken"),
-                new PluginSetting(Robot, this, "TeamCityBuildsMaxDuration")
+                new PluginSetting(Robot, this, "TeamCityBuildsMaxDuration"),
+                new PluginSetting(Robot, this, "TeamCityBaseUrl")
             };
 
             _subject = new Subject<TeamCityModel>();
 
             var maxWaitDuration = TimeSpan.FromMinutes(double.Parse(Robot.Settings.Get("TeamCityBuildsMaxDuration")));
+            _expectedBuildCount = Robot.Settings.Get<int>("TeamCityExpectedBuildCount");
+            var teamCityBaseUrl = Robot.Settings.Get<string>("TeamCityBaseUrl");
 
             var buildsPerBuildNumber = _subject.GroupBy(model => model.build.buildNumber);
 
-            buildsPerBuildNumber.Subscribe(grp => grp.BufferUntilInactive(maxWaitDuration, Scheduler, ExpectedBuildCount).Take(1).Subscribe(SendNotification));
+            buildsPerBuildNumber.Subscribe(grp => grp.BufferUntilInactive(maxWaitDuration, Scheduler, _expectedBuildCount).Take(1).Subscribe(
+                list => SendNotification(list, teamCityBaseUrl)));
 
             Robot.Messenger.Subscribe<TeamCityModel>("TeamCity.BuildStatus", OnTeamCityBuild);
         }
@@ -49,10 +53,10 @@
             _subject.OnNext(teamCityModel);
         }
 
-        private void SendNotification(IList<TeamCityModel> buildStatuses)
+        private void SendNotification(IList<TeamCityModel> buildStatuses, string teamCityBaseUrl)
         {
             bool notify;
-            var message = new TeamCityMessageBuilder(ExpectedBuildCount).BuildMessage(buildStatuses, out notify);
+            var message = new TeamCityMessageBuilder(_expectedBuildCount).BuildMessage(buildStatuses, teamCityBaseUrl, out notify);
 
             //todo add color of the line https://www.hipchat.com/docs/api/method/rooms/message
             //todo Background color for message. One of "yellow", "red", "green", "purple", "gray", or "random". (default: yellow)

@@ -23,6 +23,7 @@
 
             var settings = Substitute.For<ISettings>();
             settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
+            settings.Get<int>("TeamCityExpectedBuildCount").Returns(5);
             robot.Settings.Returns(settings);
 
             var scheduler = new TestScheduler();
@@ -54,6 +55,7 @@
 
             var settings = Substitute.For<ISettings>();
             settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
+            settings.Get<int>("TeamCityExpectedBuildCount").Returns(5);
             robot.Settings.Returns(settings);
 
             var scheduler = new TestScheduler();
@@ -148,6 +150,7 @@
 
             var settings = Substitute.For<ISettings>();
             settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
+            settings.Get<int>("TeamCityExpectedBuildCount").Returns(5);
             robot.Settings.Returns(settings);
 
             var scheduler = new TestScheduler();
@@ -194,6 +197,7 @@
 
             var settings = Substitute.For<ISettings>();
             settings.Get("TeamCityBuildsMaxDuration").Returns("8.0");
+            settings.Get<int>("TeamCityExpectedBuildCount").Returns(5);
             robot.Settings.Returns(settings);
 
             var scheduler = new TestScheduler();
